@@ -4267,11 +4267,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "d:\\PRID2324\\projects\\prid-2324-a02\\backend\\backend.csproj",
+      "projectUniqueName": "C:\\PRID2324\\projects\\prid-2324-a02\\backend\\backend.csproj",
       "projectName": "backend",
-      "projectPath": "d:\\PRID2324\\projects\\prid-2324-a02\\backend\\backend.csproj",
+      "projectPath": "C:\\PRID2324\\projects\\prid-2324-a02\\backend\\backend.csproj",
       "packagesPath": "C:\\Users\\Bunu\\.nuget\\packages\\",
-      "outputPath": "d:\\PRID2324\\projects\\prid-2324-a02\\backend\\obj\\",
+      "outputPath": "C:\\PRID2324\\projects\\prid-2324-a02\\backend\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4352,7 +4352,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "D:\\PRID2324\\tools\\dotnet-sdk\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\PRID2324\\tools\\dotnet-sdk\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }

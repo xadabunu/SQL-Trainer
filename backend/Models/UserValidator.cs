@@ -1,7 +1,6 @@
 using System.Text.RegularExpressions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.IdentityModel.Tokens;
 
 namespace prid_2324_a02.Models;
@@ -31,9 +30,14 @@ public partial class UserValidator : AbstractValidator<User>
 
 		RuleFor(u => u.Email)
 			.NotEmpty()
-			.Matches(@"[a-zA-Z0-9-_.]+@([a-zA-Z0-9_-]+.)+[a-zA-Z0-9_-]{2,4}")
-			//.EmailAddress()
-			.MustAsync(async (mail, token) => !await _context.Users.AnyAsync(u => u.Email == mail));
+			//.Matches(@"^[a-zA-Z0-9-_.]+@([a-zA-Z0-9_-]+.)+[a-zA-Z0-9_-]{2,4}$")
+			.EmailAddress()
+			.DependentRules(() => {
+				RuleFor(u => new { u.Id, u.Email})
+					.MustAsync(async (u, token) => !await _context.Users.AnyAsync(o => u.Email == o.Email && u.Id != o.Id, cancellationToken: token))
+					.OverridePropertyName(nameof(User.Email))
+					.WithMessage("'{PropertyName}' must be unique.");
+			});
 
 		RuleFor(u => new { u.FirstName, u.LastName, u.Id })
 			.Must(u => u.FirstName.IsNullOrEmpty() == u.LastName.IsNullOrEmpty())
@@ -62,7 +66,7 @@ public partial class UserValidator : AbstractValidator<User>
 	}
 
     private async Task<bool> BeUniquePseudo(string pseudo, int id, CancellationToken token) {
-        return !await _context.Users.AnyAsync(u => u.Pseudo == pseudo && u.Id != id);
+        return !await _context.Users.AnyAsync(u => u.Pseudo == pseudo && u.Id != id, cancellationToken: token);
     }
 
 	private bool ValidFullName(string? firstname, string? lastname, int id) {
@@ -78,17 +82,15 @@ public partial class UserValidator : AbstractValidator<User>
 	private async Task<bool> BeUniqueFullName(string? firstname, string? lastname, int id, CancellationToken token) {
 		if (!firstname.IsNullOrEmpty())
 			return true;
-		return !await _context.Users.AnyAsync(u => u.FirstName == firstname && u.LastName == lastname && u.Id != id);
+		return !await _context.Users.AnyAsync(u => u.FirstName == firstname && u.LastName == lastname && u.Id != id, cancellationToken: token);
 	}
 
 	private static bool ValidName(string? name) {
 		if (name == null)
 			return true;
-		if (name[0] == ' ' || name[0] == '\t' || name[^1] == ' ' || name[^1] == '\t')
-			return false;
 		return MyRegex().Match(name).Success;
 	}
 
-    [GeneratedRegex(".{3,50}")]
+    [GeneratedRegex(@"^\S.{3,50}\S$")]
     private static partial Regex MyRegex();
 }

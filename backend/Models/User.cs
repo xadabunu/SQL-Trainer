@@ -1,17 +1,14 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
 
 namespace prid_2324_a02.Models;
 
 public class User
 {
 	[Key]
-	//[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public int Id { get; set; }
-	public string Pseudo { get; set; } = "";
-	public string Password { get; set; } = "";
-	public string Email { get; set; } = "";
+	public string Pseudo { get; set; } = null!; //déclenche une exception si valeur non fournie
+	public string Password { get; set; } = null!;
+	public string Email { get; set; } = null!;
 	public string? LastName { get; set; }
 	public string? FirstName { get; set; }
 	public DateTimeOffset? BirthDate { get; set; }
@@ -36,9 +33,6 @@ public class User
 {
   "pseudo": "cestmoi",
   "email": "cestmoi@epfc.eu",
-  "firstName": null,
-  "lastName": null,
-  "birthDate": null,
   "password": "cestmoi"
 }
 

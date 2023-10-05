@@ -1,14 +1,10 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace prid_2324_a02.Models;
 
 public class UserDTO
 {
-	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-	public int Id { get; private set; }
-	public string Pseudo { get; set; } = "";
-	public string Email { get; set; } = "";
+	public int Id { get; set; }
+	public string Pseudo { get; set; } = null!;
+	public string Email { get; set; } = null!;
 	public string? FirstName { get; set; }
 	public string? LastName { get; set; }
 	public DateTimeOffset? BirthDate { get; set; }
@@ -16,5 +12,5 @@ public class UserDTO
 
 public class UserWithPasswordDTO : UserDTO
 {
-	public string Password { get; set; } = "";
+	public string Password { get; set; } = null!;
 }

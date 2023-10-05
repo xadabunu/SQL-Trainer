@@ -24,7 +24,7 @@ public class UsersController : ControllerBase
 		return _mapper.Map<List<UserDTO>>(await _context.Users.ToListAsync());
 	}
 
-	[HttpGet("{id}")]
+	[HttpGet("{id:int}")]
 	public async Task<ActionResult<UserDTO>> GetOne(int id)
 	{
 		var user = await _context.Users.FindAsync(id);
@@ -36,8 +36,7 @@ public class UsersController : ControllerBase
 	[HttpGet("byPseudo/{pseudo}")]
 	public async Task<ActionResult<UserDTO>> GetOneByPseudo(string pseudo)
 	{
-		//var user = await _context.Users.FindAsync(pseudo);
-		var user = await _context.Users.FirstOrDefaultAsync(u => u.Pseudo == pseudo);
+		var user = await _context.Users.SingleOrDefaultAsync(u => u.Pseudo == pseudo);
 		if (user == null)
 			return NotFound();
 		return _mapper.Map<UserDTO>(user);
@@ -46,7 +45,7 @@ public class UsersController : ControllerBase
 	[HttpGet("byEmail/{email}")]
 	public async Task<ActionResult<UserDTO>> GetOneByEmail(string email)
 	{
-		var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+		var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
 		if (user == null)
 			return NotFound();
 		return _mapper.Map<UserDTO>(user);
@@ -63,7 +62,7 @@ public class UsersController : ControllerBase
 		await _context.SaveChangesAsync();
 		return CreatedAtAction(
 			nameof(GetOne),
-			new { pseudo = user.Pseudo },
+			new { id = user.Id },
 			_mapper.Map<UserDTO>(newUser));
 	}
 
@@ -84,7 +83,7 @@ public class UsersController : ControllerBase
 		return NoContent();
 	}
 
-	[HttpDelete("{id}")]
+	[HttpDelete("{id:int}")]
 	public async Task<IActionResult> DeleteUser(int id)
 	{
 		var user = await _context.Users.FindAsync(id);

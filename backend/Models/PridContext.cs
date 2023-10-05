@@ -13,6 +13,8 @@ public class PridContext : DbContext
 		base.OnModelCreating(modelBuilder);
 
 		modelBuilder.Entity<User>().HasIndex(u => u.Id).IsUnique();
+		modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
+		modelBuilder.Entity<User>().HasIndex(u => new { u.FirstName, u.LastName}).IsUnique();
 
 		modelBuilder.Entity<User>().HasData(
 			new User { 

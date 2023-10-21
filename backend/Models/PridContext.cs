@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 
 namespace prid_2324_a02.Models;
@@ -23,8 +24,9 @@ public class PridContext : DbContext
 				Password = "ben",
 				Email = "benoit@epfc.eu",
 				FirstName = "Benoît",
-				LastName = "Penelle" },
-			new User { Id = 2, Pseudo = "bruno", Password = "bruno", Email = "bruno@epfc.eu", FirstName = "Bruno", LastName = "Lacroix" },
+				LastName = "Penelle",
+				BirthDate = new DateTime(1970, 1, 2) },
+			new User { Id = 2, Pseudo = "bruno", Password = "bruno", Email = "bruno@epfc.eu", FirstName = "Bruno", LastName = "Lacroix", BirthDate = new DateTime(1971, 2, 3) },
 			new User { Id = 3, Pseudo = "alain", Password = "alain", Email = "alain@epfc.eu", FirstName = "Alain", LastName = "Silovy" },
 			new User { Id = 4, Pseudo = "xavier", Password = "xavier", Email = "xavier@epfc.eu", FirstName = "Xavier", LastName = "Pigeolet" },
 			new User { Id = 5, Pseudo = "boris", Password = "boris", Email = "boris@epfc.eu", FirstName = "Boris", LastName = "Verhaegen" },

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "prid-2324-a02", "backend\prid-2324-a02.csproj", "{B8431894-3387-40C4-A928-DB9E8E03C92F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "prid-2324-a02", "backend\backend.csproj", "{B8431894-3387-40C4-A928-DB9E8E03C92F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

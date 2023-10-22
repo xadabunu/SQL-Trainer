@@ -212,3 +212,4 @@ C:\PRID2324\projects\prid-2324-a02\backend\obj\Debug\net7.0\refint\backend.dll
 C:\PRID2324\projects\prid-2324-a02\backend\obj\Debug\net7.0\backend.pdb
 C:\PRID2324\projects\prid-2324-a02\backend\obj\Debug\net7.0\backend.genruntimeconfig.cache
 C:\PRID2324\projects\prid-2324-a02\backend\obj\Debug\net7.0\ref\backend.dll
+C:\PRID2324\projects\prid-2324-a02\backend\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

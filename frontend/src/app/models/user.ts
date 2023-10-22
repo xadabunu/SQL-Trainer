@@ -1,6 +1,12 @@
 import { Type } from "class-transformer";
 import 'reflect-metadata';
 
+export enum Role {
+	User,
+	Manager,
+	Admin
+}
+
 export class User {
 	id?: number;
 	pseudo?: string;
@@ -10,6 +16,13 @@ export class User {
 	lastName?: string;
 	@Type(() => Date)
 	birthDate?: Date;
+
+	role: Role = Role.User;
+	token?: string;
+
+	public get roleAsString(): string {
+		return Role[this.role];
+	}
 
 	get display(): string {
 		return `${this.id} - ${this.pseudo} (${this.birthDate ? this.age + ' years old' : 'age unknown'})`;

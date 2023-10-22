@@ -8,6 +8,9 @@ public class UserDTO
 	public string? FirstName { get; set; }
 	public string? LastName { get; set; }
 	public DateTimeOffset? BirthDate { get; set; }
+
+	public Role Role { get; set; }
+	public string? Token { get; set; }
 }
 
 public class UserWithPasswordDTO : UserDTO

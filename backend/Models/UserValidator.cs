@@ -59,10 +59,25 @@ public partial class UserValidator : AbstractValidator<User>
 		RuleSet("create", () => {
 
 		});
+
+		RuleFor(u => u.Role)
+			.IsInEnum();
+
+		// Validations spécifiques pour l'authentification
+		RuleSet("authenticate", () => {
+			RuleFor(m => m.Token)
+				.NotNull().OverridePropertyName("Password").WithMessage("Incorrect password.");
+		});
 	}
 
 	public async Task<FluentValidation.Results.ValidationResult> ValidateOnCreate(User user) {
 		return await this.ValidateAsync(user, o => o.IncludeRuleSets("default", "create"));
+	}
+
+	public async Task<FluentValidation.Results.ValidationResult> ValidateForAuthenticate(User? user) {
+		if (user == null)
+			return ValidatorHelper.CustomError("User not found.", "Pseudo");
+		return await this.ValidateAsync(user!, o => o.IncludeRuleSets("authenticate"));
 	}
 
     private async Task<bool> BeUniquePseudo(string pseudo, int id, CancellationToken token) {

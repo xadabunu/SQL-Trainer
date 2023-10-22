@@ -9,8 +9,24 @@ const appRoutes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'counter', component: CounterComponent },
   { path: 'fetch-data', component: FetchDataComponent },
-  { path: 'users', component: UserListComponent },
-  { path: '**', redirectTo: '' }
+  {
+    path: 'users',
+    component: UserListComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Admin] }
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  { path: 'restricted', component: RestrictedComponent },
+  { path: '**', component: UnknownComponent }
 ];
+
+import { RestrictedComponent } from '../components/restricted/restricted.component';
+import { LoginComponent } from '../components/login/login.component';
+import { UnknownComponent } from '../components/unknown/unknown.component';
+import { AuthGuard } from '../services/auth.guard';
+import { Role } from '../models/user';
 
 export const AppRoutes = RouterModule.forRoot(appRoutes);

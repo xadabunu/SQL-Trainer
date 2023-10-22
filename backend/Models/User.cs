@@ -1,6 +1,13 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace prid_2324_a02.Models;
+
+public enum Role {
+	User,
+	Manager,
+	Admin
+}
 
 public class User
 {
@@ -12,6 +19,11 @@ public class User
 	public string? LastName { get; set; }
 	public string? FirstName { get; set; }
 	public DateTimeOffset? BirthDate { get; set; }
+
+	public Role Role { get; set; } = Role.User;
+
+	[NotMapped]
+	public string? Token { get; set; }
 
 	public string? FullName => FirstName + " " + LastName;	
 

@@ -6,11 +6,11 @@ namespace prid_2324_a02;
 public class Answer
 {
 	[Key]
-	int Id { get; set; }
-	string Sql { get; set; } = null!;
-	DateTimeOffset Timestamp { get; set; }
-	bool IsCorrect { get; }
+	public int Id { get; set; }
+	public string Sql { get; set; } = null!;
+	public DateTimeOffset Timestamp { get; set; }
+	public bool IsCorrect { get; }
 
-	Attempt Attempt { get; } = null!;
-	Question Question { get; } = null!;
+	public Attempt Attempt { get; } = null!;
+	public Question Question { get; } = null!;
 }

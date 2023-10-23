@@ -6,12 +6,12 @@ namespace prid_2324_a02.Models;
 public class Attempt
 {
 	[Key]
-	int Id { get; set; }
-	DateTimeOffset? Start { get; set; }
-	DateTimeOffset? Finish { get; set; }
+	public int Id { get; set; }
+	public DateTimeOffset? Start { get; set; }
+	public DateTimeOffset? Finish { get; set; }
 
-	Student Author { get; }
-	Quizz Quizz { get; }
+	public Student? Author { get; }
+	public Quizz? Quizz { get; }
 
 	public virtual ICollection<Answer> Answers { get; set; } = new HashSet<Answer>();
 }

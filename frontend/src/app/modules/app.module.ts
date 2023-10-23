@@ -14,6 +14,7 @@ import { RestrictedComponent } from '../components/restricted/restricted.compone
 import { UnknownComponent } from '../components/unknown/unknown.component';
 import { JwtInterceptor } from '../interceptors/jwt.interceptor';
 import { LoginComponent } from '../components/login/login.component';
+import { QuizzListComponent } from '../components/quizzlist/quizzlist.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { LoginComponent } from '../components/login/login.component';
     UserListComponent,
     LoginComponent,
     UnknownComponent,
-    RestrictedComponent
+    RestrictedComponent,
+    QuizzListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

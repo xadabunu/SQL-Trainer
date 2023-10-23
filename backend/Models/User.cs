@@ -3,7 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace prid_2324_a02.Models;
 
-public enum Role {
+public enum Role
+{
 	User,
 	Manager,
 	Admin

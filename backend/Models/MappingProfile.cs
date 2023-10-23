@@ -18,5 +18,8 @@ public class MappingProfile : Profile
 
 		CreateMap<UserLoginDTO, User>();
 		CreateMap<User, UserLoginDTO>();
+
+		CreateMap<Quizz, QuizzDTO>();
+		CreateMap<QuizzDTO, Quizz>();
 	}
 }

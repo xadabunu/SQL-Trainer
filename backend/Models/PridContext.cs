@@ -22,7 +22,8 @@ public class PridContext : DbContext
 				Id = 1,
 				Pseudo = "admin",
 				Password = "admin",
-				Email = "admin@epfc.eu"
+				Email = "admin@epfc.eu",
+				Role = Role.Admin
 			},
 			new User { 
 				Id = 2,

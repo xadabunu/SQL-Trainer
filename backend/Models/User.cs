@@ -9,7 +9,7 @@ public enum Role {
 	Admin
 }
 
-public class User
+public abstract class User
 {
 	[Key]
 	public int Id { get; set; }
@@ -38,6 +38,16 @@ public class User
 			return age; 
 		}
 	}
+}
+
+public class Student : User
+{
+    public virtual ICollection<Attempt> Attempts { get; set; } = new HashSet<Attempt>();
+}
+
+public class Teacher : User
+{
+
 }
 
 /*

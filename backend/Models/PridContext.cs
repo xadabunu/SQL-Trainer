@@ -18,14 +18,14 @@ public class PridContext : DbContext
 		modelBuilder.Entity<User>().HasIndex(u => new { u.FirstName, u.LastName}).IsUnique();
 
 		modelBuilder.Entity<User>().HasData(
-			new User {
+			new Teacher {
 				Id = 1,
 				Pseudo = "admin",
 				Password = "admin",
 				Email = "admin@epfc.eu",
 				Role = Role.Admin
 			},
-			new User { 
+			new Student { 
 				Id = 2,
 				Pseudo = "ben",
 				Password = "ben",
@@ -33,13 +33,19 @@ public class PridContext : DbContext
 				FirstName = "Benoît",
 				LastName = "Penelle",
 				BirthDate = new DateTime(1970, 1, 2) },
-			new User { Id = 3, Pseudo = "alain", Password = "alain", Email = "alain@epfc.eu", FirstName = "Alain", LastName = "Silovy" },
-			new User { Id = 4, Pseudo = "xavier", Password = "xavier", Email = "xavier@epfc.eu", FirstName = "Xavier", LastName = "Pigeolet" },
-			new User { Id = 5, Pseudo = "boris", Password = "boris", Email = "boris@epfc.eu", FirstName = "Boris", LastName = "Verhaegen" },
-			new User { Id = 6, Pseudo = "marc", Password = "marc", Email = "marc@epfc.eu", FirstName = "Marc", LastName = "Michel" },
-			new User { Id = 7, Pseudo = "bruno", Password = "bruno", Email = "bruno@epfc.eu", FirstName = "Bruno", LastName = "Lacroix", BirthDate = new DateTime(1971, 2, 3) }
+			new Student { Id = 3, Pseudo = "alain", Password = "alain", Email = "alain@epfc.eu", FirstName = "Alain", LastName = "Silovy" },
+			new Student { Id = 4, Pseudo = "xavier", Password = "xavier", Email = "xavier@epfc.eu", FirstName = "Xavier", LastName = "Pigeolet" },
+			new Student { Id = 5, Pseudo = "boris", Password = "boris", Email = "boris@epfc.eu", FirstName = "Boris", LastName = "Verhaegen" },
+			new Student { Id = 6, Pseudo = "marc", Password = "marc", Email = "marc@epfc.eu", FirstName = "Marc", LastName = "Michel" },
+			new Student { Id = 7, Pseudo = "bruno", Password = "bruno", Email = "bruno@epfc.eu", FirstName = "Bruno", LastName = "Lacroix", BirthDate = new DateTime(1971, 2, 3) }
 		);
 	}
 
 	public DbSet<User> Users => Set<User>();
+	public DbSet<Answer> Answers => Set<Answer>();
+	public DbSet<Attempt> Attemps => Set<Attempt>();
+	public DbSet<Database> Databases => Set<Database>();
+	public DbSet<Question> Questions => Set<Question>();
+	public DbSet<Quizz> Quizzes => Set<Quizz>();
+	public DbSet<Solution> Solutions => Set<Solution>();
 }

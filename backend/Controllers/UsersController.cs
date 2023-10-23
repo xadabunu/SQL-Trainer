@@ -106,7 +106,7 @@ public class UsersController : ControllerBase
 
 	[AllowAnonymous]
 [HttpPost("authenticate")]
-public async Task<ActionResult<UserDTO>> Authenticate(UserWithPasswordDTO dto) {
+public async Task<ActionResult<UserDTO>> Authenticate(UserLoginDTO dto) {
     var user = await Authenticate(dto.Pseudo, dto.Password);
 
     var result = await new UserValidator(_context).ValidateForAuthenticate(user);
@@ -117,7 +117,7 @@ public async Task<ActionResult<UserDTO>> Authenticate(UserWithPasswordDTO dto) {
 }
 
 private async Task<User?> Authenticate(string pseudo, string password) {
-    var user = await _context.Users.FindAsync(pseudo);
+    var user = await _context.Users.SingleOrDefaultAsync(u => u.Pseudo == pseudo);
 
     // return null if user not found
     if (user == null)

@@ -91,7 +91,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
 				// en cas d'erreurs, on reste sur la page et on les affiche
 				error: error => {
 					console.log(error);
-					//this.error = error.error.errors[0].errorMessage;
+					this.error = error.error.errors[0].errorMessage;
 					this.loading = false;
 				}
 			});

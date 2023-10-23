@@ -13,6 +13,12 @@ public class UserDTO
 	public string? Token { get; set; }
 }
 
+public class UserLoginDTO
+{
+	public string Pseudo { get; set; } = null!;
+	public string Password { get; set; } = null!;
+}
+
 public class UserWithPasswordDTO : UserDTO
 {
 	public string Password { get; set; } = null!;

@@ -76,13 +76,17 @@ public class UsersController : ControllerBase
 
 	[Authorized(Role.Admin)]
 	[HttpPut]
-	public async Task<IActionResult> PutUser(UserDTO dto)
+	public async Task<IActionResult> PutUser(UserWithPasswordDTO dto)
 	{
 		var user = await _context.Users.FindAsync(dto.Id);
 		if (user == null)
 			return NotFound();
 
-		_mapper.Map<UserDTO, User>(dto, user);
+		// S'il n'y a pas de mot de passe dans le dto, on garde le mot de passe actuel
+        if (string.IsNullOrEmpty(dto.Password))
+            dto.Password = user.Password;
+
+		_mapper.Map<UserWithPasswordDTO, User>(dto, user);
 
 		var result = await new UserValidator(_context).ValidateAsync(user);
 		if (!result.IsValid)
@@ -105,42 +109,42 @@ public class UsersController : ControllerBase
 	}
 
 	[AllowAnonymous]
-[HttpPost("authenticate")]
-public async Task<ActionResult<UserDTO>> Authenticate(UserLoginDTO dto) {
-    var user = await Authenticate(dto.Pseudo, dto.Password);
+	[HttpPost("authenticate")]
+	public async Task<ActionResult<UserDTO>> Authenticate(UserLoginDTO dto) {
+		var user = await Authenticate(dto.Pseudo, dto.Password);
 
-    var result = await new UserValidator(_context).ValidateForAuthenticate(user);
-    if (!result.IsValid)
-        return BadRequest(result);
+		var result = await new UserValidator(_context).ValidateForAuthenticate(user);
+		if (!result.IsValid)
+			return BadRequest(result);
 
-    return Ok(_mapper.Map<UserDTO>(user));
-}
+		return Ok(_mapper.Map<UserDTO>(user));
+	}
 
-private async Task<User?> Authenticate(string pseudo, string password) {
-    var user = await _context.Users.SingleOrDefaultAsync(u => u.Pseudo == pseudo);
+	private async Task<User?> Authenticate(string pseudo, string password) {
+		var user = await _context.Users.SingleOrDefaultAsync(u => u.Pseudo == pseudo);
 
-    // return null if user not found
-    if (user == null)
-        return null;
+		// return null if user not found
+		if (user == null)
+			return null;
 
-    if (user.Password == password) {
-        // authentication successful so generate jwt token
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes("my-super-secret-key");
-        var tokenDescriptor = new SecurityTokenDescriptor {
-            Subject = new ClaimsIdentity(new Claim[] {
-                    new Claim(ClaimTypes.Name, user.Pseudo),
-                    new Claim(ClaimTypes.Role, user.Role.ToString())
-                }),
-            IssuedAt = DateTime.UtcNow,
-            Expires = DateTime.UtcNow.AddMinutes(10),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        };
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        user.Token = tokenHandler.WriteToken(token);
-    }
+		if (user.Password == password) {
+			// authentication successful so generate jwt token
+			var tokenHandler = new JwtSecurityTokenHandler();
+			var key = Encoding.ASCII.GetBytes("my-super-secret-key");
+			var tokenDescriptor = new SecurityTokenDescriptor {
+				Subject = new ClaimsIdentity(new Claim[] {
+						new Claim(ClaimTypes.Name, user.Pseudo),
+						new Claim(ClaimTypes.Role, user.Role.ToString())
+					}),
+				IssuedAt = DateTime.UtcNow,
+				Expires = DateTime.UtcNow.AddMinutes(10),
+				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+			};
+			var token = tokenHandler.CreateToken(tokenDescriptor);
+			user.Token = tokenHandler.WriteToken(token);
+		}
 
-    return user;
-}
+		return user;
+	}
 
 }

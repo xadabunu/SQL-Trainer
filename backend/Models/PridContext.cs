@@ -17,14 +17,21 @@ public class PridContext : DbContext
 		modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
 		modelBuilder.Entity<User>().HasIndex(u => new { u.FirstName, u.LastName}).IsUnique();
 
-		modelBuilder.Entity<User>().HasData(
+		modelBuilder.Entity<Answer>().HasIndex(a => a.Id).IsUnique();
+		modelBuilder.Entity<Question>().HasIndex(q => q.Id).IsUnique();
+		modelBuilder.Entity<Quizz>().HasIndex(q => q.Id).IsUnique();
+
+		modelBuilder.Entity<Teacher>().HasData(
 			new Teacher {
 				Id = 1,
 				Pseudo = "admin",
 				Password = "admin",
 				Email = "admin@epfc.eu",
 				Role = Role.Admin
-			},
+			}
+		);
+
+		modelBuilder.Entity<Student>().HasData(
 			new Student { 
 				Id = 2,
 				Pseudo = "ben",
@@ -32,12 +39,21 @@ public class PridContext : DbContext
 				Email = "benoit@epfc.eu",
 				FirstName = "Benoît",
 				LastName = "Penelle",
-				BirthDate = new DateTime(1970, 1, 2) },
+				BirthDate = new DateTime(1970, 1, 2)
+			},
 			new Student { Id = 3, Pseudo = "alain", Password = "alain", Email = "alain@epfc.eu", FirstName = "Alain", LastName = "Silovy" },
 			new Student { Id = 4, Pseudo = "xavier", Password = "xavier", Email = "xavier@epfc.eu", FirstName = "Xavier", LastName = "Pigeolet" },
 			new Student { Id = 5, Pseudo = "boris", Password = "boris", Email = "boris@epfc.eu", FirstName = "Boris", LastName = "Verhaegen" },
 			new Student { Id = 6, Pseudo = "marc", Password = "marc", Email = "marc@epfc.eu", FirstName = "Marc", LastName = "Michel" },
-			new Student { Id = 7, Pseudo = "bruno", Password = "bruno", Email = "bruno@epfc.eu", FirstName = "Bruno", LastName = "Lacroix", BirthDate = new DateTime(1971, 2, 3) }
+			new Student {
+				Id = 7,
+				Pseudo = "bruno",
+				Password = "bruno",
+				Email = "bruno@epfc.eu",
+				FirstName = "Bruno",
+				LastName = "Lacroix",
+				BirthDate = new DateTime(1971, 2, 3)
+			}
 		);
 	}
 

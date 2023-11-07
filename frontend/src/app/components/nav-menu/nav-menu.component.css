@@ -21,3 +21,8 @@ html {
 .link-active {
     font-weight: bold;
 }
+
+.nav-link * {
+    vertical-align: middle;
+  }
+  

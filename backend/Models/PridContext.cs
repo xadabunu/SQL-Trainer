@@ -55,6 +55,16 @@ public class PridContext : DbContext
 				BirthDate = new DateTime(1971, 2, 3)
 			}
 		);
+
+		modelBuilder.Entity<Quizz>().HasData(
+			new Quizz {
+				Id = 1,
+				Name = "Quizz de test",
+				IsPublished = true,
+				IsClosed = false,
+				IsTest = false
+			}
+		);
 	}
 
 	public DbSet<User> Users => Set<User>();

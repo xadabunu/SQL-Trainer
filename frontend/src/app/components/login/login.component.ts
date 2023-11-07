@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
 		});
 
 		// get return url from route parameters or default to '/'
-		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+		this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/quizzes';
 	}
 
 	// On définit ici un getter qui permet de simplifier les accès aux champs du formulaire dans le HTML

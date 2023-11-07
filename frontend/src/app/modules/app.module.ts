@@ -20,6 +20,7 @@ import { EditUserComponent } from '../components/edit-user/edit-user.component';
 import { SharedModule } from './shared.module';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { fr } from 'date-fns/locale';
+import { QuizzListComponent } from '../components/quizzlist/quizzlist.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { fr } from 'date-fns/locale';
     UnknownComponent,
     RestrictedComponent,
     SetFocusDirective,
-    EditUserComponent
+    EditUserComponent,
+    QuizzListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

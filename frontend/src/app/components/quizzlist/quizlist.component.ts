@@ -16,14 +16,16 @@ import { format } from "date-fns";
 	templateUrl: './quizlist.component.html'
 })
 export class QuizListComponent {
+
 	@Input() list!: QuizList;
 	@Input() isTest!: boolean;
+	@Input() filter!: string;
+
 	trainingColumns: string[] = ['nom', 'base de données', 'statut', 'actions'];
 	testColumns: string[] = ['nom', 'base de données', 'date début', 'date fin', 'statut', 'évaluation', 'actions'];
 	displayedColumns: string[] = null!;
-	//? deux string[] pour afficher tableau de tests et d'entraînements ?
+
 	dataSource: MatTableDataSource<Quizz> = new MatTableDataSource();
-	filter: string = '';
 	state: MatTableState;
 
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -36,7 +38,11 @@ export class QuizListComponent {
 		public snackBar: MatSnackBar
 	) {
 		this.state = this.stateService.quizListState;
-		this.displayedColumns = this.isTest ? this.testColumns : this.trainingColumns;
+	}
+
+	ngOnInit(): void {
+		/* si cette assignation est faite dans le constructeur, isTest est toujours undefined */
+		this.displayedColumns = this.isTest? this.testColumns : this.trainingColumns;
 	}
 
 	ngAfterViewInit(): void {
@@ -52,7 +58,7 @@ export class QuizListComponent {
 		this.state.bind(this.dataSource);
 		this.refresh();
 	}
-	//? refresh doit getTrainings ou Tests depending on ?
+
 	refresh(): void {
 		if (this.isTest) {
 			this.quizService.getTests().subscribe(quizzes => {
@@ -69,7 +75,21 @@ export class QuizListComponent {
 		}
 	}
 
+	ngOnChange(): void {
+		console.log(this.filter);
+	}
+
+	//! filter n'est pas conservé lors d'un changement de page
+
 	filterChanged(e: KeyboardEvent): void {
-		
+
+		console.log(this.filter);
+
+		const filterValue = (e.target as HTMLInputElement).value;
+		this.dataSource.filter = filterValue.trim().toLowerCase();
+		this.state.filter = this.dataSource.filter;
+
+		if (this.dataSource.paginator)
+			this.dataSource.paginator.firstPage();
 	}
 }

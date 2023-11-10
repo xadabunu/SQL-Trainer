@@ -6,9 +6,7 @@ import { AppRoutes } from '../routing/app.routing';
 
 import { AppComponent } from '../components/app/app.component';
 import { NavMenuComponent } from '../components/nav-menu/nav-menu.component';
-import { HomeComponent } from '../components/home/home.component';
 import { CounterComponent } from '../components/counter/counter.component';
-import { FetchDataComponent } from '../components/fetch-data/fetch-data.component';
 import { UserListComponent } from '../components/userlist/userlist.component';
 import { RestrictedComponent } from '../components/restricted/restricted.component';
 import { UnknownComponent } from '../components/unknown/unknown.component';
@@ -20,23 +18,21 @@ import { EditUserComponent } from '../components/edit-user/edit-user.component';
 import { SharedModule } from './shared.module';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { fr } from 'date-fns/locale';
-import { QuizzListMainComponent } from '../components/quizzlist/quizzlist-page.component';
+import { QuizzListPageComponent } from '../components/quizzlist/quizzlist-page.component';
 import { QuizListComponent } from '../components/quizzlist/quizlist.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent,
     CounterComponent,
-    FetchDataComponent,
     UserListComponent,
     LoginComponent,
     UnknownComponent,
     RestrictedComponent,
     SetFocusDirective,
     EditUserComponent,
-    QuizzListMainComponent,
+    QuizzListPageComponent,
     QuizListComponent
   ],
   imports: [

@@ -7,10 +7,10 @@ import { StateService } from "src/app/services/state.service";
 import { QuizListComponent } from "./quizlist.component";
 
 @Component({
-	selector: 'app-quizzlist',
+	selector: 'quizzlist-page',
 	templateUrl: './quizzlist-page.component.html'
 })
-export class QuizzListMainComponent {
+export class QuizzListPageComponent {
 	quizzes: Quizz[] = [];
 	trainingQuizzes: QuizList = null!;
 	testQuizzes: QuizList = null!;
@@ -26,9 +26,6 @@ export class QuizzListMainComponent {
 	) {
 
 		this.state = this.stateService.quizListState;
-
-		let trainingList: Quizz[];
-		let testLis: Quizz[];
 
 		// quizzService.getAll().subscribe(quizzes => {
 		// 	this.quizzes = quizzes;
@@ -49,11 +46,6 @@ export class QuizzListMainComponent {
 	}
 	
 	filterChanged(e: KeyboardEvent): void {
-		const filterValue = (e.target as HTMLInputElement).value;
-		this.dataSource.filter = filterValue.trim().toLowerCase();
-		this.state.filter = this.dataSource.filter;
-
-		if (this.dataSource.paginator)
-			this.dataSource.paginator.firstPage();
+		console.log(this.filter.length);
 	}
 }

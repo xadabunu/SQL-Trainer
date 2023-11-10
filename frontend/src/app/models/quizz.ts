@@ -17,3 +17,11 @@ export class Quizz {
 		return `${this.name} - (${this.description ? this.description : 'no description'})`;
 	}
 }
+
+export class QuizList {
+	private _quizzes: Quizz[] = [];
+
+	constructor(list: Quizz[]) {
+		this._quizzes = list;
+	}
+}

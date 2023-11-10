@@ -27,4 +27,20 @@ public class QuizzesController : ControllerBase
 	{
 		return _mapper.Map<List<QuizzDTO>>(await _context.Quizzes.ToListAsync());
 	}
+
+	[Authorized(Role.User, Role.Admin)]
+	[HttpGet("getTrainings")]
+	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetTrainings()
+	{
+		return _mapper.Map<List<QuizzDTO>>(await _context.Quizzes
+			.Where(q => !q.IsTest).ToListAsync());
+	}
+
+	[Authorized(Role.User, Role.Admin)]
+	[HttpGet("getTests")]
+	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetTests()
+	{
+		return _mapper.Map<List<QuizzDTO>>(await _context.Quizzes
+			.Where(q => q.IsTest).ToListAsync());
+	}
 }

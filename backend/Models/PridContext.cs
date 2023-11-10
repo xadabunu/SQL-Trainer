@@ -20,6 +20,7 @@ public class PridContext : DbContext
 		modelBuilder.Entity<Answer>().HasIndex(a => a.Id).IsUnique();
 		modelBuilder.Entity<Question>().HasIndex(q => q.Id).IsUnique();
 		modelBuilder.Entity<Quizz>().HasIndex(q => q.Id).IsUnique();
+		modelBuilder.Entity<Database>().HasIndex(d => d.Id).IsUnique();
 
 		modelBuilder.Entity<Teacher>().HasData(
 			new Teacher {
@@ -56,13 +57,68 @@ public class PridContext : DbContext
 			}
 		);
 
+		// Database fournisseurs_db = new() { Id = 1, Name = "fournisseurs" };
+		// Database facebook_db = new() { Id = 2, Name = "facebook" };
+
+		// modelBuilder.Entity<Database>().HasData(
+		// 	fournisseurs_db,
+		// 	facebook_db
+		// );
+
 		modelBuilder.Entity<Quizz>().HasData(
 			new Quizz {
 				Id = 1,
-				Name = "Quizz de test",
+				Name = "TP1",
 				IsPublished = true,
 				IsClosed = false,
-				IsTest = false
+				IsTest = false,
+				// Database = fournisseurs_db
+			},
+			new Quizz {
+				Id = 2,
+				Name = "TP2",
+				IsPublished = true,
+				IsClosed = false,
+				IsTest = false,
+				// Database = fournisseurs_db
+			},
+			new Quizz {
+				Id = 3,
+				Name = "TP3",
+				IsPublished = true,
+				IsClosed = false,
+				IsTest = false,
+				// Database = facebook_db
+			},
+			new Quizz {
+				Id = 4,
+				Name = "TEST1",
+				IsPublished = true,
+				IsClosed = true,
+				IsTest = true,
+				Start = new DateTime(2023, 10, 20),
+				Finish = new DateTime(2023, 10, 21),
+				// Database = fournisseurs_db
+			},
+			new Quizz {
+				Id = 5,
+				Name = "TEST2",
+				IsPublished = true,
+				IsClosed = false,
+				IsTest = true,
+				Start = new DateTime(2023, 10, 21),
+				Finish = new DateTime(2023, 10, 23),
+				// Database = fournisseurs_db
+			},
+			new Quizz {
+				Id = 6,
+				Name = "TEST3",
+				IsPublished = true,
+				IsClosed = false,
+				IsTest = true,
+				Start = new DateTime(2023, 10, 22),
+				Finish = new DateTime(2023, 10, 24),
+				// Database = facebook_db
 			}
 		);
 	}

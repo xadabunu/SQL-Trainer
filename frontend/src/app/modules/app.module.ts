@@ -20,7 +20,8 @@ import { EditUserComponent } from '../components/edit-user/edit-user.component';
 import { SharedModule } from './shared.module';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { fr } from 'date-fns/locale';
-import { QuizzListComponent } from '../components/quizzlist/quizzlist.component';
+import { QuizzListMainComponent } from '../components/quizzlist/quizzlist-page.component';
+import { QuizListComponent } from '../components/quizzlist/quizlist.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { QuizzListComponent } from '../components/quizzlist/quizzlist.component'
     RestrictedComponent,
     SetFocusDirective,
     EditUserComponent,
-    QuizzListComponent
+    QuizzListMainComponent,
+    QuizListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

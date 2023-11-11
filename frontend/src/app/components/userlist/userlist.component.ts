@@ -19,7 +19,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
     templateUrl: './userlist.component.html',
     styleUrls: ['./userlist.component.css']
 })
-export class UserListComponent implements AfterViewInit, OnDestroy{
+export class UserListComponent implements AfterViewInit, OnDestroy {
 
     displayedColumns: string[] = ['pseudo', 'birthDate', 'role', 'actions'];
     dataSource: MatTableDataSource<User> = new MatTableDataSource();
@@ -66,7 +66,10 @@ export class UserListComponent implements AfterViewInit, OnDestroy{
         });
     }
 
-    // appelée chaque fois que le filtre est modifié par l'utilisateur
+    /**
+     * Appelée chaque fois que le filtre est modifié par l'utilisateur.
+     * @param e 
+     */
     filterChanged(e: KeyboardEvent) {
         const filterValue = (e.target as HTMLInputElement).value;
         // applique le filtre au datasource (et provoque l'utilisation du filterPredicate)
@@ -132,5 +135,5 @@ export class UserListComponent implements AfterViewInit, OnDestroy{
 
     ngOnDestroy(): void {
         this.snackBar.dismiss();
-}
+    }
 }

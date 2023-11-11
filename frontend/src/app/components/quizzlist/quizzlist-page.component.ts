@@ -4,7 +4,6 @@ import { QuizzService } from "src/app/services/quizz.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatTableState } from "src/app/helpers/mattable.state";
 import { StateService } from "src/app/services/state.service";
-import { QuizListComponent } from "./quizlist.component";
 
 @Component({
 	selector: 'quizzlist-page',
@@ -46,6 +45,6 @@ export class QuizzListPageComponent {
 	}
 	
 	filterChanged(e: KeyboardEvent): void {
-		console.log(this.filter.length);
+		console.log("from here " + this.filter.length);
 	}
 }

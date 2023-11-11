@@ -76,14 +76,17 @@ export class QuizListComponent {
 	}
 
 	ngOnChange(): void {
-		console.log(this.filter);
+		console.log("from onChange" + this.filter);
 	}
 
-	//! filter n'est pas conservé lors d'un changement de page
-
+	/**
+	 * 
+	 * ! filter n'est pas conservé lors d'un changement de page
+	 * ! + filter n'est pas bindé à celui du parent ?
+	 */
 	filterChanged(e: KeyboardEvent): void {
 
-		console.log(this.filter);
+		console.log("here --> " + this.filter);
 
 		const filterValue = (e.target as HTMLInputElement).value;
 		this.dataSource.filter = filterValue.trim().toLowerCase();

@@ -33,6 +33,7 @@ public class QuizzesController : ControllerBase
 	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetTrainings()
 	{
 		return _mapper.Map<List<QuizzDTO>>(await _context.Quizzes
+			.Include(q => q.Database)
 			.Where(q => !q.IsTest && q.IsPublished).ToListAsync());
 	}
 
@@ -41,6 +42,7 @@ public class QuizzesController : ControllerBase
 	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetTests()
 	{
 		return _mapper.Map<List<QuizzDTO>>(await _context.Quizzes
+			.Include(q => q.Database)
 			.Where(q => q.IsTest && q.IsPublished).ToListAsync());
 	}
 }

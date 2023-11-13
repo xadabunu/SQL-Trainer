@@ -57,13 +57,13 @@ public class PridContext : DbContext
 			}
 		);
 
-		// Database fournisseurs_db = new() { Id = 1, Name = "fournisseurs" };
-		// Database facebook_db = new() { Id = 2, Name = "facebook" };
+		Database fournisseurs_db = new() { Id = 1, Name = "fournisseurs" };
+		Database facebook_db = new() { Id = 2, Name = "facebook" };
 
-		// modelBuilder.Entity<Database>().HasData(
-		// 	fournisseurs_db,
-		// 	facebook_db
-		// );
+		modelBuilder.Entity<Database>().HasData(
+			fournisseurs_db,
+			facebook_db
+		);
 
 		modelBuilder.Entity<Quizz>().HasData(
 			new Quizz {
@@ -72,7 +72,7 @@ public class PridContext : DbContext
 				IsPublished = true,
 				IsClosed = false,
 				IsTest = false,
-				// Database = fournisseurs_db
+				DatabaseId = fournisseurs_db.Id
 			},
 			new Quizz {
 				Id = 2,
@@ -80,7 +80,7 @@ public class PridContext : DbContext
 				IsPublished = true,
 				IsClosed = false,
 				IsTest = false,
-				// Database = fournisseurs_db
+				DatabaseId = fournisseurs_db.Id
 			},
 			new Quizz {
 				Id = 3,
@@ -88,7 +88,7 @@ public class PridContext : DbContext
 				IsPublished = true,
 				IsClosed = false,
 				IsTest = false,
-				// Database = facebook_db
+				DatabaseId = facebook_db.Id
 			},
 			new Quizz {
 				Id = 4,
@@ -98,7 +98,7 @@ public class PridContext : DbContext
 				IsTest = true,
 				Start = new DateTime(2023, 10, 20),
 				Finish = new DateTime(2023, 10, 21),
-				// Database = fournisseurs_db
+				DatabaseId = fournisseurs_db.Id
 			},
 			new Quizz {
 				Id = 5,
@@ -108,7 +108,7 @@ public class PridContext : DbContext
 				IsTest = true,
 				Start = new DateTime(2023, 10, 21),
 				Finish = new DateTime(2023, 10, 23),
-				// Database = fournisseurs_db
+				DatabaseId = fournisseurs_db.Id
 			},
 			new Quizz {
 				Id = 6,
@@ -118,7 +118,7 @@ public class PridContext : DbContext
 				IsTest = true,
 				Start = new DateTime(2023, 10, 22),
 				Finish = new DateTime(2023, 10, 24),
-				// Database = facebook_db
+				DatabaseId = facebook_db.Id
 			}
 		);
 	}

@@ -19,7 +19,19 @@ export class QuizListComponent {
 
 	@Input() list!: QuizList;
 	@Input() isTest!: boolean;
-	@Input() filter!: string;
+
+	private _filter!: string;
+	get filter(): string {
+		return this._filter;
+	}
+	@Input() set filter(val: string) {
+		this._filter = val;
+		this.dataSource.filter = val.trim().toLowerCase();
+		this.state.filter = this.dataSource.filter;
+
+		if (this.dataSource.paginator)
+			this.dataSource.paginator.firstPage();
+	}
 
 	trainingColumns: string[] = ['nom', 'base de données', 'statut', 'actions'];
 	testColumns: string[] = ['nom', 'base de données', 'date début', 'date fin', 'statut', 'évaluation', 'actions'];
@@ -42,7 +54,7 @@ export class QuizListComponent {
 
 	ngOnInit(): void {
 		/* si cette assignation est faite dans le constructeur, isTest est toujours undefined */
-		this.displayedColumns = this.isTest? this.testColumns : this.trainingColumns;
+		this.displayedColumns = this.isTest ? this.testColumns : this.trainingColumns;
 	}
 
 	ngAfterViewInit(): void {
@@ -51,8 +63,8 @@ export class QuizListComponent {
 
 		this.dataSource.filterPredicate = (data: Quizz, filter: string) => {
 			const str = data.name + ' ' + data.description + ' ' +
-					(data.start ? format(data.start!, 'dd/MM/yyyy') : ' ') + ' ' +
-							(data.finish ? format(data.finish!, 'dd/MM/yyyy') : ' ');
+				(data.start ? format(data.start!, 'dd/MM/yyyy') : ' ') + ' ' +
+					(data.finish ? format(data.finish!, 'dd/MM/yyyy') : ' ');
 			return str.toLowerCase().includes(filter);
 		}
 		this.state.bind(this.dataSource);
@@ -73,26 +85,5 @@ export class QuizListComponent {
 				this.filter = this.state.filter;
 			})
 		}
-	}
-
-	ngOnChange(): void {
-		console.log("from onChange" + this.filter);
-	}
-
-	/**
-	 * 
-	 * ! filter n'est pas conservé lors d'un changement de page
-	 * ! + filter n'est pas bindé à celui du parent ?
-	 */
-	filterChanged(e: KeyboardEvent): void {
-
-		console.log("here --> " + this.filter);
-
-		const filterValue = (e.target as HTMLInputElement).value;
-		this.dataSource.filter = filterValue.trim().toLowerCase();
-		this.state.filter = this.dataSource.filter;
-
-		if (this.dataSource.paginator)
-			this.dataSource.paginator.firstPage();
 	}
 }

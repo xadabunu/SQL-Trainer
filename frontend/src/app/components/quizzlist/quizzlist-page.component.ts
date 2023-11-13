@@ -25,17 +25,8 @@ export class QuizzListPageComponent {
 	) {
 
 		this.state = this.stateService.quizListState;
+		this.filter = this.state.filter;
 
-		// quizzService.getAll().subscribe(quizzes => {
-		// 	this.quizzes = quizzes;
-		// })
-		// for (let quiz of this.quizzes)
-		// {
-		// 	if (quiz.isTest)
-		// 		this.testQuizzes.push(quiz);
-		// 	else
-		// 		this.trainingQuizzes.push(quiz);
-		// }
 		quizzService.getTrainings().subscribe(trainingQuizzes => {
 			this.trainingQuizzes = new QuizList(trainingQuizzes);
 		})
@@ -44,7 +35,12 @@ export class QuizzListPageComponent {
 		})
 	}
 	
+	/**
+	 * On sauvegarde le filtre dans le state du composant parent
+	 * car c'est lui qui fournit son filtre aux enfants quand on
+	 * revient sur la page.
+	 */
 	filterChanged(e: KeyboardEvent): void {
-		console.log("from here " + this.filter.length);
+		this.state.filter = this.filter;
 	}
 }

@@ -11,18 +11,10 @@
 	</mat-form-field>
 </div>
 
-<div class="row">
-	<div class="col-sm-12">
-		<h3>Quiz d'entraînement:</h3>
-	</div>
-</div>
-<quizlist [list]="trainingQuizzes" [isTest]=false [filter]="filter"></quizlist>
+<quizlist [list]="allQuizzes" [filter]="filter" *ngIf="isAdmin"></quizlist>
+
+<quizlist [list]="trainingQuizzes" [isTest]=false [filter]="filter" *ngIf="!isAdmin"></quizlist>
 
 <br>
 
-<div class="row">
-	<div class="col-sm-12">
-		<h3>Quiz de test:</h3>
-	</div>
-</div>
-<quizlist [list]="testQuizzes" [isTest]=true [filter]="filter"></quizlist>
+<quizlist [list]="testQuizzes" [isTest]=true [filter]="filter" *ngIf="!isAdmin"></quizlist>

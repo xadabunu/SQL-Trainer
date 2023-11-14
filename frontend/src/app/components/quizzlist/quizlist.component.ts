@@ -20,6 +20,8 @@ export class QuizListComponent {
 	@Input() list!: QuizList;
 	@Input() isTest!: boolean;
 
+	title!: string;
+
 	private _filter!: string;
 	get filter(): string {
 		return this._filter;
@@ -54,7 +56,8 @@ export class QuizListComponent {
 
 	ngOnInit(): void {
 		/* si cette assignation est faite dans le constructeur, isTest est toujours undefined */
-		this.displayedColumns = this.isTest ? this.testColumns : this.trainingColumns;
+		this.displayedColumns = (this.isTest || this.isTest === undefined) ? this.testColumns : this.trainingColumns;
+		this.title = this.isTest === undefined ? "Liste des quiz :" : ("Quiz " + (this.isTest === true ? "de test :" : "d'entraînement :"));
 	}
 
 	ngAfterViewInit(): void {
@@ -72,18 +75,14 @@ export class QuizListComponent {
 	}
 
 	refresh(): void {
-		if (this.isTest) {
-			this.quizService.getTests().subscribe(quizzes => {
-				this.dataSource.data = quizzes;
-				this.state.restoreState(this.dataSource);
-				this.filter = this.state.filter;
-			});
-		} else {
-			this.quizService.getTrainings().subscribe(quizzes => {
-				this.dataSource.data = quizzes;
-				this.state.restoreState(this.dataSource);
-				this.filter = this.state.filter;
-			})
-		}
+		if (this.isTest)
+			this.quizService.getTests().subscribe(quizzes => this.dataSource.data = quizzes);
+		else if (this.isTest === false)
+			this.quizService.getTrainings().subscribe(quizzes => this.dataSource.data = quizzes);
+		else
+			this.quizService.getAll().subscribe(quizzes => this.dataSource.data = quizzes);
+		
+		this.state.restoreState(this.dataSource);
+		this.filter = this.state.filter;
 	}
 }

@@ -11,7 +11,7 @@ export class QuizzService {
 	constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
 	getAll(): Observable<Quizz[]> {
-		return this.http.get<any[]>(`${this.baseUrl}api/quizzes`)
+		return this.http.get<any[]>(`${this.baseUrl}api/quizzes/getAll`)
 			.pipe(map(res => plainToInstance(Quizz, res)));
 	}
 

@@ -19,12 +19,6 @@
             <mat-error class="field-error" *ngIf="ctlPassword.hasError('minlength')">Minimum length is
                 {{ctlPassword.errors?.minlength?.requiredLength}}</mat-error>
         </mat-form-field>
-        <!-- <mat-form-field>
-            <mat-label>Full Name</mat-label>
-            <input matInput [formControl]="ctlFullName">
-            <mat-error class="field-error" *ngIf="ctlFullName.hasError('minlength')">Minimum length is
-                {{ctlFullName.errors?.minlength?.requiredLength}}</mat-error>
-        </mat-form-field> -->
         <mat-form-field appearance="fill">
             <mat-label>Birth Date</mat-label>
             <input matInput [matDatepicker]="picker" [formControl]="ctlBirthDate" [max]="maxDate">

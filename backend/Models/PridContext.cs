@@ -119,6 +119,14 @@ public class PridContext : DbContext
 				Start = new DateTime(2023, 10, 22),
 				Finish = new DateTime(2023, 10, 24),
 				DatabaseId = facebook_db.Id
+			},
+			new Quizz {
+				Id = 7,
+				Name = "TP4",
+				IsPublished = true,
+				IsClosed = false,
+				IsTest = false,
+				DatabaseId = facebook_db.Id
 			}
 		);
 	}

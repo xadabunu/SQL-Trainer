@@ -11,10 +11,8 @@
 	</mat-form-field>
 </div>
 
-<quizlist [list]="allQuizzes" [filter]="filter" *ngIf="isAdmin"></quizlist>
+<quizlist [filter]="filter" *ngIf="isAdmin"></quizlist>
 
-<quizlist [list]="trainingQuizzes" [isTest]=false [filter]="filter" *ngIf="!isAdmin"></quizlist>
-
-<br>
-
-<quizlist [list]="testQuizzes" [isTest]=true [filter]="filter" *ngIf="!isAdmin"></quizlist>
+<quizlist [isTest]=false [filter]="filter" *ngIf="!isAdmin"></quizlist>
+<br *ngIf="!isAdmin">
+<quizlist [isTest]=true [filter]="filter" *ngIf="!isAdmin"></quizlist>

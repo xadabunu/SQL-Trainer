@@ -3,10 +3,9 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatTableState } from "src/app/helpers/mattable.state";
-import { QuizList, Quizz } from "src/app/models/quizz";
+import { Quizz } from "src/app/models/quizz";
 import { QuizzService } from "src/app/services/quizz.service";
 import { StateService } from "src/app/services/state.service";
-import { MatFormField } from "@angular/material/form-field";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { format } from "date-fns";
@@ -17,7 +16,6 @@ import { format } from "date-fns";
 })
 export class QuizListComponent {
 
-	@Input() list!: QuizList;
 	@Input() isTest!: boolean;
 
 	title!: string;
@@ -27,6 +25,7 @@ export class QuizListComponent {
 		return this._filter;
 	}
 	@Input() set filter(val: string) {
+
 		this._filter = val;
 		this.dataSource.filter = val.trim().toLowerCase();
 		this.state.filter = this.dataSource.filter;
@@ -57,7 +56,8 @@ export class QuizListComponent {
 	ngOnInit(): void {
 		/* si cette assignation est faite dans le constructeur, isTest est toujours undefined */
 		this.displayedColumns = (this.isTest || this.isTest === undefined) ? this.testColumns : this.trainingColumns;
-		this.title = this.isTest === undefined ? "Liste des quiz :" : ("Quiz " + (this.isTest === true ? "de test :" : "d'entraînement :"));
+		this.title = this.isTest === undefined ? "Liste des quiz :"
+			: ("Quiz " + (this.isTest === true ? "de test :" : "d'entraînement :"));
 	}
 
 	ngAfterViewInit(): void {
@@ -76,13 +76,22 @@ export class QuizListComponent {
 
 	refresh(): void {
 		if (this.isTest)
-			this.quizService.getTests().subscribe(quizzes => this.dataSource.data = quizzes);
+			this.quizService.getTests().subscribe(quizzes => {
+				this.dataSource.data = quizzes
+				this.state.restoreState(this.dataSource);
+				this.filter = this.state.filter;
+			});
 		else if (this.isTest === false)
-			this.quizService.getTrainings().subscribe(quizzes => this.dataSource.data = quizzes);
+			this.quizService.getTrainings().subscribe(quizzes => {
+				this.dataSource.data = quizzes
+				this.state.restoreState(this.dataSource);
+				this.filter = this.state.filter;
+			});
 		else
-			this.quizService.getAll().subscribe(quizzes => this.dataSource.data = quizzes);
-		
-		this.state.restoreState(this.dataSource);
-		this.filter = this.state.filter;
+			this.quizService.getAll().subscribe(quizzes => {
+				this.dataSource.data = quizzes
+				this.state.restoreState(this.dataSource);
+				this.filter = this.state.filter;
+			});
 	}
 }

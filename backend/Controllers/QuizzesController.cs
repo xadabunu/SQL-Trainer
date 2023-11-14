@@ -21,8 +21,8 @@ public class QuizzesController : ControllerBase
 		_mapper = mapper;
 	}
 
-	[Authorized(Role.User, Role.Admin)]
-	[HttpGet]
+	[Authorized(Role.Admin)]
+	[HttpGet("getAll")]
 	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetAll()
 	{
 		return _mapper.Map<List<QuizzDTO>>(await _context.Quizzes.ToListAsync());

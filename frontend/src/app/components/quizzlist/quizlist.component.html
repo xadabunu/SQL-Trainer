@@ -3,6 +3,7 @@
 		<h3>{{title}}</h3>
 	</div>
 </div>
+
 <div class="row">
 	<div class="col-sm-12">
 		<div class="mat-elevation-z2">
@@ -15,13 +16,17 @@
 					<th mat-header-cell *matHeaderCellDef mat-sort-header> Base de données </th>
 					<td mat-cell *matCellDef="let row"> {{row.database.name}} </td>
 				</ng-container>
+				<ng-container matColumnDef="type de quiz">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header> Type de quiz </th>
+					<td mat-cell *matCellDef="let row"> {{row.getTestOrTraining}} </td>
+				</ng-container>
 				<ng-container matColumnDef="date début">
-					<th mat-header-cell *matHeaderCellDef mat-sort-header> Date debut </th>
-					<td mat-cell *matCellDef="let row"> {{row.start | date:'dd/MM/yyyy'}} </td>
+					<th mat-header-cell *matHeaderCellDef mat-sort-header> Date début </th>
+					<td mat-cell *matCellDef="let row"> {{row.getStart}} </td>
 				</ng-container>
 				<ng-container matColumnDef="date fin">
 					<th mat-header-cell *matHeaderCellDef mat-sort-header> Date fin </th>
-					<td mat-cell *matCellDef="let row"> {{row.finish | date:'dd/MM/yyyy'}} </td>
+					<td mat-cell *matCellDef="let row"> {{row.getFinish}} </td>
 				</ng-container>
 				<ng-container matColumnDef="statut">
 					<th mat-header-cell *matHeaderCellDef mat-sort-header> Statut </th>

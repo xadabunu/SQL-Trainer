@@ -10,6 +10,10 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { format } from "date-fns";
 
+/**
+ * ! sort can not be set to descending
+ */
+
 @Component({
 	selector: 'quizlist',
 	templateUrl: './quizlist.component.html'
@@ -36,6 +40,8 @@ export class QuizListComponent {
 
 	trainingColumns: string[] = ['nom', 'base de données', 'statut', 'actions'];
 	testColumns: string[] = ['nom', 'base de données', 'date début', 'date fin', 'statut', 'évaluation', 'actions'];
+	teacherColumns: string[] = ['nom', 'base de données', 'type de quiz', 'statut', 'date début', 'date fin', 'actions'];
+
 	displayedColumns: string[] = null!;
 
 	dataSource: MatTableDataSource<Quizz> = new MatTableDataSource();
@@ -55,7 +61,8 @@ export class QuizListComponent {
 
 	ngOnInit(): void {
 		/* si cette assignation est faite dans le constructeur, isTest est toujours undefined */
-		this.displayedColumns = (this.isTest || this.isTest === undefined) ? this.testColumns : this.trainingColumns;
+		this.displayedColumns = this.isTest ? this.testColumns : 
+				(this.isTest === undefined ? this.teacherColumns : this.trainingColumns);
 		this.title = this.isTest === undefined ? "Liste des quiz :"
 			: ("Quiz " + (this.isTest === true ? "de test :" : "d'entraînement :"));
 	}

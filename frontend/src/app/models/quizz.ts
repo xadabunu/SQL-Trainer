@@ -25,7 +25,11 @@ enum state {
 	/**
 	 * La date de début du quizz est dans le futur.
 	 */
-	A_VENIR = "À VENIR"
+	A_VENIR = "À VENIR",
+	/**
+	 * Uniquement pour la liste de quizz des professeurs.
+	 */
+	PAS_PUBLIE = "PAS PUBLIÉ"
 }
 
 export class Quizz {
@@ -45,8 +49,14 @@ export class Quizz {
 		return `${this.name} - (${this.description ? this.description : 'no description'})`;
 	}
 
+	/**
+	 * ? getStatus(currentUser: User) 
+	 */
 	get getStatus(): string {
+		if (!this.isPublished) return state.PAS_PUBLIE;
+
 		let today = new Date(2023, 9, 21);
+
 		if (this.start && this.finish)
 		{
 			if (this.start.valueOf() > today.valueOf())
@@ -62,6 +72,18 @@ export class Quizz {
 
 	get getEvaluation(): string {
 		return "N/A";
+	}
+
+	get getTestOrTraining(): string {
+		return this.isTest ? "Test" : "Training";
+	}
+
+	get getStart(): string {
+		return this.start ? this.start.toLocaleDateString('eu-EU') : "N/A";
+	}
+
+	get getFinish(): string {
+		return this.finish ? this.finish.toLocaleDateString('eu-EU') : "N/A";
 	}
 }
 

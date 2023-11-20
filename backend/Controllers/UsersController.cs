@@ -108,6 +108,18 @@ public class UsersController : ControllerBase
 		return NoContent();
 	}
 
+    [AllowAnonymous]
+    [HttpGet("available/{pseudo}")]
+    public async Task<ActionResult<bool>> IsAvailable(string pseudo) {
+        return await _context.Users.FindAsync(pseudo) == null;
+    }
+
+    [AllowAnonymous]
+    [HttpPost("signup")]
+    public async Task<ActionResult<UserDTO>> SignUp(UserWithPasswordDTO data) {
+        return await PostUser(data);
+    }
+
 	[AllowAnonymous]
 	[HttpPost("authenticate")]
 	public async Task<ActionResult<UserDTO>> Authenticate(UserLoginDTO dto) {

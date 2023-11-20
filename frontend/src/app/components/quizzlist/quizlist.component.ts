@@ -9,6 +9,8 @@ import { StateService } from "src/app/services/state.service";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { format } from "date-fns";
+import { AuthenticationService } from "src/app/services/authentication.service";
+import { Role } from "src/app/models/user";
 
 /**
  * ! sort can not be set to descending
@@ -54,7 +56,8 @@ export class QuizListComponent {
 		private quizService: QuizzService,
 		private stateService: StateService,
 		public dialog: MatDialog, // sera utile en cas de bouton "new Quizz" pour les Teachers
-		public snackBar: MatSnackBar
+		public snackBar: MatSnackBar,
+		private authService: AuthenticationService
 	) {
 		this.state = this.stateService.quizListState;
 	}
@@ -100,5 +103,9 @@ export class QuizListComponent {
 				this.state.restoreState(this.dataSource);
 				this.filter = this.state.filter;
 			});
+	}
+
+	isAdmin(): boolean {
+		return this.authService.currentUser?.role === Role.Admin;
 	}
 }

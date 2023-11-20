@@ -14,6 +14,8 @@ const appRoutes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'quizzes', component: QuizzListPageComponent, canActivate: [AuthGuard], data: { roles: [Role.User, Role.Admin]} },
+  // { path: 'signup', component: SignUpComponent },  
+  { path: 'newQuizz', component: NewQuizzComponent},
   { path: 'restricted', component: RestrictedComponent },
   { path: '**', component: UnknownComponent }
 ];
@@ -24,5 +26,7 @@ import { UnknownComponent } from '../components/unknown/unknown.component';
 import { AuthGuard } from '../services/auth.guard';
 import { Role } from '../models/user';
 import { QuizzListPageComponent } from '../components/quizzlist/quizzlist-page.component';
+import { NewQuizzComponent } from '../components/new-quizz/newquizz.component';
+// import { SignUpComponent } from '../components/signup/signup.component';
 
 export const AppRoutes = RouterModule.forRoot(appRoutes);

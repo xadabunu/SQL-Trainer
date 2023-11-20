@@ -1,8 +1,9 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { User } from '../models/user';
 import { plainToClass } from 'class-transformer';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -38,4 +39,15 @@ export class AuthenticationService {
         sessionStorage.removeItem('currentUser');
         this.currentUser = undefined;
     }
+
+    // public isPseudoAvailable(pseudo: string): Observable<boolean> {
+    //     return this.http.get<boolean>(`${this.baseUrl}api/users/available/${pseudo}`);
+    // }
+
+    
+    // public signup(pseudo: string, password: string): Observable<User> {
+    //     return this.http.post<User>(`${this.baseUrl}api/members/signup`, { pseudo: pseudo, password: password }).pipe(
+    //         mergeMap(res => this.login(pseudo, password)),
+    //     );
+    // }
 }

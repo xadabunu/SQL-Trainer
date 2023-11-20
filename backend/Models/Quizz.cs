@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace prid_2324_a02.Models;
 
@@ -12,8 +11,8 @@ public class Quizz
 	public int DatabaseId { get; set; }
 	public Database Database { get; set; } = null!;
 	public bool IsPublished { get; set; }
-	public bool IsClosed { get; set; }
-	public bool IsTest { get; set; }
+	public bool IsClosed { get; set; } = false;
+	public bool IsTest { get; set; } = false;
 	public DateTimeOffset? Start { get; set; }
 	public DateTimeOffset? Finish { get; set; }
 

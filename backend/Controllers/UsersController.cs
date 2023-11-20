@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using prid_2324_a02.Helpers;
+using prid_tuto.Helpers;
 
 namespace prid_2324.Controllers;
 
@@ -139,7 +140,7 @@ public class UsersController : ControllerBase
 		if (user == null)
 			return null;
 
-		if (user.Password == password) {
+		if (user.Password == TokenHelper.GetPasswordHash(password)) {
 			// authentication successful so generate jwt token
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var key = Encoding.ASCII.GetBytes("my-super-secret-key");

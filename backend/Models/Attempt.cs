@@ -11,7 +11,9 @@ public class Attempt
 	public DateTimeOffset? Finish { get; set; }
 
 	public Student Author { get; } = null!;
+	public int AuthorId { get; set; }
 	public Quizz Quizz { get; } = null!;
+	public int QuizzId { get; set; }
 
 	public virtual ICollection<Answer> Answers { get; set; } = new HashSet<Answer>();
 }

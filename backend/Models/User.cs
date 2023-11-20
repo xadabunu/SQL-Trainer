@@ -26,6 +26,7 @@ public abstract class User
 	public string? Token { get; set; }
 
 	public string? FullName => FirstName + " " + LastName;	
+	public string? RefreshToken { get; set; }
 
 	public int? Age {
 		get {
@@ -47,5 +48,7 @@ public class Student : User
 
 public class Teacher : User
 {
-
+	public Teacher() {
+		this.Role = Role.Teacher;
+	}
 }

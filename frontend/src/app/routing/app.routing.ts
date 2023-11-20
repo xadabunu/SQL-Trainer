@@ -10,12 +10,12 @@ const appRoutes: Routes = [
     path: 'users',
     component: UserListComponent,
     canActivate: [AuthGuard],
-    data: { roles: [Role.Admin] }
+    data: { roles: [Role.Teacher] }
   },
   { path: 'login', component: LoginComponent },
-  { path: 'quizzes', component: QuizzListPageComponent, canActivate: [AuthGuard], data: { roles: [Role.User, Role.Admin]} },
+  { path: 'quizzes', component: QuizzListPageComponent, canActivate: [AuthGuard], data: { roles: [Role.Student, Role.Teacher]} },
   // { path: 'signup', component: SignUpComponent },  
-  { path: 'newQuizz', component: NewQuizzComponent},
+  { path: 'newQuizz', component: NewQuizzComponent, canActivate: [AuthGuard], data: { roles: [Role.Teacher]} },
   { path: 'restricted', component: RestrictedComponent },
   { path: '**', component: UnknownComponent }
 ];

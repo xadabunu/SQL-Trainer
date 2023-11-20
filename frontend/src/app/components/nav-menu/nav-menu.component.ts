@@ -27,8 +27,8 @@ export class NavMenuComponent {
         return this.authenticationService.currentUser;
     }
 
-    get isAdmin() {
-        return this.currentUser && this.currentUser.role === Role.Admin;
+    get isTeacher() {
+        return this.currentUser && this.currentUser.role === Role.Teacher;
     }
 
     logout() {

@@ -28,7 +28,7 @@ public class PridContext : DbContext
 				Pseudo = "admin",
 				Password = "admin",
 				Email = "admin@epfc.eu",
-				Role = Role.Admin
+				Role = Role.Teacher
 			}
 		);
 

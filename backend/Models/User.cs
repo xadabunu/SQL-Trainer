@@ -5,9 +5,8 @@ namespace prid_2324_a02.Models;
 
 public enum Role
 {
-	User,
-	Manager,
-	Admin
+	Student,
+	Teacher
 }
 
 public abstract class User
@@ -21,7 +20,7 @@ public abstract class User
 	public string? FirstName { get; set; }
 	public DateTimeOffset? BirthDate { get; set; }
 
-	public Role Role { get; set; } = Role.User;
+	public Role Role { get; set; } = Role.Student;
 
 	[NotMapped]
 	public string? Token { get; set; }
@@ -50,13 +49,3 @@ public class Teacher : User
 {
 
 }
-
-/*
-
-{
-  "pseudo": "cestmoi",
-  "email": "cestmoi@epfc.eu",
-  "password": "cestmoi"
-}
-
-*/

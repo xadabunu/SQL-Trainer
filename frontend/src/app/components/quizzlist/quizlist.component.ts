@@ -105,7 +105,7 @@ export class QuizListComponent {
 			});
 	}
 
-	isAdmin(): boolean {
-		return this.authService.currentUser?.role === Role.Admin;
+	get isTeacher(): boolean {
+		return this.authService.currentUser?.role === Role.Teacher;
 	}
 }

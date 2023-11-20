@@ -21,14 +21,14 @@ public class QuizzesController : ControllerBase
 		_mapper = mapper;
 	}
 
-	[Authorized(Role.Admin)]
+	[Authorized(Role.Teacher)]
 	[HttpGet("getAll")]
 	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetAll()
 	{
 		return _mapper.Map<List<QuizzDTO>>(await _context.Quizzes.Include(q => q.Database).ToListAsync());
 	}
 
-	[Authorized(Role.User, Role.Admin)]
+	[Authorized(Role.Student, Role.Teacher)]
 	[HttpGet("getTrainings")]
 	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetTrainings()
 	{
@@ -37,7 +37,7 @@ public class QuizzesController : ControllerBase
 			.Where(q => !q.IsTest && q.IsPublished).ToListAsync());
 	}
 
-	[Authorized(Role.User, Role.Admin)]
+	[Authorized(Role.Student, Role.Teacher)]
 	[HttpGet("getTests")]
 	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetTests()
 	{

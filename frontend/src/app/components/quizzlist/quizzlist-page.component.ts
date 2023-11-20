@@ -30,7 +30,7 @@ export class QuizzListPageComponent {
 		this.state.filter = this.filter;
 	}
 
-	get isAdmin() {
-        return this.authenticationServie.currentUser && this.authenticationServie.currentUser.role === Role.Admin;
+	get isTeacher() {
+        return this.authenticationServie.currentUser && this.authenticationServie.currentUser.role === Role.Teacher;
     }
 }

@@ -25,7 +25,7 @@ public class UsersController : ControllerBase
 		_mapper = mapper;
 	}
 
-	[Authorized(Role.Admin)]
+	[Authorized(Role.Teacher)]
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<UserDTO>>> GetAll()
 	{
@@ -74,7 +74,7 @@ public class UsersController : ControllerBase
 			_mapper.Map<UserDTO>(newUser));
 	}
 
-	[Authorized(Role.Admin)]
+	[Authorized(Role.Teacher)]
 	[HttpPut]
 	public async Task<IActionResult> PutUser(UserWithPasswordDTO dto)
 	{
@@ -96,7 +96,7 @@ public class UsersController : ControllerBase
 		return NoContent();
 	}
 
-	[Authorized(Role.Admin)]
+	[Authorized(Role.Teacher)]
 	[HttpDelete("{id:int}")]
 	public async Task<IActionResult> DeleteUser(int id)
 	{

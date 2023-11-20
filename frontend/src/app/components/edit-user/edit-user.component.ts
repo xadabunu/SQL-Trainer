@@ -36,7 +36,7 @@ export class EditUserComponent {
         ], [this.pseudoUsed()]);
         this.ctlPassword = this.fb.control('', data.isNew ? [Validators.required, Validators.minLength(3)] : []);
         this.ctlBirthDate = this.fb.control(null, [this.validateBirthDate()]);
-        this.ctlRole = this.fb.control(Role.User, []);
+        this.ctlRole = this.fb.control(Role.Student, []);
         this.frm = this.fb.group({
             pseudo: this.ctlPseudo,
             password: this.ctlPassword,

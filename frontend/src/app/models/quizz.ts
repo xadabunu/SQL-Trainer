@@ -55,7 +55,7 @@ export class Quizz {
 	get getStatus(): string {
 		if (!this.isPublished) return state.PAS_PUBLIE;
 
-		let today = new Date(2023, 9, 21);
+		let today = new Date();
 
 		if (this.start && this.finish)
 		{

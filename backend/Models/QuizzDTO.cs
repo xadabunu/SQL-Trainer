@@ -12,3 +12,8 @@ public class QuizzDTO
 	public DateTimeOffset? Start { get; set; }
 	public DateTimeOffset? Finish { get; set; }
 }
+
+public class QuizzWithQuestionsDTO : QuizzDTO
+{
+	public virtual ICollection<Question> Questions { get; set; } = new HashSet<Question>();
+}

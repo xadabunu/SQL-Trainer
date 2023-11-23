@@ -1,6 +1,7 @@
 import { Type } from "class-transformer";
 import 'reflect-metadata';
 import { Database } from "./database";
+import { Question } from "./question";
 
 /**
  * Précise l'état d'un quizz à une date donnée.
@@ -44,6 +45,8 @@ export class Quizz {
 	@Type(() => Date)
 	finish?: Date;
 	database?: Database;
+
+	questions: Question[] = [];
 
 	get display(): string {
 		return `${this.name} - (${this.description ? this.description : 'no description'})`;

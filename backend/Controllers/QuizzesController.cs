@@ -25,7 +25,11 @@ public class QuizzesController : ControllerBase
 	[HttpGet("{id:int}")]
 	public async Task<ActionResult<QuizzDTO>> GetOne(int id)
 	{
-		var quizz = await _context.Quizzes.Include(q => q.Database).SingleOrDefaultAsync(q => q.Id == id);
+		var quizz = await _context.Quizzes
+		.Include(q => q.Database)
+		// .Include(q => q.Questions).ThenInclude(q => q.Solutions)
+		// .AsNoTracking()
+		.SingleOrDefaultAsync(q => q.Id == id);
 		if (quizz == null)
 			return NotFound();
 		return _mapper.Map<QuizzDTO>(quizz);
@@ -35,7 +39,11 @@ public class QuizzesController : ControllerBase
 	[HttpGet("getAll")]
 	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetAll()
 	{
-		return _mapper.Map<List<QuizzDTO>>(await _context.Quizzes.Include(q => q.Database).ToListAsync());
+		return _mapper.Map<List<QuizzDTO>>(
+			await _context.Quizzes
+			.Include(q => q.Database)
+			.ToListAsync()
+			);
 	}
 
 	[Authorized(Role.Student, Role.Teacher)]
@@ -54,5 +62,16 @@ public class QuizzesController : ControllerBase
 		return _mapper.Map<List<QuizzDTO>>(await _context.Quizzes
 			.Include(q => q.Database)
 			.Where(q => q.IsTest && q.IsPublished).ToListAsync());
+	}
+
+	[Authorized(Role.Student, Role.Teacher)]
+	[HttpGet("getQuestions/{quizId:int}")]
+	public async Task<ActionResult<IEnumerable<QuestionDTO>>> GetQuestions(int quizId)
+	{
+		return _mapper.Map<List<QuestionDTO>>(
+			await _context.Questions
+				.Include(q => q.Solutions)
+				.Where(q => q.QuizzId == quizId).ToListAsync()
+		);
 	}
 }

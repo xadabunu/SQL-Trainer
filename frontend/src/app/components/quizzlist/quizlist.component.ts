@@ -87,19 +87,19 @@ export class QuizListComponent {
 	refresh(): void {
 		if (this.isTest)
 			this.quizService.getTests().subscribe(quizzes => {
-				this.dataSource.data = quizzes
+				this.dataSource.data = quizzes;
 				this.state.restoreState(this.dataSource);
 				this.filter = this.state.filter;
 			});
 		else if (this.isTest === false)
 			this.quizService.getTrainings().subscribe(quizzes => {
-				this.dataSource.data = quizzes
+				this.dataSource.data = quizzes;
 				this.state.restoreState(this.dataSource);
 				this.filter = this.state.filter;
 			});
 		else
 			this.quizService.getAll().subscribe(quizzes => {
-				this.dataSource.data = quizzes
+				this.dataSource.data = quizzes;
 				this.state.restoreState(this.dataSource);
 				this.filter = this.state.filter;
 			});

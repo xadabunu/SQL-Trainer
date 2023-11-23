@@ -5,6 +5,7 @@ import { Quizz } from '../models/quizz';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { plainToInstance } from 'class-transformer';
+import { Question } from '../models/question';
 
 @Injectable({ providedIn: 'root' })
 export class QuizzService {
@@ -28,6 +29,12 @@ export class QuizzService {
 	getById(id: number) {
 		return this.http.get<Quizz>(`${this.baseUrl}api/quizzes/${id}`)
 			.pipe(map(res => plainToInstance(Quizz, res)),
+			catchError(err => of(null)));
+	}
+
+	getQuestions(id: number) {
+		return this.http.get<any[]>(`${this.baseUrl}api/quizzes/getQuestions/${id}`)
+			.pipe(map(res => plainToInstance(Question, res)),
 			catchError(err => of(null)));
 	}
 }

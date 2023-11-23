@@ -5,6 +5,7 @@ import { DatabaseService } from "src/app/services/database.service";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { QuizzService } from "src/app/services/quizz.service";
+import { Question } from "src/app/models/question";
 
 enum quizType{
 	Training = "Training",
@@ -41,6 +42,7 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 	public ctlPublished!: FormControl;
 
 	dbs: MatTableDataSource<Database> = new MatTableDataSource();
+	qsts: MatTableDataSource<Question> = new MatTableDataSource();
 
 	constructor(
 		private databaseService: DatabaseService,
@@ -92,6 +94,11 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 						this.ctlStart.setValue(quizz?.start);
 						this.ctlFinish.setValue(quizz?.finish);
 				})
+				this.quizService.getQuestions(params['id'])
+					.subscribe(qsts => {
+						if (qsts)
+							this.qsts.data = qsts;
+					});
 			}
 		});
 		

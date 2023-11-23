@@ -21,6 +21,16 @@ public class QuizzesController : ControllerBase
 		_mapper = mapper;
 	}
 
+	[Authorized(Role.Student, Role.Teacher)]
+	[HttpGet("{id:int}")]
+	public async Task<ActionResult<QuizzDTO>> GetOne(int id)
+	{
+		var quizz = await _context.Quizzes.Include(q => q.Database).SingleOrDefaultAsync(q => q.Id == id);
+		if (quizz == null)
+			return NotFound();
+		return _mapper.Map<QuizzDTO>(quizz);
+	}
+
 	[Authorized(Role.Teacher)]
 	[HttpGet("getAll")]
 	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetAll()

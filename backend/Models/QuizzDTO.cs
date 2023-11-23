@@ -11,5 +11,4 @@ public class QuizzDTO
 	public bool IsTest { get; set; }
 	public DateTimeOffset? Start { get; set; }
 	public DateTimeOffset? Finish { get; set; }
-		
 }

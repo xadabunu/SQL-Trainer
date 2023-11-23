@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DefaultValueAccessor, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutes } from '../routing/app.routing';
 
@@ -20,6 +20,7 @@ import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { fr } from 'date-fns/locale';
 import { QuizzListPageComponent } from '../components/quizzlist/quizzlist-page.component';
 import { QuizListComponent } from '../components/quizzlist/quizlist.component';
+import { EditQuizzComponent } from '../components/edit-quizz/edit-quizz.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { QuizListComponent } from '../components/quizzlist/quizlist.component';
     SetFocusDirective,
     EditUserComponent,
     QuizzListPageComponent,
-    QuizListComponent
+    QuizListComponent,
+    EditQuizzComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -63,4 +65,12 @@ import { QuizListComponent } from '../components/quizzlist/quizlist.component';
     },  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    DefaultValueAccessor.prototype.registerOnChange = function (fn: (_: string | null) => void): void {
+      this.onChange = (value: string | null) => {
+          fn(value === '' ? null : value);
+      };
+    };
+  }
+}

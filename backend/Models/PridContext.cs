@@ -169,7 +169,7 @@ public class SeedData
     public void CreateUsers()
     {
         modelBuilder.Entity<Teacher>().HasData(
-			new Teacher { Id = 1, Pseudo = "teacher", Password = TokenHelper.GetPasswordHash("teacher"),
+			new Teacher { Id = 1, Pseudo = "tea", Password = TokenHelper.GetPasswordHash("tea"),
 							Email = "teacher@epfc.eu"},
             new Teacher { Id = 2, Pseudo = "ben", Password = TokenHelper.GetPasswordHash("ben"),
 							FirstName = "Benoît", LastName = "Penelle", Email = "ben@epfc.eu" },
@@ -395,4 +395,3 @@ WHERE l.ID_P = p.ID_P
     }
 
 }
-

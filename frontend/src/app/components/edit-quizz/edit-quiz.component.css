@@ -1,0 +1,38 @@
+.form {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr); /* 4 colonnes équivalentes */
+	grid-template-rows: repeat(3, 100px); /* 3 lignes de 100 pixels de hauteur */
+	gap: 10px; /* Espacement entre les cellules */
+}
+
+label {
+	grid-column: 1;
+}
+
+.input {
+	grid-column: 2;
+}
+
+.db {
+	grid-column: 3;
+}
+
+/* 1ère colonne - Labels */
+.label-column {
+    grid-column: span 1;
+}
+
+/* 2ème colonne - Inputs liés aux labels */
+.input-column {
+    grid-column: span 1;
+}
+
+/* 3ème colonne - Combobox */
+.mat-form-field:nth-child(7) {
+    grid-column: span 1;
+}
+
+/* 4ème colonne - Toggle-button */
+.mat-slide-toggle {
+    grid-column: span 1;
+}

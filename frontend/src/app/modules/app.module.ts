@@ -21,6 +21,7 @@ import { fr } from 'date-fns/locale';
 import { QuizzListPageComponent } from '../components/quizzlist/quizzlist-page.component';
 import { QuizListComponent } from '../components/quizzlist/quizlist.component';
 import { EditQuizzComponent } from '../components/edit-quizz/edit-quizz.component';
+import { EditQuestionComponent } from '../components/edit-question/edit-question.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { EditQuizzComponent } from '../components/edit-quizz/edit-quizz.componen
     EditUserComponent,
     QuizzListPageComponent,
     QuizListComponent,
-    EditQuizzComponent
+    EditQuizzComponent,
+    EditQuestionComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

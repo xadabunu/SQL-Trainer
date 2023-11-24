@@ -1,0 +1,28 @@
+<!-- <div class="mat-elevation-z2">
+	<span>{{question.order}}. {{question.body}}</span>
+	<mat-icon (click)="expand()">{{ isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>
+</div> -->
+
+<!-- app.component.html -->
+<mat-expansion-panel>
+	<mat-expansion-panel-header 
+			(opened)="changeTitle(true)"
+			(closed)="changeTitle(false)">
+		<!-- <mat-panel-title>
+		{{question.order}}. {{question.body}}
+	  </mat-panel-title> -->
+		<div>
+			{{ panelTitle }}
+		</div>
+	</mat-expansion-panel-header>
+
+	<!-- <mat-expansion-panel-header (opened)="myisExtanded = true" (closed)="myisExtanded = false">
+		<mat-panel-title>
+			{{ myisExtanded ? openTitle : closeTitle }}
+		</mat-panel-title>
+
+	</mat-expansion-panel-header> -->
+
+	<!-- Contenu à afficher/masquer -->
+	<p>Contenu à afficher/masquer</p>
+</mat-expansion-panel>

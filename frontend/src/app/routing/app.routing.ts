@@ -26,6 +26,7 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: [Role.Teacher]}
   },
+  { path: 'test', component: TestCodeEditorComponent },
   { path: 'restricted', component: RestrictedComponent },
   { path: '**', component: UnknownComponent }
 ];
@@ -37,6 +38,7 @@ import { AuthGuard } from '../services/auth.guard';
 import { Role } from '../models/user';
 import { QuizzListPageComponent } from '../components/quizzlist/quizzlist-page.component';
 import { EditQuizzComponent } from '../components/edit-quizz/edit-quizz.component';
+import { TestCodeEditorComponent } from '../components/test-code-editor/test-code-editor.component';
 // import { SignUpComponent } from '../components/signup/signup.component';
 
 export const AppRoutes = RouterModule.forRoot(appRoutes);

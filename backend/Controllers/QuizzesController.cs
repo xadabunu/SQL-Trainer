@@ -71,6 +71,7 @@ public class QuizzesController : ControllerBase
 		return _mapper.Map<List<QuestionDTO>>(
 			await _context.Questions
 				.Include(q => q.Solutions)
+				.OrderBy(q =>q .Order)
 				.Where(q => q.QuizzId == quizId).ToListAsync()
 		);
 	}

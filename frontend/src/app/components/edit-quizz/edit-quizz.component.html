@@ -1,4 +1,4 @@
-<form class="form" id="form" [formGroup]="editQuizForm" novalidate>
+<form id="form" [formGroup]="editQuizForm" novalidate>
 	<div class="form">
 		<label>Nom</label>
 		<mat-form-field>
@@ -39,8 +39,14 @@
 		</mat-form-field>
 		<label>Publié</label>
 		<mat-slide-toggle [formControl]="ctlPublished"></mat-slide-toggle>
-		<button type="submit" mat-button form="form" disabled=""></button>
+		<button type="submit" mat-mini-fab class="mini-fab" form="form"
+			[disabled]="editQuizForm.pristine || editQuizForm.invalid || editQuizForm.pending"
+			(click)="update()">
+			<mat-icon>save</mat-icon>
+		</button>
 	</div>
 </form>
 <h3>Questions</h3>
 <edit-question *ngFor="let question of qsts.data" [question]="question"></edit-question>
+
+<button mat-mini-fab><mat-icon>save</mat-icon></button>

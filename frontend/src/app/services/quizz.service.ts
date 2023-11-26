@@ -37,4 +37,8 @@ export class QuizzService {
 			.pipe(map(res => plainToInstance(Question, res)),
 			catchError(err => of(null)));
 	}
+
+	update() {
+		
+	}
 }

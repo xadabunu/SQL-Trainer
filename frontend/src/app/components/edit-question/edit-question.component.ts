@@ -3,7 +3,8 @@ import { Question } from "src/app/models/question"
 
 @Component({
 	selector: 'edit-question',
-	templateUrl: './edit-question.component.html'
+	templateUrl: './edit-question.component.html',
+	styleUrls: ['./edit-question.component.css']
 })
 export class EditQuestionComponent {
 
@@ -34,5 +35,9 @@ export class EditQuestionComponent {
 
 	toggleExpansion() {
 		this.myisExtanded = !this.myisExtanded;
+	}
+
+	canEdit(): boolean {
+		return true;
 	}
 }

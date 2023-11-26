@@ -5,7 +5,15 @@
 	gap: 10px; /* Espacement entre les cellules */
 }
 
-label {
+.mini-fab {
+    width: 40px;
+    height: 40px;
+    border: 1px solid black;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+/* label {
 	grid-column: 1;
 }
 
@@ -15,24 +23,24 @@ label {
 
 .db {
 	grid-column: 3;
-}
+} */
 
 /* 1ère colonne - Labels */
-.label-column {
+/* .label-column {
     grid-column: span 1;
-}
+} */
 
 /* 2ème colonne - Inputs liés aux labels */
-.input-column {
+/* .input-column {
     grid-column: span 1;
-}
+} */
 
 /* 3ème colonne - Combobox */
-.mat-form-field:nth-child(7) {
+/* .mat-form-field:nth-child(7) {
     grid-column: span 1;
-}
+} */
 
 /* 4ème colonne - Toggle-button */
-.mat-slide-toggle {
+/* .mat-slide-toggle {
     grid-column: span 1;
-}
+} */

@@ -55,7 +55,7 @@ export class Quizz {
 	/**
 	 * ? getStatus(currentUser: User) 
 	 */
-	get getStatus(): string {
+	get status(): string {
 		if (!this.isPublished) return state.PAS_PUBLIE;
 
 		let today = new Date();
@@ -73,7 +73,7 @@ export class Quizz {
 		return state.PAS_COMMENCE; //todo: return hasAttempt ? (si finie -> FINI : EN_COURS) : PAS_COMMENCE
 	}
 
-	get getEvaluation(): string {
+	get evaluation(): string {
 		return "N/A";
 	}
 
@@ -81,19 +81,15 @@ export class Quizz {
 		return this.isTest ? "Test" : "Training";
 	}
 
-	get getStart(): string {
+	get dbName(): string | undefined {
+		return this.database?.name;
+	}
+
+	get startAsString(): string {
 		return this.start ? this.start.toLocaleDateString('eu-EU') : "N/A";
 	}
 
-	get getFinish(): string {
+	get finishAsString(): string {
 		return this.finish ? this.finish.toLocaleDateString('eu-EU') : "N/A";
-	}
-}
-
-export class QuizList {
-	private _quizzes: Quizz[] = [];
-
-	constructor(list: Quizz[]) {
-		this._quizzes = list;
 	}
 }

@@ -12,10 +12,6 @@ import { format } from "date-fns";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { Role } from "src/app/models/user";
 
-/**
- * ! sort can not be set to descending
- */
-
 @Component({
 	selector: 'quizlist',
 	templateUrl: './quizlist.component.html'
@@ -40,9 +36,9 @@ export class QuizListComponent {
 			this.dataSource.paginator.firstPage();
 	}
 
-	trainingColumns: string[] = ['nom', 'base de données', 'statut', 'actions'];
-	testColumns: string[] = ['nom', 'base de données', 'date début', 'date fin', 'statut', 'évaluation', 'actions'];
-	teacherColumns: string[] = ['nom', 'base de données', 'type de quiz', 'statut', 'date début', 'date fin', 'actions'];
+	trainingColumns: string[] = ['name', 'dbName', 'status', 'actions'];
+	testColumns: string[] = ['name', 'dbName', 'startAsString', 'finishAsString', 'status', 'evaluation', 'actions'];
+	teacherColumns: string[] = ['name', 'dbName', 'type de quiz', 'status', 'startAsString', 'finishAsString', 'actions'];
 
 	displayedColumns: string[] = null!;
 

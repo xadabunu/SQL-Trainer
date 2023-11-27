@@ -8,38 +8,39 @@
 	<div class="col-sm-12">
 		<div class="mat-elevation-z2">
 			<table mat-table [dataSource]="dataSource" matSort matSortDisableClear>
-				<ng-container matColumnDef="nom">
+				<ng-container matColumnDef="name">
 					<th mat-header-cell *matHeaderCellDef mat-sort-header> Nom </th>
                     <td mat-cell *matCellDef="let row"> {{row.name}} </td>
 				</ng-container>
-				<ng-container matColumnDef="base de données">
+				<ng-container matColumnDef="dbName">
 					<th mat-header-cell *matHeaderCellDef mat-sort-header> Base de données </th>
-					<td mat-cell *matCellDef="let row"> {{row.database.name}} </td>
+					<td mat-cell *matCellDef="let row"> {{row.dbName}} </td>
 				</ng-container>
 				<ng-container matColumnDef="type de quiz">
 					<th mat-header-cell *matHeaderCellDef mat-sort-header> Type de quiz </th>
 					<td mat-cell *matCellDef="let row"> {{row.getTestOrTraining}} </td>
 				</ng-container>
-				<ng-container matColumnDef="date début">
+				<ng-container matColumnDef="startAsString">
 					<th mat-header-cell *matHeaderCellDef mat-sort-header> Date début </th>
-					<td mat-cell *matCellDef="let row"> {{row.getStart}} </td>
+					<td mat-cell *matCellDef="let row"> {{row.startAsString}} </td>
 				</ng-container>
-				<ng-container matColumnDef="date fin">
+				<ng-container matColumnDef="finishAsString">
 					<th mat-header-cell *matHeaderCellDef mat-sort-header> Date fin </th>
-					<td mat-cell *matCellDef="let row"> {{row.getFinish}} </td>
+					<td mat-cell *matCellDef="let row"> {{row.finishAsString}} </td>
 				</ng-container>
-				<ng-container matColumnDef="statut">
+				<ng-container matColumnDef="status">
 					<th mat-header-cell *matHeaderCellDef mat-sort-header> Statut </th>
-					<td mat-cell *matCellDef="let row"> {{row.getStatus}} </td>
+					<td mat-cell *matCellDef="let row"> {{row.status}} </td>
 				</ng-container>
-					<ng-container matColumnDef="évaluation">
+					<ng-container matColumnDef="evaluation">
 					<th mat-header-cell *matHeaderCellDef mat-sort-header> Evaluation </th>
-					<td mat-cell *matCellDef="let row"> {{row.getEvaluation}} </td>
+					<td mat-cell *matCellDef="let row"> {{row.evaluation}} </td>
 				</ng-container>
 				<ng-container matColumnDef="actions">
 					<th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
 					<td mat-cell *matCellDef="let row">
-						<button mat-icon-button tabindex="-1" [routerLink]="['/editQuizz/', row.id]">
+						<button mat-icon-button tabindex="-1" *ngIf="isTeacher"
+								[routerLink]="['/editQuizz/', row.id]">
 							<mat-icon>edit</mat-icon>
 						</button>
 					</td>

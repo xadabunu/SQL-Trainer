@@ -30,11 +30,6 @@ export class EditQuestionComponent {
 	changeTitle(isExpanded: boolean) {
 		this.panelTitle = isExpanded ? "Question " + this.question.id : this.question.id + ". " + this.question.body;
 		this.cdr.detectChanges();
-		console.log(1)
-	}
-
-	toggleExpansion() {
-		this.myisExtanded = !this.myisExtanded;
 	}
 
 	canEdit(): boolean {

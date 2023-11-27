@@ -1,19 +1,12 @@
-<mat-expansion-panel>
-	<mat-expansion-panel-header
-			(opened)="changeTitle(true)"
-			(closed)="changeTitle(false)">
+<mat-expansion-panel
+	(opened)="changeTitle(true)"
+	(closed)="changeTitle(false)">
+	<mat-expansion-panel-header>
 		<mat-panel-title>
 			{{ panelTitle }}
 		</mat-panel-title>
 	</mat-expansion-panel-header>
 	
-	<!-- <mat-expansion-panel-header (opened)="myisExtanded = true" (closed)="myisExtanded = false">
-		<mat-panel-title>
-			{{ myisExtanded ? openTitle : closeTitle }}
-		</mat-panel-title>
-
-	</mat-expansion-panel-header> -->
-
 	<!-- Contenu à afficher/masquer -->
 
 	<div>

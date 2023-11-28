@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace prid_2324_a02.Models;
 
@@ -18,4 +19,36 @@ public class Quizz
 
 	public virtual ICollection<Attempt> Attempts { get; set; } = new HashSet<Attempt>();
 	public virtual ICollection<Question> Questions { get; set; } = new HashSet<Question>();
+
+	[NotMapped]
+	public string? Status { get; set; } = null;
+
+	public Quizz AddStatus(Attempt? attempt) {
+
+		if (IsTest) {
+			var today = DateTime.Now;
+			if (Start!.Value > today) {
+				Status = "A VENIR";
+				return this;
+			}
+			if (Finish!.Value < today)
+				Status = "CLOTURE";
+			else
+				SetStatusForAttempt(attempt);
+			return this;
+		}
+		SetStatusForAttempt(attempt);
+		return this;
+	}
+
+	private void SetStatusForAttempt(Attempt? attempt) {
+		if (attempt == null) {
+			Status = "PAS COMMENCE";
+			return ;
+		}
+		if (attempt.Finish != null)
+			Status = "FINI";
+		else
+			Status = "EN COURS";
+	}
 }

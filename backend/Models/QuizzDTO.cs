@@ -11,6 +11,7 @@ public class QuizzDTO
 	public bool IsTest { get; set; }
 	public DateTimeOffset? Start { get; set; }
 	public DateTimeOffset? Finish { get; set; }
+	public string? Status { get; set; } = null;
 }
 
 public class QuizzWithQuestionsDTO : QuizzDTO

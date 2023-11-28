@@ -39,10 +39,17 @@ public class QuizzesController : ControllerBase
 	[HttpGet("getAll")]
 	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetAll()
 	{
-		return _mapper.Map<List<QuizzDTO>>(
-			await _context.Quizzes
+
+		var list = await _context.Quizzes
 			.Include(q => q.Database)
-			.ToListAsync()
+			.ToListAsync();
+
+		return _mapper.Map<List<QuizzDTO>>(
+			list.Select(q => {
+				var now = DateTime.Now;
+				q.Status = !q.IsPublished ? "PAS PUBLIE" : ((q.IsTest && now > q.Finish!.Value) ? "CLOTURE" : "PUBLIE");
+				return q;
+			})
 			);
 	}
 
@@ -50,18 +57,38 @@ public class QuizzesController : ControllerBase
 	[HttpGet("getTrainings")]
 	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetTrainings()
 	{
-		return _mapper.Map<List<QuizzDTO>>(await _context.Quizzes
-			.Include(q => q.Database)
-			.Where(q => !q.IsTest && q.IsPublished).ToListAsync());
+		var user = _context.Users.SingleOrDefault(u => u.Pseudo == User.Identity!.Name);
+
+		var list = await _context.Quizzes
+        	.Include(q => q.Database)
+        	.Where(q => !q.IsTest && q.IsPublished)
+        	.ToListAsync();
+
+		return _mapper.Map<List<QuizzDTO>>(
+			list.Select(q => {
+				var attempt = _context.Attemps
+                                .SingleOrDefault(a => a.QuizzId == q.Id && a.AuthorId == user!.Id);
+				return q.AddStatus(attempt);
+			}));
 	}
 
 	[Authorized(Role.Student, Role.Teacher)]
 	[HttpGet("getTests")]
 	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetTests()
 	{
-		return _mapper.Map<List<QuizzDTO>>(await _context.Quizzes
-			.Include(q => q.Database)
-			.Where(q => q.IsTest && q.IsPublished).ToListAsync());
+		var user = _context.Users.SingleOrDefault(u => u.Pseudo == User.Identity!.Name);
+
+		var list = await _context.Quizzes
+        	.Include(q => q.Database)
+        	.Where(q => q.IsTest && q.IsPublished)
+        	.ToListAsync();
+
+		return _mapper.Map<List<QuizzDTO>>(
+			list.Select(q => {
+				var attempt = _context.Attemps
+                                .SingleOrDefault(a => a.QuizzId == q.Id && a.AuthorId == user!.Id);
+				return q.AddStatus(attempt);
+			}));
 	}
 
 	[Authorized(Role.Student, Role.Teacher)]

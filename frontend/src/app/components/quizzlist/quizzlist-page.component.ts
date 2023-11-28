@@ -14,7 +14,7 @@ export class QuizzListPageComponent {
 	state: MatTableState;
 
 	constructor(
-		private authenticationServie: AuthenticationService,
+		private authenticationService: AuthenticationService,
 		private stateService: StateService
 	) {
 		this.state = this.stateService.quizListState;
@@ -31,6 +31,6 @@ export class QuizzListPageComponent {
 	}
 
 	get isTeacher() {
-        return this.authenticationServie.currentUser && this.authenticationServie.currentUser.role === Role.Teacher;
+        return this.authenticationService.currentUser && this.authenticationService.currentUser.role === Role.Teacher;
     }
 }

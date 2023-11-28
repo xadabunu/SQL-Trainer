@@ -20,15 +20,13 @@ export class EditQuestionComponent {
 
 	ngOnInit() {
 		this.panelTitle = this.question.id + ". " + this.question.body;
-		this.closeTitle = this.question.id + ". " + this.question.body;
-		this.openTitle = "Question " + this.question.id;
 	}
 	
 	ngAfterViewInit(): void {
 	}
 
 	changeTitle(isExpanded: boolean) {
-		this.panelTitle = isExpanded ? "Question " + this.question.id : this.question.id + ". " + this.question.body;
+		this.panelTitle = isExpanded ? "Question " + this.question.order : this.question.order + ". " + this.question.body;
 		this.cdr.detectChanges();
 	}
 

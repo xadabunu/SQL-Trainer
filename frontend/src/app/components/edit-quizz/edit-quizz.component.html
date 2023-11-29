@@ -4,10 +4,10 @@
 			<label>Nom</label>
 			<mat-form-field>
 				<input class="input" matInput [formControl]="ctlName" required>
-				<mat-error class="field-error" *ngIf="ctlName.hasError('required')">Required</mat-error>
-				<mat-error class="field-error" *ngIf="ctlName.hasError('minlength')">Minimum length is
+				<mat-error class="field-error" *ngIf="ctlName.hasError('required')">Requis</mat-error>
+				<mat-error class="field-error" *ngIf="ctlName.hasError('minlength')">Taille minimum : 
 					{{ctlName.errors?.minlength?.requiredLength}}</mat-error>
-				<mat-error class="field-error" *ngIf="ctlName.hasError('nameUsed')">Name already in use</mat-error>
+				<mat-error class="field-error" *ngIf="ctlName.hasError('nameUsed')">Nom déjà pris</mat-error>
 			</mat-form-field>
 			<label>Description</label>
 			<mat-form-field>
@@ -23,12 +23,16 @@
 					<input matInput [matDatepicker]="start" placeholder="Date début" [formControl]="ctlStart">
 					<mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
 					<mat-datepicker #start></mat-datepicker>
+					<mat-error class="field-error" *ngIf="ctlStart.hasError('startRequired')">Date début manquante</mat-error>
+					<mat-error class="field-error" *ngIf="ctlFinish.hasError('finishAfterStart')">Date de fin doit être après date de début</mat-error>
 				</mat-form-field>
 
 				<mat-form-field *ngIf="ctlType.value === 'Test'">
 					<input matInput [matDatepicker]="finish" placeholder="Date fin" [formControl]="ctlFinish">
 					<mat-datepicker-toggle matSuffix [for]="finish"></mat-datepicker-toggle>
 					<mat-datepicker #finish></mat-datepicker>
+					<mat-error class="field-error" *ngIf="ctlFinish.hasError('finishRequired')">Date fin manquante</mat-error>
+					<mat-error class="field-error" *ngIf="ctlFinish.hasError('finishAfterStart')">Date de fin doit être après date de début</mat-error>
 				</mat-form-field>
 			</div>
 		</div>

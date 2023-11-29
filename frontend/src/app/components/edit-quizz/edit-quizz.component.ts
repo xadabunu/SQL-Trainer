@@ -2,12 +2,12 @@ import { AfterViewInit, Component, Input, OnInit } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { Database } from "src/app/models/database";
 import { DatabaseService } from "src/app/services/database.service";
-import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { QuizzService } from "src/app/services/quizz.service";
 import { Question } from "src/app/models/question";
 
-enum quizType{
+enum quizType {
 	Training = "Training",
 	Test = "Test"
 }
@@ -21,17 +21,6 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 
 	editQuizForm!: FormGroup;
 	id: number = 0;
-
-	public isTest: boolean = false;
-
-	private _quizType: string = quizType.Training;
-	get quizType(): string {
-		return this._quizType;
-	}
-	@Input() set quizType(val: string) {
-		this._quizType = val;
-		this.isTest = this._quizType === quizType.Test;
-	}
 
 	public ctlName!: FormControl;
 	public ctlDescription!: FormControl;
@@ -49,15 +38,15 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 		private quizService: QuizzService,
 		private formBuilder: FormBuilder,
 		private route: ActivatedRoute
-		) {
+	) {
 		this.getDatabases();
 		this.ctlName = this.formBuilder.control('', [
 			Validators.required,
 			Validators.minLength(3)
 		], [this.nameUsed()]);
 		this.ctlDescription = this.formBuilder.control('');
-		this.ctlStart = this.formBuilder.control('');
-		this.ctlFinish = this.formBuilder.control('');
+		this.ctlStart = this.formBuilder.control('', [this.startValidator.bind(this)]);
+		this.ctlFinish = this.formBuilder.control('', [this.finishValidator.bind(this)]);
 		this.ctlType = this.formBuilder.control(quizType.Training);
 		this.ctlDatabase = this.formBuilder.control(null);
 		this.ctlPublished = this.formBuilder.control(false);
@@ -67,20 +56,19 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 			start: this.ctlStart,
 			finish: this.ctlFinish,
 			database: this.ctlDatabase,
-			isTest: this.ctlType,
+			isTest: this.ctlType.value === quizType.Test,
 			isPublished: this.ctlPublished,
 		});
 	}
 
 	ngAfterViewInit(): void {
-		this._quizType = quizType.Training;
+		this.ctlType.setValue(quizType.Training);
 	}
 
 	ngOnInit(): void {
 		this.route.params.subscribe(params => {
 			this.id = params['id'];
-			if (params['id'] != 0)
-			{
+			if (params['id'] != 0) {
 				this.quizService.getById(params['id'])
 					.subscribe(quizz => {
 						this.ctlName.setValue(quizz?.name);
@@ -93,7 +81,7 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 						this.ctlDatabase.setValue(this.dbs.data[index ?? 0]);
 						this.ctlStart.setValue(quizz?.start);
 						this.ctlFinish.setValue(quizz?.finish);
-				})
+					})
 				this.quizService.getQuestions(params['id'])
 					.subscribe(qsts => {
 						if (qsts)
@@ -101,6 +89,12 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 					});
 			}
 		});
+		this.ctlType.valueChanges.subscribe(() => {
+			console.log("in here");
+			this.ctlStart.updateValueAndValidity();
+			this.ctlFinish.updateValueAndValidity();
+		});
+		this.ctlStart.valueChanges.subscribe(() => this.ctlFinish.setValue(''));
 	}
 
 	nameUsed(): any {
@@ -114,14 +108,46 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 						resolve(null);
 					else
 						this.quizService.getByName(name)
-							.subscribe(quiz => resolve((quiz && this.id != quiz.id ) ? { nameUsed: true } : null));
+							.subscribe(quiz => resolve((quiz && this.id != quiz.id) ? { nameUsed: true } : null));
 				}, 300)
 			})
 		};
 	}
 
+	private hasValue(ctl: any): boolean {
+		if (!ctl) return false;
+		return ctl?.value !== undefined && ctl?.value !== null && ctl?.value !== '';
+	}
+
+	startValidator(control: AbstractControl): { [key: string]: any } | null {
+		if (this.isTest && !this.hasValue(control)) {
+			return { startRequired: true };
+		}
+		if (this.hasValue(this.ctlFinish) && this.ctlFinish?.value < control.value) {
+			console.log("oui", this.ctlFinish.value);
+			return { finishAfterStart: true };
+		}
+		return null;
+	}
+
+	finishValidator(control: AbstractControl): { [key: string]: any } | null {
+		if (this.isTest) {
+			if (control.value === undefined || control.value === null || control.value === '') {
+				return { finishRequired: true };
+			}
+			if (this.ctlStart.value > control.value) {
+				return { finishAfterStart: true };
+			}
+		}
+		return null;
+	}
+
 	get canEdit(): boolean {
 		return true;
+	}
+
+	get isTest(): boolean {
+		return this.ctlType?.value === quizType.Test;
 	}
 
 	update() {

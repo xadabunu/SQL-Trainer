@@ -15,7 +15,7 @@ enum quizType{
 @Component({
 	selector: 'edit-quizz',
 	templateUrl: './edit-quizz.component.html',
-	//styleUrls: ['./edit-quiz.component.css']
+	styleUrls: ['./edit-quiz.component.css']
 })
 export class EditQuizzComponent implements AfterViewInit, OnInit {
 
@@ -104,8 +104,16 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 		
 	}
 
+	get canEdit(): boolean {
+		return true;
+	}
+
 	update() {
 		this.quizService.update();
+	}
+
+	delete() {
+		console.log("delete");
 	}
 
 	private getDatabases(): void {

@@ -15,7 +15,7 @@
 	Inititulé
 	<textarea rows="5">{{ question.body }}</textarea>
 	<div *ngFor="let solution of question.solutions">
-		<code-editor [(ngModel)]="solution.sql" [readOnly]="canEdit()"></code-editor>
+		<code-editor [(ngModel)]="solution.sql" [readOnly]="canEdit"></code-editor>
 	</div>
 
 </mat-expansion-panel>

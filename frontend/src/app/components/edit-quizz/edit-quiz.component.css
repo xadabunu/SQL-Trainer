@@ -1,8 +1,6 @@
 .form {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr); /* 4 colonnes équivalentes */
-	grid-template-rows: repeat(3, 100px); /* 3 lignes de 100 pixels de hauteur */
-	gap: 10px; /* Espacement entre les cellules */
+    display: grid;
+    grid-template-columns: 50% 50%;
 }
 
 .mini-fab {
@@ -13,34 +11,74 @@
     border-radius: 0;
 }
 
-/* label {
-	grid-column: 1;
+.line {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.type {
+    display: flex;
+    flex-direction: row;
+    vertical-align: middle;
+}
+
+.toggle {
+    display: flex;
+    flex-direction: column;
+}
+
+.date {
+    margin: 10px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: auto 1fr; /* Deux colonnes de largeur automatique */
+    grid-template-rows: repeat(3, auto); /* Trois lignes de hauteur automatique */
+    gap: 8px; /* Espacement entre les éléments */
+    align-items: center; /* Alignement vertical des éléments dans chaque ligne */
+}
+
+.grid label {
+    grid-column: 1; /* Les labels sont dans la première colonne */
+    grid-row: span 1; /* Les labels occupent une seule ligne */
+    margin-bottom: 4px; /* Espace sous chaque label */
+    margin-right: 10px;
 }
 
 .input {
-	grid-column: 2;
+    grid-column: 2; /* Les éléments d'entrée sont dans la deuxième colonne */
+    grid-row: span 1; /* Les éléments d'entrée occupent une seule ligne */
 }
 
-.db {
-	grid-column: 3;
-} */
+.date {
+    grid-column: 2; /* Les éléments du div de class 'date' sont dans la deuxième colonne */
+    grid-row: span 1; /* Les éléments du div de class 'date' occupent une seule ligne */
+    display: flex; /* Les éléments du div de class 'date' seront dans un conteneur flex pour les aligner horizontalement */
+    justify-content: left; /* Les éléments du div de class 'date' sont alignés avec un espacement entre eux */
+    width: 100%; /* Les éléments du div de class 'date' occupent toute la largeur de la colonne */
+}
 
-/* 1ère colonne - Labels */
-/* .label-column {
-    grid-column: span 1;
-} */
 
-/* 2ème colonne - Inputs liés aux labels */
-/* .input-column {
-    grid-column: span 1;
-} */
+.date mat-form-field {
+    width: calc(35% - 4px); /* Chaque élément du div de class 'date' occupe 35% de la largeur avec un espace de 4px entre eux */
+    margin-right: 10px; /* Ajoute un espacement de 4px à droite de chaque élément du div de class 'date' */
+}
 
-/* 3ème colonne - Combobox */
-/* .mat-form-field:nth-child(7) {
-    grid-column: span 1;
-} */
+.date mat-form-field:last-child {
+    margin-right: 0; /* Supprime l'espace à droite du dernier élément du div de class 'date' */
+}
 
-/* 4ème colonne - Toggle-button */
-/* .mat-slide-toggle {
-    grid-column: span 1;
-} */
+.grid2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-right: 20%;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

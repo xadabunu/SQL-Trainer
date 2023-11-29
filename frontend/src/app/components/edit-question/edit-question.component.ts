@@ -11,11 +11,8 @@ export class EditQuestionComponent {
 	@Input() question!: Question;
 
 	panelTitle: string = "";
-	myisExtanded: boolean = false;
-	openTitle: string = "";
-	closeTitle: string = "";
 
-	constructor(private cdr: ChangeDetectorRef) {
+	constructor() {
 	}
 
 	ngOnInit() {
@@ -26,11 +23,12 @@ export class EditQuestionComponent {
 	}
 
 	changeTitle(isExpanded: boolean) {
-		this.panelTitle = isExpanded ? "Question " + this.question.order : this.question.order + ". " + this.question.body;
-		this.cdr.detectChanges();
+		this.panelTitle = isExpanded ?
+			"Question " + this.question.order :
+				this.question.order + ". " + this.question.body;
 	}
 
-	canEdit(): boolean {
+	get canEdit(): boolean {
 		return true;
 	}
 }

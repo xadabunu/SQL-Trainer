@@ -15,7 +15,7 @@ export class Quizz {
 	@Type(() => Date)
 	finish?: Date;
 	database?: Database;
-	status?: string = 'value';
+	status?: string;
 
 	questions: Question[] = [];
 

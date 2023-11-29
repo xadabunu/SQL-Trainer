@@ -54,7 +54,7 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 		this.ctlName = this.formBuilder.control('', [
 			Validators.required,
 			Validators.minLength(3)
-		]);
+		], [this.nameUsed()]);
 		this.ctlDescription = this.formBuilder.control('');
 		this.ctlStart = this.formBuilder.control('');
 		this.ctlFinish = this.formBuilder.control('');
@@ -101,7 +101,23 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 					});
 			}
 		});
-		
+	}
+
+	nameUsed(): any {
+		let timeout: NodeJS.Timeout;
+		return (ctl: FormControl) => {
+			clearTimeout(timeout);
+			const name = ctl.value;
+			return new Promise(resolve => {
+				timeout = setTimeout(() => {
+					if (ctl.pristine)
+						resolve(null);
+					else
+						this.quizService.getByName(name)
+							.subscribe(quiz => resolve((quiz && this.id != quiz.id ) ? { nameUsed: true } : null));
+				}, 300)
+			})
+		};
 	}
 
 	get canEdit(): boolean {

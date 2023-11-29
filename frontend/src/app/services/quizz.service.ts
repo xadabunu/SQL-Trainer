@@ -32,6 +32,12 @@ export class QuizzService {
 			catchError(err => of(null)));
 	}
 
+	getByName(name: string) {
+		return this.http.get<Quizz>(`${this.baseUrl}api/quizzes/byName/${name}`)
+			.pipe(map(res => plainToInstance(Quizz, res)),
+			catchError(err => of(null)));
+	}
+
 	getQuestions(id: number) {
 		return this.http.get<any[]>(`${this.baseUrl}api/quizzes/getQuestions/${id}`)
 			.pipe(map(res => plainToInstance(Question, res)),

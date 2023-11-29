@@ -102,4 +102,15 @@ public class QuizzesController : ControllerBase
 				.Where(q => q.QuizzId == quizId).ToListAsync()
 		);
 	}
+
+	[Authorized(Role.Teacher)]
+	[HttpGet("byName/{name}")]
+	public async Task<ActionResult<QuizzDTO>> ByName(string name)
+	{
+		var quizz = await _context.Quizzes
+		.SingleOrDefaultAsync(q => q.Name == name);
+		if (quizz == null)
+			return NotFound();
+		return _mapper.Map<QuizzDTO>(quizz);
+	}
 }

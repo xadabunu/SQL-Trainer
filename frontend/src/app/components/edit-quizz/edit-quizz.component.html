@@ -43,6 +43,7 @@
 				<mat-select [formControl]="ctlDatabase">
 					<mat-option *ngFor="let db of dbs.data" [value]="db">{{ db.name }}</mat-option>
 				</mat-select>
+				<mat-error class="field-error" *ngIf="ctlDatabase.hasError('required')">Requis</mat-error>
 			</mat-form-field>
 			<div class="toggle">
 				<label>Publié</label>
@@ -51,14 +52,14 @@
 
 			<div class="buttons">
 				<span matTooltip="Enregistrer" *ngIf="canEdit">
-					<button type="submit" mat-mini-fab form="form"
+					<button type="submit" mat-elevated-button form="form" *ngIf="canEdit"
 						[disabled]="editQuizForm.pristine || editQuizForm.invalid || editQuizForm.pending"
 						(click)="update()">
 						<mat-icon>save</mat-icon>
 					</button>
 				</span>
 				<span matTooltip="Supprimer">
-					<button mat-mini-fab tabindex="-1" (click)="delete()">
+					<button mat-elevated-button tabindex="-1" (click)="delete()">
 						<mat-icon>delete</mat-icon>
 					</button>
 				</span>
@@ -67,4 +68,8 @@
 	</div>
 </form>
 <h3>Questions</h3>
-<edit-question *ngFor="let question of qsts.data" [question]="question"></edit-question>
+<mat-error class="field-error" *ngIf="ctlQuestions.hasError('required')"></mat-error>
+<edit-question *ngFor="let question of qsts.data" [question]="question" [canEdit]="canEdit"></edit-question>
+<button mat-elevated-button (click)="addQuestion()" *ngIf="canEdit">
+	<mat-icon> add </mat-icon>
+</button>

@@ -29,6 +29,7 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 	public ctlType!: FormControl;
 	public ctlDatabase!: FormControl;
 	public ctlPublished!: FormControl;
+	public ctlQuestions!: FormControl;
 
 	dbs: MatTableDataSource<Database> = new MatTableDataSource();
 	qsts: MatTableDataSource<Question> = new MatTableDataSource();
@@ -48,8 +49,11 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 		this.ctlStart = this.formBuilder.control('', [this.startValidator.bind(this)]);
 		this.ctlFinish = this.formBuilder.control('', [this.finishValidator.bind(this)]);
 		this.ctlType = this.formBuilder.control(quizType.Training);
-		this.ctlDatabase = this.formBuilder.control(null);
+		this.ctlDatabase = this.formBuilder.control(null, [
+			Validators.required
+		]);
 		this.ctlPublished = this.formBuilder.control(false);
+		this.ctlQuestions = this.formBuilder.control('');
 		this.editQuizForm = this.formBuilder.group({
 			name: this.ctlName,
 			description: this.ctlDescription,
@@ -84,13 +88,13 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 					})
 				this.quizService.getQuestions(params['id'])
 					.subscribe(qsts => {
-						if (qsts)
-							this.qsts.data = qsts;
+						if (qsts) {
+							this.qsts.data = qsts;								
+						}
 					});
 			}
 		});
 		this.ctlType.valueChanges.subscribe(() => {
-			console.log("in here");
 			this.ctlStart.updateValueAndValidity();
 			this.ctlFinish.updateValueAndValidity();
 		});
@@ -124,7 +128,6 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 			return { startRequired: true };
 		}
 		if (this.hasValue(this.ctlFinish) && this.ctlFinish?.value < control.value) {
-			console.log("oui", this.ctlFinish.value);
 			return { finishAfterStart: true };
 		}
 		return null;
@@ -158,10 +161,18 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 		console.log("delete");
 	}
 
+	addQuestion(): void {
+		const order:number = this.qsts.data.length + 1;
+		this.qsts.data.push({
+			order: order,
+			solutions: []
+		});
+	}
+
 	private getDatabases(): void {
 		this.databaseService.getAll().subscribe(dbs => {
 			this.dbs.data = dbs;
-			this.ctlDatabase = this.formBuilder.control(this.dbs.data[0]);
+			// this.ctlDatabase = this.formBuilder.control(this.dbs.data[0]);
 		});
 	}
 }

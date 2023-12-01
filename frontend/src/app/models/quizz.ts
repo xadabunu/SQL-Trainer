@@ -16,6 +16,7 @@ export class Quizz {
 	finish?: Date;
 	database?: Database;
 	status?: string;
+	editable?: boolean;
 
 	questions: Question[] = [];
 

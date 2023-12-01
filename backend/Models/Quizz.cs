@@ -22,6 +22,8 @@ public class Quizz
 
 	[NotMapped]
 	public string? Status { get; set; } = null;
+	[NotMapped]
+	public bool Editable { get; set; } = true;
 
 	public Quizz AddStatus(Attempt? attempt) {
 

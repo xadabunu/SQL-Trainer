@@ -21,6 +21,7 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 
 	editQuizForm!: FormGroup;
 	id: number = 0;
+	private _editable: boolean = true;
 
 	public ctlName!: FormControl;
 	public ctlDescription!: FormControl;
@@ -85,6 +86,7 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 						this.ctlDatabase.setValue(this.dbs.data[index ?? 0]);
 						this.ctlStart.setValue(quizz?.start);
 						this.ctlFinish.setValue(quizz?.finish);
+						this._editable = quizz?.editable ?? true;
 					})
 				this.quizService.getQuestions(params['id'])
 					.subscribe(qsts => {
@@ -146,7 +148,7 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 	}
 
 	get canEdit(): boolean {
-		return true;
+		return this._editable;
 	}
 
 	get isTest(): boolean {

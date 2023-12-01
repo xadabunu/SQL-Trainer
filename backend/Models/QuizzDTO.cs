@@ -12,6 +12,7 @@ public class QuizzDTO
 	public DateTimeOffset? Start { get; set; }
 	public DateTimeOffset? Finish { get; set; }
 	public string? Status { get; set; } = null;
+	public bool Editable { get; set; }
 }
 
 public class QuizzWithQuestionsDTO : QuizzDTO

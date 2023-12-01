@@ -32,6 +32,7 @@ public class QuizzesController : ControllerBase
 		.SingleOrDefaultAsync(q => q.Id == id);
 		if (quizz == null)
 			return NotFound();
+		quizz.Editable = await _context.Attemps.AnyAsync(a => a.QuizzId == quizz.Id);
 		return _mapper.Map<QuizzDTO>(quizz);
 	}
 
@@ -39,7 +40,6 @@ public class QuizzesController : ControllerBase
 	[HttpGet("getAll")]
 	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetAll()
 	{
-
 		var list = await _context.Quizzes
 			.Include(q => q.Database)
 			.ToListAsync();

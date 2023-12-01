@@ -11,6 +11,7 @@ export class EditQuestionComponent {
 
 	@Input() question!: Question;
 	@Input() canEdit!: boolean;
+	@Input() isLast!: boolean;
 
 	panelTitle: string = "";
 	isExpanded: boolean = false;
@@ -44,6 +45,10 @@ export class EditQuestionComponent {
 			this.panelTitle = this.question.order + ". " + (this.question.body === undefined ?
 				"Nouvelle question" : this.question.body)
 		}
+	}
+
+	goDown(index: number | undefined): void {
+
 	}
 
 	addSolution(): void {

@@ -25,7 +25,7 @@ public abstract class User
 	[NotMapped]
 	public string? Token { get; set; }
 
-	public string? FullName => FirstName + " " + LastName;	
+	[NotMapped]
 	public string? RefreshToken { get; set; }
 
 	public int? Age {

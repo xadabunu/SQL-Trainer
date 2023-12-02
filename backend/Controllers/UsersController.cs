@@ -79,6 +79,8 @@ public class UsersController : ControllerBase
 	[HttpPut]
 	public async Task<IActionResult> PutUser(UserWithPasswordDTO dto)
 	{
+		// Console.WriteLine("in Controller");
+		// return Ok();
 		var user = await _context.Users.FindAsync(dto.Id);
 		if (user == null)
 			return NotFound();

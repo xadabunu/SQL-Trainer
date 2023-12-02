@@ -44,7 +44,13 @@ export class QuizzService {
 			catchError(err => of(null)));
 	}
 
-	update() {
-		
+	update(q: Quizz): Observable<boolean> {
+		return this.http.put<Quizz>(`${this.baseUrl}api/quizzes`, q).pipe(
+			map(res => true),
+			catchError(err => {
+				console.log(err);
+				return of(false);
+			})
+		)
 	}
 }

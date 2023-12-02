@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from
 import { ActivatedRoute } from "@angular/router";
 import { QuizzService } from "src/app/services/quizz.service";
 import { Question } from "src/app/models/question";
+import { Quizz } from "src/app/models/quizz";
 
 enum quizType {
 	Training = "Training",
@@ -22,6 +23,7 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 	editQuizForm!: FormGroup;
 	id: number = 0;
 	private _editable: boolean = true;
+	private _quizz: Quizz = null!;
 
 	public ctlName!: FormControl;
 	public ctlDescription!: FormControl;
@@ -77,6 +79,8 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 			if (params['id'] != 0) {
 				this.quizService.getById(params['id'])
 					.subscribe(quizz => {
+						if (quizz)
+							this._quizz = quizz;
 						this.ctlName.setValue(quizz?.name);
 						this.ctlDescription.setValue(quizz?.description);
 						this.ctlType.setValue(quizz?.isTest ? quizType.Test : quizType.Training);
@@ -87,7 +91,16 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 						this.ctlDatabase.setValue(this.dbs.data[index ?? 0]);
 						this.ctlStart.setValue(quizz?.start);
 						this.ctlFinish.setValue(quizz?.finish);
-						this._editable = quizz?.editable ?? true;
+						if (!quizz?.editable) {
+							this._editable = quizz?.editable ?? true;
+							this.ctlName.disable();
+							this.ctlDescription.disable();
+							this.ctlType.disable();
+							this.ctlPublished.disable();
+							this.ctlDatabase.disable();
+							this.ctlStart.disable();
+							this.ctlFinish.disable();
+						}
 					})
 				this.quizService.getQuestions(params['id'])
 					.subscribe(qsts => {
@@ -157,7 +170,7 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 	}
 
 	update() {
-		this.quizService.update();
+		this.quizService.update(this._quizz);
 	}
 
 	delete() {

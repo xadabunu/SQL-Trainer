@@ -32,7 +32,7 @@ public class QuizzesController : ControllerBase
 		.SingleOrDefaultAsync(q => q.Id == id);
 		if (quizz == null)
 			return NotFound();
-		quizz.Editable = await _context.Attemps.AnyAsync(a => a.QuizzId == quizz.Id);
+		quizz.Editable = !await _context.Attemps.AnyAsync(a => a.QuizzId == quizz.Id);
 		return _mapper.Map<QuizzDTO>(quizz);
 	}
 
@@ -112,5 +112,26 @@ public class QuizzesController : ControllerBase
 		// if (quizz == null)
 		// 	return NotFound();
 		return _mapper.Map<QuizzDTO>(quizz);
+	}
+
+	/**
+	 * !On ne rentre pas dans la méthode
+	 */
+	[Authorized(Role.Teacher)]
+	[HttpPut]
+	public async Task<IActionResult> PutQuiz(QuizzWithQuestionsDTO dto)
+	{
+		var quizz = await _context.Quizzes.FindAsync(dto.Id);
+
+		if (quizz == null) return NotFound();
+
+		_mapper.Map<QuizzWithQuestionsDTO, Quizz>(dto, quizz);
+
+		var result = await new QuizValidator(_context).ValidateAsync(quizz);
+		if (!result.IsValid)
+			return BadRequest(result);
+		
+		await _context.SaveChangesAsync();
+		return NoContent();
 	}
 }

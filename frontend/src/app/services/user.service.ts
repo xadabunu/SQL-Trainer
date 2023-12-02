@@ -22,6 +22,9 @@ export class UserService {
         );
     }
 
+    /**
+     * !put et post renvoie BadRequest sans entrer dans la méthode du Controller
+     */
     public update(m: User): Observable<boolean> {
         return this.http.put<User>(`${this.baseUrl}api/users`, m).pipe(
             map(res => true),

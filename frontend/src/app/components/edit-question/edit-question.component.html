@@ -8,9 +8,9 @@
 	<!-- Contenu à afficher/masquer -->
 	<div>
 		<div class="buttons" *ngIf="canEdit">
-			<button mat-elevated-button [disabled]="question.order===1"><mat-icon>arrow_drop_up</mat-icon></button>
+			<button mat-elevated-button [disabled]="question.order===1" (click)="goUp(question.order)"><mat-icon>arrow_drop_up</mat-icon></button>
 			<button mat-elevated-button [disabled]="isLast" (click)="goDown(question.order)"><mat-icon>arrow_drop_down</mat-icon></button>
-			<button mat-elevated-button><mat-icon>delete</mat-icon></button>
+			<button mat-elevated-button (click)="deleteQuestion()"><mat-icon>delete</mat-icon></button>
 		</div>
 		<div>
 			Inititulé
@@ -19,8 +19,8 @@
 	</div>
 	<div *ngFor="let solution of question.solutions" class="solution">
 		<div *ngIf="canEdit">
-			<button mat-elevated-button [disabled]="solution.order===1"><mat-icon>arrow_drop_up</mat-icon></button>
-			<button mat-elevated-button [disabled]="solution.order===question.solutions.length"><mat-icon>arrow_drop_down</mat-icon></button>
+			<button mat-elevated-button (click)="solutionUp(solution.order)" [disabled]="solution.order===1"><mat-icon>arrow_drop_up</mat-icon></button>
+			<button mat-elevated-button  (click)="solutionDown(solution.order)" [disabled]="solution.order===question.solutions.length"><mat-icon>arrow_drop_down</mat-icon></button>
 		</div>
 		<code-editor [(ngModel)]="solution.sql" [readOnly]="!canEdit"></code-editor>
 		<button mat-elevated-button class="delete" (click)="deleteSolution(solution.order)" *ngIf="canEdit"><mat-icon>delete</mat-icon></button>

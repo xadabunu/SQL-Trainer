@@ -69,7 +69,13 @@
 </form>
 <h3>Questions</h3>
 <mat-error class="field-error" *ngIf="ctlQuestions.hasError('required')"></mat-error>
-<edit-question *ngFor="let question of qsts.data" [question]="question" [canEdit]="canEdit" [isLast]="question.order===qsts.data.length"></edit-question>
+<edit-question *ngFor="let question of qsts.data"
+		[question]="question" [canEdit]="canEdit" [isLast]="question.order===qsts.data.length"
+		(indexToRemove)="deleteQuestion($event)"
+		(indexToPushDown)="swapQuestions('down', $event)"
+		(indexToPushUp)="swapQuestions('up', $event)">
+	</edit-question>
+
 <button mat-elevated-button (click)="addQuestion()" *ngIf="canEdit">
 	<mat-icon> add </mat-icon>
 </button>

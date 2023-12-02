@@ -1,6 +1,7 @@
-import { Component, Input } from "@angular/core"
+import { Component, EventEmitter, Input, Output } from "@angular/core"
 import { FormControl } from "@angular/forms";
 import { Question } from "src/app/models/question"
+import { Solution } from "src/app/models/solution";
 
 @Component({
 	selector: 'edit-question',
@@ -13,12 +14,17 @@ export class EditQuestionComponent {
 	@Input() canEdit!: boolean;
 	@Input() isLast!: boolean;
 
+	@Output() indexToRemove = new EventEmitter<number>();
+	@Output() indexToPushDown = new EventEmitter<number>();
+	@Output() indexToPushUp = new EventEmitter<number>();
+
 	panelTitle: string = "";
 	isExpanded: boolean = false;
 
 	public ctlBody!: FormControl;
 
 	constructor() {
+
 	}
 
 	ngOnInit() {
@@ -47,8 +53,18 @@ export class EditQuestionComponent {
 		}
 	}
 
-	goDown(index: number | undefined): void {
+	deleteQuestion(): void {
+		this.indexToRemove.emit((this.question.order ?? 0) - 1);
+	}
 
+	goDown(index: number | undefined): void {
+		this.indexToPushDown.emit((index ?? 0) - 1);
+		this.changeTitle(true);
+	}
+
+	goUp(index: number | undefined): void {
+		this.indexToPushUp.emit((index ?? 0) - 1);
+		this.changeTitle(true);
 	}
 
 	addSolution(): void {
@@ -59,7 +75,33 @@ export class EditQuestionComponent {
 	}
 
 	deleteSolution(order: number | undefined): void {
-		if (order)
-			this.question.solutions.splice(order - 1, 1);
+		if (order) {
+			const index: number = order - 1;
+			this.question.solutions.splice(index, 1);
+			for (let i = index; i < this.question.solutions.length; i++) {
+				const element = this.question.solutions[i];
+				if (element && element.order) element.order -= 1;
+			}
+		}
+	}
+
+	solutionUp(order: number | undefined): void {
+		if (order) {
+			let temp: Solution = this.question.solutions[order - 1];
+			if (temp && temp.order) temp.order -= 1;
+			temp = this.question.solutions[order - 2];
+			if (temp && temp.order) temp.order += 1;
+			this.question.solutions.sort((s1, s2) => (s1.order ?? 0) - (s2.order ?? 0));
+		}
+	}
+
+	solutionDown(order: number | undefined): void {
+		if (order) {
+			let temp: Solution = this.question.solutions[order - 1];
+			if (temp && temp.order) temp.order += 1;
+			temp = this.question.solutions[order];
+			if (temp && temp.order) temp.order -= 1;
+			this.question.solutions.sort((s1, s2) => (s1.order ?? 0) - (s2.order ?? 0));
+		}
 	}
 }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { Database } from "src/app/models/database";
 import { DatabaseService } from "src/app/services/database.service";
@@ -39,7 +39,8 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 		private databaseService: DatabaseService,
 		private quizService: QuizzService,
 		private formBuilder: FormBuilder,
-		private route: ActivatedRoute
+		private route: ActivatedRoute,
+		private cdr: ChangeDetectorRef
 	) {
 		this.getDatabases();
 		this.ctlName = this.formBuilder.control('', [
@@ -171,10 +172,28 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 		});
 	}
 
+	deleteQuestion($event: number): void {
+		if ($event >= 0)
+			this.qsts.data.splice($event, 1);
+		for (let index = $event; index < this.qsts.data.length; index++) {
+			const element = this.qsts.data[index];
+			if (element && element.order) element.order--;
+		}
+	}
+
+	swapQuestions(direction: 'up' | 'down', index: number): void {
+		let destination: number = index + (direction === 'up' ? -1 : 1);
+		let temp: Question = this.qsts.data[index];
+		if (temp && temp.order) temp.order += (direction === 'up' ? -1 : 1);
+		temp = this.qsts.data[destination];
+		if (temp && temp.order) temp.order -= (direction === 'up' ? -1 : 1);
+		this.qsts.data.sort((q1, q2) => (q1.order ?? 0) - (q2.order ?? 0));
+		this.cdr.detectChanges();
+	}
+
 	private getDatabases(): void {
 		this.databaseService.getAll().subscribe(dbs => {
 			this.dbs.data = dbs;
-			// this.ctlDatabase = this.formBuilder.control(this.dbs.data[0]);
 		});
 	}
 }

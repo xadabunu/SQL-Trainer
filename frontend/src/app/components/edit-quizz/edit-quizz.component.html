@@ -68,14 +68,28 @@
 	</div>
 </form>
 <h3>Questions</h3>
-<mat-error class="field-error" *ngIf="ctlQuestions.hasError('required')"></mat-error>
-<edit-question *ngFor="let question of qsts.data"
-		[question]="question" [canEdit]="canEdit" [isLast]="question.order===qsts.data.length"
-		(indexToRemove)="deleteQuestion($event)"
-		(indexToPushDown)="swapQuestions('down', $event)"
-		(indexToPushUp)="swapQuestions('up', $event)">
-	</edit-question>
-
+<div class="questions">
+	<mat-error class="field-error" *ngIf="ctlQuestions.hasError('noQuestion')">
+		Aucune question
+	</mat-error>
+	<mat-error class="field-error" *ngIf="ctlQuestions.hasError('questionBody')">
+		L'intitulé de chaque question doit contenir minimum 2 caractères
+	</mat-error>
+	<mat-error class="field-error" *ngIf="ctlQuestions.hasError('noSolution')">
+		Chaque question doit avoir au moins une solution
+	</mat-error>
+	<mat-error class="field-error" *ngIf="ctlQuestions.hasError('emptySolution')">
+		Aucune solution ne peut être vide
+	</mat-error>
+	<edit-question *ngFor="let question of qsts.data"
+			[question]="question" [canEdit]="canEdit" [isLast]="question.order===qsts.data.length"
+			(indexToRemove)="deleteQuestion($event)"
+			(indexToPushDown)="swapQuestions('down', $event)"
+			(indexToPushUp)="swapQuestions('up', $event)"
+			(bodyChange)="onBodyChange($event)"
+			(solutionChange)="onSolutionChange($event)">
+		</edit-question>
+</div>
 <button mat-elevated-button (click)="addQuestion()" *ngIf="canEdit">
 	<mat-icon> add </mat-icon>
 </button>

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core"
-import { FormControl } from "@angular/forms";
+import { FormControl, ValidationErrors } from "@angular/forms";
 import { Question } from "src/app/models/question"
 import { Solution } from "src/app/models/solution";
 
@@ -17,6 +17,9 @@ export class EditQuestionComponent {
 	@Output() indexToRemove = new EventEmitter<number>();
 	@Output() indexToPushDown = new EventEmitter<number>();
 	@Output() indexToPushUp = new EventEmitter<number>();
+
+	@Output() bodyChange = new EventEmitter<string>();
+	@Output() solutionChange = new EventEmitter<ValidationErrors>();
 
 	panelTitle: string = "";
 	isExpanded: boolean = false;
@@ -53,6 +56,14 @@ export class EditQuestionComponent {
 		}
 	}
 
+	onBodyChange(): void {
+		this.bodyChange.emit(this.question.body);
+	}
+
+	sqlChange(sql: string | undefined): void {
+		this.solutionChange.emit((sql && sql.length > 0) ? undefined : { emptySolution: true});
+	}
+
 	deleteQuestion(): void {
 		this.indexToRemove.emit((this.question.order ?? 0) - 1);
 	}
@@ -72,6 +83,7 @@ export class EditQuestionComponent {
 		this.question.solutions.push({
 			order: order
 		});
+		this.solutionChange.emit(undefined);
 	}
 
 	deleteSolution(order: number | undefined): void {
@@ -83,6 +95,8 @@ export class EditQuestionComponent {
 				if (element && element.order) element.order -= 1;
 			}
 		}
+		if (this.question.solutions.length === 0)
+			this.solutionChange.emit({ noSolution: true });
 	}
 
 	solutionUp(order: number | undefined): void {

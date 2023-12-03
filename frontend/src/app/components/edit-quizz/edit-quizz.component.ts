@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit } from "@ang
 import { MatTableDataSource } from "@angular/material/table";
 import { Database } from "src/app/models/database";
 import { DatabaseService } from "src/app/services/database.service";
-import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl, ValidationErrors } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { QuizzService } from "src/app/services/quizz.service";
 import { Question } from "src/app/models/question";
@@ -57,7 +57,9 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 			Validators.required
 		]);
 		this.ctlPublished = this.formBuilder.control(false);
-		this.ctlQuestions = this.formBuilder.control('');
+		this.ctlQuestions = this.formBuilder.control('', [
+			this.emptyQuestion(),
+		]);
 		this.editQuizForm = this.formBuilder.group({
 			name: this.ctlName,
 			description: this.ctlDescription,
@@ -66,6 +68,7 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 			database: this.ctlDatabase,
 			isTest: this.ctlType.value === quizType.Test,
 			isPublished: this.ctlPublished,
+			question: this.ctlQuestions
 		});
 	}
 
@@ -105,7 +108,8 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 				this.quizService.getQuestions(params['id'])
 					.subscribe(qsts => {
 						if (qsts) {
-							this.qsts.data = qsts;								
+							this.qsts.data = qsts;
+							this.ctlQuestions.setValue(this.qsts.data);
 						}
 					});
 			}
@@ -178,11 +182,12 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 	}
 
 	addQuestion(): void {
-		const order:number = this.qsts.data.length + 1;
+		const order: number = this.qsts.data.length + 1;
 		this.qsts.data.push({
 			order: order,
 			solutions: []
 		});
+		this.ctlQuestions.setErrors({ questionBody: true });
 	}
 
 	deleteQuestion($event: number): void {
@@ -192,6 +197,7 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 			const element = this.qsts.data[index];
 			if (element && element.order) element.order--;
 		}
+		this.ctlQuestions.updateValueAndValidity();
 	}
 
 	swapQuestions(direction: 'up' | 'down', index: number): void {
@@ -208,5 +214,81 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 		this.databaseService.getAll().subscribe(dbs => {
 			this.dbs.data = dbs;
 		});
+	}
+
+	onBodyChange(body: string): void {
+		let errors = this.ctlQuestions.errors || {};
+
+		if (!body || body.trim().length < 2) {
+			errors = { ...errors, questionBody: true };
+		} else {
+			let validBody = this.qsts.data.every(question => (question.body?.trim().length ?? 0) >= 2);
+
+			if (validBody) {
+				delete errors['questionBody'];
+			} else {
+				errors = { ...errors, questionBody: true };
+			}
+		}
+
+		if (Object.keys(errors).length === 0) {
+			this.checkSolutions();
+			return;
+		} else {
+			this.ctlQuestions.setErrors(errors);
+		}
+	}
+
+	onSolutionChange($event: ValidationErrors): void {
+		if ($event !== undefined)
+			this.ctlQuestions.setErrors($event);
+		else
+			this.checkSolutions();
+	}
+
+	checkSolutions(): void {
+		let errors = this.ctlQuestions.errors || {};
+		let hasEmptySolution = false;
+		let hasNoSolution = false;
+	  
+		this.qsts.data.forEach(question => {
+		  if (!question.solutions || question.solutions.length === 0) {
+			hasNoSolution = true;
+		  } else {
+			for (const solution of question.solutions) {
+			  if (!solution || !solution.sql || solution.sql.trim().length === 0) {
+				hasEmptySolution = true;
+				break;
+			  }
+			}
+		  }
+		});
+	  
+		if (hasNoSolution) {
+		  errors = { ...errors, noSolution: true };
+		} else {
+		  delete errors['noSolution'];
+		}
+	  
+		if (hasEmptySolution) {
+		  errors = { ...errors, emptySolution: true };
+		} else {
+		  delete errors['emptySolution'];
+		}
+	  
+		if (Object.keys(errors).length === 0) {
+		  this.ctlQuestions.setErrors(null);
+		} else {
+		  this.ctlQuestions.setErrors(errors);
+		}
+	  }
+	  
+
+	private emptyQuestion(): any {
+		return () => {
+			if (this.qsts.data.length === 0)
+				return { noQuestion: true };
+			return { noQuestion: false };
+		};
 	}
 }

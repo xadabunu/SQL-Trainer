@@ -78,3 +78,8 @@ button {
     flex-direction: row;
     justify-content: space-between;
 }
+
+.questions {
+    display: flex;
+    flex-direction: column;
+}

@@ -66,7 +66,8 @@ public class QuizzesController : ControllerBase
 
 		return _mapper.Map<List<QuizzDTO>>(
 			list.Select(q => {
-				var attempt = _context.Attemps
+				var firstQuestion = q.Questions.FirstOrDefault(q => q.Order == 1);
+				q.FirstQuestionId = q.Id;				var attempt = _context.Attemps
                                 .SingleOrDefault(a => a.QuizzId == q.Id && a.AuthorId == user!.Id);
 				return q.AddStatus(attempt);
 			}));
@@ -85,6 +86,8 @@ public class QuizzesController : ControllerBase
 
 		return _mapper.Map<List<QuizzDTO>>(
 			list.Select(q => {
+				var firstQuestion = q.Questions.FirstOrDefault(q => q.Order == 1);
+				q.FirstQuestionId = q.Id;
 				var attempt = _context.Attemps
                                 .SingleOrDefault(a => a.QuizzId == q.Id && a.AuthorId == user!.Id);
 				return q.AddStatus(attempt);

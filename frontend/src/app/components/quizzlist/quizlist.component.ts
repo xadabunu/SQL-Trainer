@@ -11,6 +11,8 @@ import { MatSort } from "@angular/material/sort";
 import { format } from "date-fns";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { Role } from "src/app/models/user";
+import { Attempt } from "src/app/models/attempt";
+import { Router } from "@angular/router";
 
 @Component({
 	selector: 'quizlist',
@@ -53,7 +55,8 @@ export class QuizListComponent {
 		private stateService: StateService,
 		public dialog: MatDialog, // sera utile en cas de bouton "new Quizz" pour les Teachers
 		public snackBar: MatSnackBar,
-		private authService: AuthenticationService
+		private authService: AuthenticationService,
+		private router: Router
 	) {
 		this.state = this.stateService.quizListState;
 	}
@@ -103,5 +106,29 @@ export class QuizListComponent {
 
 	get isTeacher(): boolean {
 		return this.authService.currentUser?.role === Role.Teacher;
+	}
+
+	canCreate(quiz: Quizz): boolean {
+		return !this.isTeacher &&
+			(quiz.status === 'PAS COMMENCE' ||
+				(quiz.status === 'FINI' && !quiz.isTest));
+	}
+
+	canEdit(quiz: Quizz): boolean {
+		return !this.isTeacher && quiz.status === 'EN COURS';
+	}
+
+	canConsult(quiz: Quizz): boolean {
+		return !this.isTeacher && quiz.status === 'FINI';
+	}
+
+	navigateToAttempt(quiz: Quizz, create: boolean): void {
+		if (create) {
+			const attempt: Attempt = {
+					quizId: quiz.id, start: new Date()
+			};
+			this.quizService.createAttempt(attempt);
+		}
+		this.router.navigateByUrl('question/' + quiz.firstQuestionId);
 	}
 }

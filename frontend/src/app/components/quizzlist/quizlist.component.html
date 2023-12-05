@@ -43,6 +43,18 @@
 								[routerLink]="['/editQuizz/', row.id]">
 							<mat-icon>edit</mat-icon>
 						</button>
+						<button mat-icon-button tabindex="-1" *ngIf="canEdit(row)"
+								(click)="navigateToAttempt(row, false)">
+								<mat-icon>edit</mat-icon>
+						</button>
+						<button mat-icon-button tabindex="-1" *ngIf="canConsult(row)"
+								(click)="navigateToAttempt(row, false)">
+								<mat-icon>book</mat-icon>
+						</button>
+						<button mat-icon-button tabindex="-1" *ngIf="canCreate(row)"
+								(click)="navigateToAttempt(row, true)">
+								<mat-icon>add_box</mat-icon>
+						</button>
 					</td>
 				</ng-container>
 				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

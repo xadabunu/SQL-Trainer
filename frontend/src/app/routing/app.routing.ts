@@ -19,6 +19,10 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: [Role.Student, Role.Teacher]}
   },
+  {
+	path: 'question/:id',
+	component: QuestionComponent
+  },
   // { path: 'signup', component: SignUpComponent },  
   {
     path: 'editQuizz/:id',
@@ -39,6 +43,7 @@ import { Role } from '../models/user';
 import { QuizzListPageComponent } from '../components/quizzlist/quizzlist-page.component';
 import { EditQuizzComponent } from '../components/edit-quizz/edit-quizz.component';
 import { TestCodeEditorComponent } from '../components/test-code-editor/test-code-editor.component';
+import { QuestionComponent } from '../components/question/question.component';
 // import { SignUpComponent } from '../components/signup/signup.component';
 
 export const AppRoutes = RouterModule.forRoot(appRoutes);

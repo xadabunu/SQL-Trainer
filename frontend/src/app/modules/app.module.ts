@@ -24,6 +24,7 @@ import { EditQuizzComponent } from '../components/edit-quizz/edit-quizz.componen
 import { EditQuestionComponent } from '../components/edit-question/edit-question.component';
 import { TestCodeEditorComponent } from '../components/test-code-editor/test-code-editor.component';
 import { CodeEditorComponent } from '../components/code-editor/code-editor.component';
+import { QuestionComponent } from '../components/question/question.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { CodeEditorComponent } from '../components/code-editor/code-editor.compo
     EditQuizzComponent,
     EditQuestionComponent,
     CodeEditorComponent,
-    TestCodeEditorComponent
+    TestCodeEditorComponent,
+	QuestionComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

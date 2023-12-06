@@ -1,11 +1,8 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace prid_2324_a02.Models;
 
-public class Answer
+public class AnswerDTO
 {
-	[Key]
-	public int Id { get; set; }
+    public int Id { get; set; }
 	public string Sql { get; set; } = null!;
 	public DateTimeOffset Timestamp { get; set; }
 	public bool IsCorrect { get; set; }
@@ -13,5 +10,4 @@ public class Answer
 	public Attempt Attempt { get; } = null!;
 	public int AttemptId { get; set; }
 	public Question Question { get; } = null!;
-	public int QuestionId { get; set; }
-}
+	public int QuestionId { get; set; }}

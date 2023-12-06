@@ -1,3 +1,4 @@
+import { Answer } from "./answer";
 import { Solution } from "./solution";
 
 export class Question {
@@ -6,4 +7,9 @@ export class Question {
 	body?: string;
 
 	solutions: Solution[] = [];
+
+	previous: number = 0;
+	next: number = 0;
+	quizTitle: string = '';
+	answer?: Answer | undefined = undefined;
 }

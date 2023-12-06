@@ -185,7 +185,10 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 		const order: number = this.qsts.data.length + 1;
 		this.qsts.data.push({
 			order: order,
-			solutions: []
+			solutions: [],
+			previous: 0,
+			next: 0,
+			quizTitle: this._quizz.name ?? ''
 		});
 		this.ctlQuestions.setErrors({ questionBody: true });
 	}

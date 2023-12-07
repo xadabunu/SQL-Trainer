@@ -20,8 +20,10 @@ const appRoutes: Routes = [
     data: { roles: [Role.Student, Role.Teacher]}
   },
   {
-	path: 'question/:id',
-	component: QuestionComponent
+	  path: 'question/:id',
+	  component: QuestionComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [Role.Student] }
   },
   // { path: 'signup', component: SignUpComponent },  
   {

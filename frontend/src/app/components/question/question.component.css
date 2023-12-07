@@ -1,0 +1,18 @@
+.myheader {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.nav-button button {
+	margin: 0 5px;
+}
+
+h1 {
+	color: cornflowerblue;
+}
+
+pre {
+	font-size: 150%;
+	color: green;
+}

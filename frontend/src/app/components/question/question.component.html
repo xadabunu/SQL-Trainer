@@ -1,16 +1,30 @@
-<div class="header">
+<div class="myheader">
     <div class="nav-button">
         <button mat-elevated-button
-            [disabled]="isFirst" (click)="navigateToPrevious">
-            <mat-icon>arrow_drop_left</mat-icon>
+            [disabled]="isFirst" (click)="navigateToPrevious()">
+            <mat-icon>arrow_left</mat-icon>
         </button>
         <button mat-elevated-button
-            [disabled]="isLast" [routerLink]="['/question/', question.next]">
-            <mat-icon>arrow_drop_right</mat-icon>
+            [disabled]="isLast" (click)="navigateToNext()">
+            <mat-icon>arrow_right</mat-icon>
         </button>
     </div>
-    <h3>{{ title }}</h3>
+    <h3>{{ header }}</h3>
     <button mat-elevated-button [disabled]="!canSave">
-        <mat-icon>cross</mat-icon>
+        <mat-icon>cancel</mat-icon>
     </button>
+</div>
+<h1>{{ body }}</h1>
+<div>{{ label }}</div>
+<code-editor [(ngModel)]="sql"></code-editor>
+<div class="nav-button">
+    <button mat-elevated-button (click)="send()">Envoyer</button>
+    <button mat-elevated-button (click)="erase()">Effacer</button>
+    <button mat-elevated-button (click)="showSolutions()">Voir solutions</button>
+</div>
+<div *ngIf="displaySolutions">
+    <div *ngFor="let solution of question.solutions">
+        <h2>Solution {{ solution.order }}</h2>
+        <pre>{{ solution.sql }}</pre>
+    </div>
 </div>

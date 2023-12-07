@@ -33,5 +33,8 @@ public class MappingProfile : Profile
 
 		CreateMap<Database, DatabaseDTO>();
 		CreateMap<DatabaseDTO, Database>();
+
+		CreateMap<Answer, AnswerDTO>();
+		CreateMap<AnswerDTO, Answer>();
 	}
 }

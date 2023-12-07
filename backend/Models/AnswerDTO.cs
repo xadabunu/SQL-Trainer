@@ -7,7 +7,6 @@ public class AnswerDTO
 	public DateTimeOffset Timestamp { get; set; }
 	public bool IsCorrect { get; set; }
 
-	public Attempt Attempt { get; } = null!;
-	public int AttemptId { get; set; }
-	public Question Question { get; } = null!;
-	public int QuestionId { get; set; }}
+	public AttemptDTO Attempt { get; } = null!;
+	public QuestionDTO Question { get; } = null!;
+}

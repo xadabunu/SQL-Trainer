@@ -26,21 +26,27 @@ public class QuestionsController : ControllerBase
     public async Task<ActionResult<QuestionDTO>> GetOne(int id)
     {
         var question = await _context.Questions
-            .FindAsync(id);
+            .Include(q => q.Solutions)
+            .SingleOrDefaultAsync(q => q.Id == id);
         if (question == null)
             return NotFound();
 
         var dto = _mapper.Map<QuestionDTO>(question);
-        var temp = _context.Questions
+
+        var temp = await _context.Questions
             .Where(q => q.QuizzId == dto.QuizzId && q.Order == dto.Order - 1)
-            .SingleOrDefault();
+            .SingleOrDefaultAsync();
         dto.Previous = temp?.Id ?? 0;
-        temp = _context.Questions
+
+        temp = await _context.Questions
             .Where(q => q.QuizzId == dto.QuizzId && q.Order == dto.Order + 1)
-            .SingleOrDefault();
+            .SingleOrDefaultAsync();
         dto.Next = temp?.Id ?? 0;
-        var answer = _context.Answers
-            .Where(a => a.QuestionId == id && a.Attempt.Author.Pseudo == User.Identity!.Name)
+
+        var user = _context.Users.SingleOrDefault(u => u.Pseudo == User.Identity!.Name);
+        var answer = await _context.Answers
+            .Include(a => a.Attempt)
+            .Where(a => a.QuestionId == id && a.Attempt.AuthorId == user.Id)
             .SingleOrDefaultAsync();
         
         dto.Answer = _mapper.Map<AnswerDTO>(answer);

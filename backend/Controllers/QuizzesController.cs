@@ -61,13 +61,15 @@ public class QuizzesController : ControllerBase
 
 		var list = await _context.Quizzes
         	.Include(q => q.Database)
+			.Include(q => q.Questions)
         	.Where(q => !q.IsTest && q.IsPublished)
         	.ToListAsync();
 
 		return _mapper.Map<List<QuizzDTO>>(
 			list.Select(q => {
 				var firstQuestion = q.Questions.FirstOrDefault(q => q.Order == 1);
-				q.FirstQuestionId = q.Id;				var attempt = _context.Attemps
+				q.FirstQuestionId = firstQuestion?.Id ?? 0;
+				var attempt = _context.Attemps
                                 .SingleOrDefault(a => a.QuizzId == q.Id && a.AuthorId == user!.Id);
 				return q.AddStatus(attempt);
 			}));
@@ -81,13 +83,14 @@ public class QuizzesController : ControllerBase
 
 		var list = await _context.Quizzes
         	.Include(q => q.Database)
+			.Include(q => q.Questions)
         	.Where(q => q.IsTest && q.IsPublished)
         	.ToListAsync();
 
 		return _mapper.Map<List<QuizzDTO>>(
 			list.Select(q => {
 				var firstQuestion = q.Questions.FirstOrDefault(q => q.Order == 1);
-				q.FirstQuestionId = q.Id;
+				q.FirstQuestionId = firstQuestion?.Id ?? 0;
 				var attempt = _context.Attemps
                                 .SingleOrDefault(a => a.QuizzId == q.Id && a.AuthorId == user!.Id);
 				return q.AddStatus(attempt);

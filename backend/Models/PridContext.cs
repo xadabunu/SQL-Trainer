@@ -60,8 +60,6 @@ public class SeedData
     public void CreateUsers()
     {
         modelBuilder.Entity<Teacher>().HasData(
-			new Teacher { Id = 1, Pseudo = "tea", Password = TokenHelper.GetPasswordHash("tea"),
-							Email = "teacher@epfc.eu"},
             new Teacher { Id = 2, Pseudo = "ben", Password = TokenHelper.GetPasswordHash("ben"),
 							FirstName = "Benoît", LastName = "Penelle", Email = "ben@epfc.eu" },
             new Teacher { Id = 3, Pseudo = "bruno", Password = TokenHelper.GetPasswordHash("bruno"),
@@ -72,9 +70,7 @@ public class SeedData
             new Student { Id = 4, Pseudo = "bob", Password = TokenHelper.GetPasswordHash("bob"),
 							FirstName = "Bob", LastName = "Bob l'Eponge", Email = "bob@epfc.eu" },
             new Student { Id = 5, Pseudo = "caro", Password = TokenHelper.GetPasswordHash("caro"),
-							FirstName = "Caroline", LastName = "de Monaco", Email = "caro@epfc.eu" },
-			new Student { Id = 6, Pseudo = "student", Password = TokenHelper.GetPasswordHash("student"),
-							Email = "student@epfc.eu" }
+							FirstName = "Caroline", LastName = "de Monaco", Email = "caro@epfc.eu" }
         );
     }
 

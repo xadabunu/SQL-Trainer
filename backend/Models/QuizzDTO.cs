@@ -20,3 +20,12 @@ public class QuizzWithQuestionsDTO : QuizzDTO
 {
 	public virtual ICollection<Question> Questions { get; set; } = new HashSet<Question>();
 }
+
+public class QuizzForQuestionDTO
+{
+	public int Id { get; set; }
+	public string Name { get; set; } = null!;
+	public DatabaseDTO Database { get; set; } = null!;
+	public bool IsClosed { get; set; }
+	public bool IsTest { get; set; }
+}

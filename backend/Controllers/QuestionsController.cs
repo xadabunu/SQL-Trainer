@@ -27,31 +27,32 @@ public class QuestionsController : ControllerBase
     {
         var question = await _context.Questions
             .Include(q => q.Solutions)
+            .Include(q => q.Quizz)
+            .ThenInclude(q => q.Database)
             .SingleOrDefaultAsync(q => q.Id == id);
         if (question == null)
             return NotFound();
 
+        var quiz = question.Quizz;
         var dto = _mapper.Map<QuestionDTO>(question);
-
+        dto.Quiz = _mapper.Map<QuizzForQuestionDTO>(quiz);
         var temp = await _context.Questions
-            .Where(q => q.QuizzId == dto.QuizzId && q.Order == dto.Order - 1)
+            .Where(q => q.QuizzId == dto.Quiz.Id && q.Order == dto.Order - 1)
             .SingleOrDefaultAsync();
         dto.Previous = temp?.Id ?? 0;
 
         temp = await _context.Questions
-            .Where(q => q.QuizzId == dto.QuizzId && q.Order == dto.Order + 1)
+            .Where(q => q.QuizzId == dto.Quiz.Id && q.Order == dto.Order + 1)
             .SingleOrDefaultAsync();
         dto.Next = temp?.Id ?? 0;
 
         var user = _context.Users.SingleOrDefault(u => u.Pseudo == User.Identity!.Name);
         var answer = await _context.Answers
             .Include(a => a.Attempt)
-            .Where(a => a.QuestionId == id && a.Attempt.AuthorId == user.Id)
+            .Where(a => a.QuestionId == id && a.Attempt.AuthorId == user!.Id)
             .SingleOrDefaultAsync();
         
         dto.Answer = _mapper.Map<AnswerDTO>(answer);
-        var quiz = _context.Quizzes.Find(dto.QuizzId);
-        dto.QuizTitle = quiz!.Name;
         return dto;
     }
 

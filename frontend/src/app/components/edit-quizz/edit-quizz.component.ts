@@ -188,7 +188,6 @@ export class EditQuizzComponent implements AfterViewInit, OnInit {
 			solutions: [],
 			previous: 0,
 			next: 0,
-			quizTitle: this._quizz.name ?? ''
 		});
 		this.ctlQuestions.setErrors({ questionBody: true });
 	}

@@ -36,5 +36,8 @@ public class MappingProfile : Profile
 
 		CreateMap<Answer, AnswerDTO>();
 		CreateMap<AnswerDTO, Answer>();
+
+		CreateMap<QuizzForQuestionDTO, Quizz>();
+		CreateMap<Quizz, QuizzForQuestionDTO>();
 	}
 }

@@ -13,9 +13,11 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 	question!: Question;
 	header: string = '';
 	body: string = '';
-	label: string = 'Votre requête:';
-	sql: string = '';
+	label: string = '';
+	query: string = '';
 	displaySolutions: boolean = false;
+	canWrite: boolean = false;
+	solutionBtnLabel: string = 'Voir solutions';
 
 	constructor(
 		private questionService: QuestionService,
@@ -31,33 +33,30 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 
 	navigateToPrevious(): void {
 		this.router.navigateByUrl("/question/" + this.question.previous)
-			.then(() => {
-				this.refresh();
-			});
+			.then(() =>	this.refresh());
 	}
 
 	navigateToNext(): void {
 		this.router.navigateByUrl("/question/" + this.question.next)
-			.then(() => {
-				this.refresh();
-			});
+			.then(() =>	this.refresh());
 	}
 
 	refresh(): void {
 		this.route.params.subscribe(params => {
 			this.questionService.getQuestion(params['id']).subscribe(question => {
 				this.question = question;
-				this.header = question.quizTitle + ' - Exercice ' + question.order;
+				this.header = question.quiz?.name + ' - Exercice ' + question.order;
 				this.body = question.body ?? '';
+				this.canWrite = this.canEdit;
 				if (!question.answer) {
 					this.label = 'Votre requête: (pas encore répondu)';
-					this.sql = '';
-				}
-				else {
+					this.query = '';
+					this.displaySolutions = false;
+				} else {
 					this.label = 'Votre requête:';
-					this.sql = question.answer.sql;
+					this.query = question.answer.sql;
+					this.displaySolutions = true;
 				}
-				this.displaySolutions = false;
 			});
 		});
 	}
@@ -67,11 +66,20 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 	}
 
 	erase(): void {
-		this.sql = '';
+		this.query = '';
 	}
 
 	showSolutions(): void {
-		this.displaySolutions = true;
+		if (this.displaySolutions === true)
+		{
+			this.solutionBtnLabel = "Voir solutions";
+			this.canWrite = true;
+		}
+		else {
+			this.solutionBtnLabel = "Effacer solutions";
+			this.canWrite = false;
+		}
+		this.displaySolutions = !this.displaySolutions;
 	}
 
 	get isFirst(): boolean {
@@ -90,5 +98,24 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 		if (this.question !== undefined)
 			return this.question.answer?.sql !== undefined;
 		return false;
+	}
+
+	get canEdit(): boolean {
+		if (this.question !== undefined)
+			return !this.question.quiz!.isClosed &&
+				(!this.question.quiz!.isTest || this.question.answer === undefined);
+		return false;
+	}
+
+	get canSeeSolutions() {
+		if (this.question !== undefined)
+			return !this.question.quiz!.isTest || this.question.quiz!.isClosed;
+		return false;
+	}
+
+	get dbName(): string {
+		if (this.question!== undefined)
+			return this.question.quiz!.database!.name!;
+		return '';
 	}
 }

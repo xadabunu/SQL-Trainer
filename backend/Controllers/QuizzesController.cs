@@ -92,7 +92,13 @@ public class QuizzesController : ControllerBase
 				var firstQuestion = q.Questions.FirstOrDefault(q => q.Order == 1);
 				q.FirstQuestionId = firstQuestion?.Id ?? 0;
 				var attempt = _context.Attemps
-                                .SingleOrDefault(a => a.QuizzId == q.Id && a.AuthorId == user!.Id);
+					.Include(a => a.Answers)
+                    .SingleOrDefault(a => a.QuizzId == q.Id && a.AuthorId == user!.Id);
+				if (attempt != null) {
+					var points = attempt.Answers.Count(a => a.IsCorrect);
+					var total = q.Questions.Count;
+					q.Evaluation = "" + points * 10 / total + "/10";
+				}
 				return q.AddStatus(attempt);
 			}));
 	}

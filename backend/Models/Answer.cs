@@ -10,7 +10,7 @@ public class Answer
 	public DateTimeOffset Timestamp { get; set; }
 	public bool IsCorrect { get; set; }
 
-	public Attempt Attempt { get; set;} = null!;
+	public Attempt Attempt { get; set; } = null!;
 	public int AttemptId { get; set; }
 	public Question Question { get; } = null!;
 	public int QuestionId { get; set; }

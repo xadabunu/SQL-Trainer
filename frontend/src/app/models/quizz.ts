@@ -18,6 +18,7 @@ export class Quizz {
 	status?: string;
 	editable?: boolean;
 	firstQuestionId: number = 0;
+	evaluation?: string;
 
 	questions: Question[] = [];
 
@@ -25,8 +26,8 @@ export class Quizz {
 		return `${this.name} - (${this.description ? this.description : 'no description'})`;
 	}
 
-	get evaluation(): string {
-		return "N/A";
+	get evaluationAsString(): string {
+		return this.evaluation ?? "N/A";
 	}
 
 	get getTestOrTraining(): string {

@@ -14,6 +14,7 @@ public class QuizzDTO
 	public string? Status { get; set; } = null;
 	public bool Editable { get; set; }
 	public int FirstQuestionId { get; set; }
+	public string? Evaluation { get; set; }
 }
 
 public class QuizzWithQuestionsDTO : QuizzDTO

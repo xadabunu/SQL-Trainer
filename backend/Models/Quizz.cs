@@ -26,6 +26,8 @@ public class Quizz
 	public bool Editable { get; set; } = true;
 	[NotMapped]
 	public int FirstQuestionId { get; set; }
+	[NotMapped]
+	public string? Evaluation { get; set; }
 
 	public Quizz AddStatus(Attempt? attempt) {
 

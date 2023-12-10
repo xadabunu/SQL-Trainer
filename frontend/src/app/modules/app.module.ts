@@ -41,7 +41,7 @@ import { QuestionComponent } from '../components/question/question.component';
     EditQuestionComponent,
     CodeEditorComponent,
     TestCodeEditorComponent,
-	QuestionComponent
+	  QuestionComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

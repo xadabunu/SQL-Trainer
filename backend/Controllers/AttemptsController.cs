@@ -21,7 +21,7 @@ public class AttemptsController : ControllerBase
     }
 
     [Authorized(Role.Student)]
-    [HttpPut]
+    [HttpPost]
     public async Task<ActionResult> CreateAttempt(AttemptDTO dto)
 	{
         Console.WriteLine("in controller");

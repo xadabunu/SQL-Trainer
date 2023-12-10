@@ -45,16 +45,6 @@ export class QuizzService {
 			catchError(err => of(null)));
 	}
 
-	createAttempt(a: Attempt) {
-		return this.http
-			.post<any>(`${this.baseUrl}api/attempts`, a)
-			.pipe(map(res => true),
-				catchError(err => {
-					console.log(err);
-					return of(false);
-				}));
-	}
-
 	update(q: Quizz): Observable<boolean> {
 		return this.http.put<Quizz>(`${this.baseUrl}api/quizzes`, q).pipe(
 			map(res => true),
@@ -63,5 +53,15 @@ export class QuizzService {
 				return of(false);
 			})
 		)
+	}
+
+	createAttempt(a: Attempt): Observable<boolean> {
+		console.log("in service", a)
+		return this.http.post<Attempt>(`${this.baseUrl}api/attempts`, a)
+			.pipe(map(res => true),
+				catchError(err => {
+					console.log(err);
+					return of(false);
+				}));
 	}
 }

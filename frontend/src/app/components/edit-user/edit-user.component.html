@@ -13,6 +13,10 @@
             </mat-error>
         </mat-form-field>
         <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput [formControl]="ctlEmail" required>
+        </mat-form-field>
+        <mat-form-field>
             <mat-label>{{'Password ' + (isNew ? '' : ' (leave blank if no change)')}}</mat-label>
             <input matInput [formControl]="ctlPassword" type="password" [required]="isNew" autocomplete="new-password">
             <mat-error class="field-error" *ngIf="ctlPassword.hasError('required')">Required</mat-error>

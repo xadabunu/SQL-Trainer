@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "prid-tuto": {
+    "prid-2324": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -73,10 +73,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "prid-tuto:build:production"
+              "browserTarget": "prid-2324:build:production"
             },
             "development": {
-              "browserTarget": "prid-tuto:build:development",
+              "browserTarget": "prid-2324:build:development",
               "proxyConfig": "proxy.conf.js"
             }
           },
@@ -85,7 +85,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "prid-tuto:build"
+            "browserTarget": "prid-2324:build"
           }
         },
         "test": {

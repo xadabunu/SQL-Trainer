@@ -6,7 +6,6 @@ import { AppRoutes } from '../routing/app.routing';
 
 import { AppComponent } from '../components/app/app.component';
 import { NavMenuComponent } from '../components/nav-menu/nav-menu.component';
-import { CounterComponent } from '../components/counter/counter.component';
 import { UserListComponent } from '../components/userlist/userlist.component';
 import { RestrictedComponent } from '../components/restricted/restricted.component';
 import { UnknownComponent } from '../components/unknown/unknown.component';
@@ -30,7 +29,6 @@ import { QuestionComponent } from '../components/question/question.component';
   declarations: [
     AppComponent,
     NavMenuComponent,
-    CounterComponent,
     UserListComponent,
     LoginComponent,
     UnknownComponent,

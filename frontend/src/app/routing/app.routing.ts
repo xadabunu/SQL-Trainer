@@ -1,17 +1,15 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import { CounterComponent } from '../components/counter/counter.component';
 import { UserListComponent } from '../components/userlist/userlist.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'quizzes', pathMatch: 'full' },
-  { path: 'counter', component: CounterComponent },
-  {
-    path: 'users',
-    component: UserListComponent,
-    canActivate: [AuthGuard],
-    data: { roles: [Role.Teacher] }
-  },
+  // {
+  //   path: 'users',
+  //   component: UserListComponent,
+  //   canActivate: [AuthGuard],
+  //   data: { roles: [Role.Teacher] }
+  // },
   { path: 'login', component: LoginComponent },
   {
     path: 'quizzes',

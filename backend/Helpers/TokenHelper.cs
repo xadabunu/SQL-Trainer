@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.IdentityModel.Tokens;
 using prid_2324_a02.Models;
 
-namespace prid_tuto.Helpers;
+namespace prid_2324_a02.Helpers;
 
 public class TokenHelper
 {

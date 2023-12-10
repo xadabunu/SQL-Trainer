@@ -125,7 +125,8 @@ export class QuizListComponent {
 	navigateToAttempt(quiz: Quizz, create: boolean): void {
 		if (create) {
 			const attempt: Attempt = {
-					quizId: quiz.id, start: new Date()
+					quizId: quiz.id,
+					start: new Date()
 			};
 			this.quizService.createAttempt(attempt);
 		}

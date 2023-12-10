@@ -22,6 +22,13 @@ export class UserService {
         );
     }
 
+    getByEmail(email: string) {
+        return this.http.get<User>(`${this.baseUrl}api/users/byEmail/${email}`).pipe(
+            map(u => plainToInstance(User, u)),
+            catchError(err => of(null))
+        );
+    }
+
     /**
      * !put et post renvoie BadRequest sans entrer dans la méthode du Controller
      */

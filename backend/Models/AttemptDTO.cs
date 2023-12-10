@@ -8,4 +8,5 @@ public class AttemptDTO
 
 	public UserDTO Author { get; } = null!;
 	public QuizzDTO Quizz { get; } = null!;
+	public int QuizId { get; set; }
 }

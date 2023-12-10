@@ -1,6 +1,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
-using prid_tuto.Helpers;
+using prid_2324_a02.Helpers;
 using SQLitePCL;
 
 namespace prid_2324_a02.Models;

@@ -47,7 +47,7 @@ export class QuizzService {
 
 	createAttempt(a: Attempt) {
 		return this.http
-			.post<any>(`${this.baseUrl}api/quizzes/newAttempt}`, a)
+			.post<any>(`${this.baseUrl}api/attempts`, a)
 			.pipe(map(res => true),
 				catchError(err => {
 					console.log(err);

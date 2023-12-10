@@ -8,7 +8,6 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using prid_2324_a02.Helpers;
-using prid_tuto.Helpers;
 
 namespace prid_2324.Controllers;
 
@@ -60,6 +59,10 @@ public class UsersController : ControllerBase
 		return _mapper.Map<UserDTO>(user);
 	}
 
+	/**
+	 * ! erreur cannot create instance of User at AutoMapper...,
+	 */
+	[AllowAnonymous]
 	[HttpPost]
 	public async Task<ActionResult<UserDTO>> PostUser(UserWithPasswordDTO user)
 	{
@@ -161,5 +164,4 @@ public class UsersController : ControllerBase
 
 		return user;
 	}
-
 }

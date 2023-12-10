@@ -18,6 +18,7 @@ import { differenceInYears, sub } from 'date-fns';
 export class EditUserComponent {
     public frm!: FormGroup;
     public ctlPseudo!: FormControl;
+    public ctlEmail!: FormControl;
     public ctlPassword!: FormControl;
     public ctlBirthDate!: FormControl;
     public ctlRole!: FormControl;
@@ -34,11 +35,16 @@ export class EditUserComponent {
             Validators.minLength(3),
             this.forbiddenValue('abc')
         ], [this.pseudoUsed()]);
+        this.ctlEmail = this.fb.control('', [
+            Validators.required,
+            Validators.email
+        ], [ this.emailUsed() ]);
         this.ctlPassword = this.fb.control('', data.isNew ? [Validators.required, Validators.minLength(3)] : []);
         this.ctlBirthDate = this.fb.control(null, [this.validateBirthDate()]);
         this.ctlRole = this.fb.control(Role.Student, []);
         this.frm = this.fb.group({
             pseudo: this.ctlPseudo,
+            email: this.ctlEmail,
             password: this.ctlPassword,
             birthDate: this.ctlBirthDate,
             role: this.ctlRole
@@ -83,6 +89,25 @@ export class EditUserComponent {
                         resolve(null);
                     } else {
                         this.userService.getById(pseudo).subscribe(user => {
+                            resolve(user ? { pseudoUsed: true } : null);
+                        });
+                    }
+                }, 300);
+            });
+        };
+    }
+
+    emailUsed(): any {
+        let timeout: NodeJS.Timeout;
+        return (ctl: FormControl) => {
+            clearTimeout(timeout);
+            const email = ctl.value;
+            return new Promise(resolve => {
+                timeout = setTimeout(() => {
+                    if (ctl.pristine) {
+                        resolve(null);
+                    } else {
+                        this.userService.getByEmail(email).subscribe(user => {
                             resolve(user ? { pseudoUsed: true } : null);
                         });
                     }

@@ -13,6 +13,8 @@
 
 <quizlist [filter]="filter" *ngIf="isTeacher"></quizlist>
 
-<quizlist [isTest]=false [filter]="filter" *ngIf="!isTeacher"></quizlist>
-<br *ngIf="!isTeacher">
-<quizlist [isTest]=true [filter]="filter" *ngIf="!isTeacher"></quizlist>
+<div *ngIf="!isTeacher">
+	<quizlist [isTest]=false [filter]="filter"></quizlist>
+	<br>
+	<quizlist [isTest]=true [filter]="filter"></quizlist>
+</div>

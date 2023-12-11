@@ -39,5 +39,8 @@ public class MappingProfile : Profile
 
 		CreateMap<QuizzForQuestionDTO, Quizz>();
 		CreateMap<Quizz, QuizzForQuestionDTO>();
+
+		CreateMap<Attempt, AttemptDTO>();
+		CreateMap<AttemptDTO, Attempt>();
 	}
 }

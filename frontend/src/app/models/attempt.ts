@@ -8,6 +8,6 @@ export class Attempt {
 	start?: Date;
 	@Type(() => Date)
 	finish?: Date;
-	quiz?: Quizz;
+	quizz?: Quizz;
 	author?: User;
 }

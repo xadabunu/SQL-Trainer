@@ -20,12 +20,12 @@ public class AttemptsController : ControllerBase
         _mapper = mapper;
     }
 
-    [Authorized(Role.Student)]
+    // [Authorized(Role.Student)]
+	[AllowAnonymous]
     [HttpPost]
     public async Task<ActionResult> CreateAttempt(AttemptDTO dto)
 	{
-        Console.WriteLine("in controller");
-		var quiz = await _context.Quizzes.FindAsync(dto.QuizId);
+		var quiz = await _context.Quizzes.FindAsync(dto.Quizz.Id);
 
 		if (quiz == null)
 			return NotFound();
@@ -37,7 +37,6 @@ public class AttemptsController : ControllerBase
 		_context.Attemps.Add(attempt);
 
 		await _context.SaveChangesAsync();
-		Console.WriteLine("done");
 		return NoContent();
 	}
 }

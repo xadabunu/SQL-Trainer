@@ -126,12 +126,12 @@ export class QuizListComponent {
 		if (create) {
 			const attempt: Attempt = {
 					id: 0,
-					quiz: quiz,
+					quizz: quiz,
 					author: this.authService.currentUser,
 					start: new Date(),
 					finish: undefined
 			};
-			this.quizService.createAttempt(attempt);
+			this.quizService.createAttempt(attempt).subscribe();
 		}
 		this.router.navigateByUrl('question/' + quiz.firstQuestionId);
 	}

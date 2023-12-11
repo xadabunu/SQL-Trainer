@@ -133,6 +133,6 @@ export class QuizListComponent {
 			};
 			this.quizService.createAttempt(attempt);
 		}
-		//this.router.navigateByUrl('question/' + quiz.firstQuestionId);
+		this.router.navigateByUrl('question/' + quiz.firstQuestionId);
 	}
 }

@@ -61,8 +61,8 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 		});
 	}
 
-	send(): void {
-
+	send(): [ boolean, string ] {
+		return [ true, ''];
 	}
 
 	erase(): void {
@@ -76,7 +76,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 			this.canWrite = true;
 		}
 		else {
-			this.solutionBtnLabel = "Effacer solutions";
+			this.solutionBtnLabel = "Cacher solutions";
 			this.canWrite = false;
 		}
 		this.displaySolutions = !this.displaySolutions;

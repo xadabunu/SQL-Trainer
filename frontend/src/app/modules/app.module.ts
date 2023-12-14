@@ -17,14 +17,14 @@ import { EditUserComponent } from '../components/edit-user/edit-user.component';
 import { SharedModule } from './shared.module';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { fr } from 'date-fns/locale';
-import { QuizzListPageComponent } from '../components/quizzlist/quizzlist-page.component';
-import { QuizListComponent } from '../components/quizzlist/quizlist.component';
-import { EditQuizzComponent } from '../components/edit-quizz/edit-quizz.component';
+import { QuizListPageComponent } from '../components/quizlist/quizlist-page.component';
+import { EditQuizComponent } from '../components/edit-quiz/edit-quiz.component';
 import { EditQuestionComponent } from '../components/edit-question/edit-question.component';
 import { TestCodeEditorComponent } from '../components/test-code-editor/test-code-editor.component';
 import { CodeEditorComponent } from '../components/code-editor/code-editor.component';
 import { QuestionComponent } from '../components/question/question.component';
 import { QueryResultComponent } from '../components/question/query-result.component';
+import { QuizListComponent } from '../components/quizlist/quizlist.component';
 
 @NgModule({
   declarations: [
@@ -36,9 +36,9 @@ import { QueryResultComponent } from '../components/question/query-result.compon
     RestrictedComponent,
     SetFocusDirective,
     EditUserComponent,
-    QuizzListPageComponent,
+    QuizListPageComponent,
     QuizListComponent,
-    EditQuizzComponent,
+    EditQuizComponent,
     EditQuestionComponent,
     CodeEditorComponent,
     TestCodeEditorComponent,

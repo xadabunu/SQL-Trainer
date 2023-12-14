@@ -25,7 +25,7 @@ public class AttemptsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> CreateAttempt(AttemptDTO dto)
 	{
-		var quiz = await _context.Quizzes.FindAsync(dto.Quizz.Id);
+		var quiz = await _context.Quizzes.FindAsync(dto.Quiz.Id);
 
 		if (quiz == null)
 			return NotFound();

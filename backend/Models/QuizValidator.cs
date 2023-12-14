@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace prid_2324_a02.Models;
 
-public partial class QuizValidator : AbstractValidator<Quizz>
+public partial class QuizValidator : AbstractValidator<Quiz>
 {
     private readonly PridContext _context;
 
@@ -17,13 +17,13 @@ public partial class QuizValidator : AbstractValidator<Quizz>
             .DependentRules(() => {
                 RuleFor(q => new { q.Name, q.Id })
                 .MustAsync((q, token) => BeUniqueName(q.Name, q.Id, token))
-                .OverridePropertyName(nameof(Quizz.Name))
+                .OverridePropertyName(nameof(Quiz.Name))
                 .WithMessage("'{PropertyName}' must be unique.");
             });
         
         RuleFor(q => q.Questions)
             .Must(questions => questions != null && questions.Any())
-            .WithMessage("Quizz must have at least 1 question.");
+            .WithMessage("Quiz must have at least 1 question.");
         
         RuleForEach(q => q.Questions).SetValidator(new QuestionValidator(context));
     }

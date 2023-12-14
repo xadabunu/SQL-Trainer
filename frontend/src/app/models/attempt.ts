@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { Quizz } from "./quizz";
+import { Quiz } from "./quiz";
 import { User } from "./user";
 
 export class Attempt {
@@ -8,6 +8,6 @@ export class Attempt {
 	start?: Date;
 	@Type(() => Date)
 	finish?: Date;
-	quizz?: Quizz;
+	quiz?: Quiz;
 	author?: User;
 }

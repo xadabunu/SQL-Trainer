@@ -27,22 +27,22 @@ public class QuestionsController : ControllerBase
     {
         var question = await _context.Questions
             .Include(q => q.Solutions)
-            .Include(q => q.Quizz)
+            .Include(q => q.Quiz)
             .ThenInclude(q => q.Database)
             .SingleOrDefaultAsync(q => q.Id == id);
         if (question == null)
             return NotFound();
 
-        var quiz = question.Quizz;
+        var quiz = question.Quiz;
         var dto = _mapper.Map<QuestionDTO>(question);
-        dto.Quiz = _mapper.Map<QuizzForQuestionDTO>(quiz);
+        dto.Quiz = _mapper.Map<QuizForQuestionDTO>(quiz);
         var temp = await _context.Questions
-            .Where(q => q.QuizzId == dto.Quiz.Id && q.Order == dto.Order - 1)
+            .Where(q => q.QuizId == dto.Quiz.Id && q.Order == dto.Order - 1)
             .SingleOrDefaultAsync();
         dto.Previous = temp?.Id ?? 0;
 
         temp = await _context.Questions
-            .Where(q => q.QuizzId == dto.Quiz.Id && q.Order == dto.Order + 1)
+            .Where(q => q.QuizId == dto.Quiz.Id && q.Order == dto.Order + 1)
             .SingleOrDefaultAsync();
         dto.Next = temp?.Id ?? 0;
 

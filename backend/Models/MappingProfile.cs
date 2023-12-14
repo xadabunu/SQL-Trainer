@@ -19,14 +19,14 @@ public class MappingProfile : Profile
 		CreateMap<UserLoginDTO, User>();
 		CreateMap<User, UserLoginDTO>();
 
-		CreateMap<Quizz, QuizzDTO>();
-		CreateMap<QuizzDTO, Quizz>();
+		CreateMap<Quiz, QuizDTO>();
+		CreateMap<QuizDTO, Quiz>();
 
 		CreateMap<Question, QuestionDTO>();
 		CreateMap<QuestionDTO, Question>();
 
-		CreateMap<Quizz, QuizzWithQuestionsDTO>();
-		CreateMap<QuizzWithQuestionsDTO, Quizz>();
+		CreateMap<Quiz, QuizWithQuestionsDTO>();
+		CreateMap<QuizWithQuestionsDTO, Quiz>();
 
 		CreateMap<Solution, SolutionDTO>();
 		CreateMap<SolutionDTO, Solution>();
@@ -37,8 +37,8 @@ public class MappingProfile : Profile
 		CreateMap<Answer, AnswerDTO>();
 		CreateMap<AnswerDTO, Answer>();
 
-		CreateMap<QuizzForQuestionDTO, Quizz>();
-		CreateMap<Quizz, QuizzForQuestionDTO>();
+		CreateMap<QuizForQuestionDTO, Quiz>();
+		CreateMap<Quiz, QuizForQuestionDTO>();
 
 		CreateMap<Attempt, AttemptDTO>();
 		CreateMap<AttemptDTO, Attempt>();

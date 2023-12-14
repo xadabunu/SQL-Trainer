@@ -9,5 +9,5 @@ public class Database
 	public string Name { get; set; } = null!;
 	public string? Description { get; set; }
 
-	public virtual ICollection<Quizz> Quizzes { get; set; } = new HashSet<Quizz>();
+	public virtual ICollection<Quiz> Quizzes { get; set; } = new HashSet<Quiz>();
 }

@@ -23,28 +23,28 @@ public class QuizzesController : ControllerBase
 
 	[Authorized(Role.Student, Role.Teacher)]
 	[HttpGet("{id:int}")]
-	public async Task<ActionResult<QuizzDTO>> GetOne(int id)
+	public async Task<ActionResult<QuizDTO>> GetOne(int id)
 	{
-		var quizz = await _context.Quizzes
+		var quiz = await _context.Quizzes
 		.Include(q => q.Database)
 		// .Include(q => q.Questions).ThenInclude(q => q.Solutions)
 		// .AsNoTracking()
 		.SingleOrDefaultAsync(q => q.Id == id);
-		if (quizz == null)
+		if (quiz == null)
 			return NotFound();
-		quizz.Editable = !await _context.Attemps.AnyAsync(a => a.QuizzId == quizz.Id);
-		return _mapper.Map<QuizzDTO>(quizz);
+		quiz.Editable = !await _context.Attemps.AnyAsync(a => a.QuizId == quiz.Id);
+		return _mapper.Map<QuizDTO>(quiz);
 	}
 
 	[Authorized(Role.Teacher)]
 	[HttpGet("getAll")]
-	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetAll()
+	public async Task<ActionResult<IEnumerable<QuizDTO>>> GetAll()
 	{
 		var list = await _context.Quizzes
 			.Include(q => q.Database)
 			.ToListAsync();
 
-		return _mapper.Map<List<QuizzDTO>>(
+		return _mapper.Map<List<QuizDTO>>(
 			list.Select(q => {
 				var now = DateTime.Now;
 				q.Status = !q.IsPublished ? "PAS PUBLIE" : ((q.IsTest && now > q.Finish!.Value) ? "CLOTURE" : "PUBLIE");
@@ -55,7 +55,7 @@ public class QuizzesController : ControllerBase
 
 	[Authorized(Role.Student, Role.Teacher)]
 	[HttpGet("getTrainings")]
-	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetTrainings()
+	public async Task<ActionResult<IEnumerable<QuizDTO>>> GetTrainings()
 	{
 		var user = _context.Users.SingleOrDefault(u => u.Pseudo == User.Identity!.Name);
 
@@ -65,19 +65,19 @@ public class QuizzesController : ControllerBase
         	.Where(q => !q.IsTest && q.IsPublished)
         	.ToListAsync();
 
-		return _mapper.Map<List<QuizzDTO>>(
+		return _mapper.Map<List<QuizDTO>>(
 			list.Select(q => {
 				var firstQuestion = q.Questions.FirstOrDefault(q => q.Order == 1);
 				q.FirstQuestionId = firstQuestion?.Id ?? 0;
 				var attempt = _context.Attemps
-                                .SingleOrDefault(a => a.QuizzId == q.Id && a.AuthorId == user!.Id);
+                                .SingleOrDefault(a => a.QuizId == q.Id && a.AuthorId == user!.Id);
 				return q.AddStatus(attempt);
 			}));
 	}
 
 	[Authorized(Role.Student, Role.Teacher)]
 	[HttpGet("getTests")]
-	public async Task<ActionResult<IEnumerable<QuizzDTO>>> GetTests()
+	public async Task<ActionResult<IEnumerable<QuizDTO>>> GetTests()
 	{
 		var user = _context.Users.SingleOrDefault(u => u.Pseudo == User.Identity!.Name);
 
@@ -87,13 +87,13 @@ public class QuizzesController : ControllerBase
         	.Where(q => q.IsTest && q.IsPublished)
         	.ToListAsync();
 
-		return _mapper.Map<List<QuizzDTO>>(
+		return _mapper.Map<List<QuizDTO>>(
 			list.Select(q => {
 				var firstQuestion = q.Questions.FirstOrDefault(q => q.Order == 1);
 				q.FirstQuestionId = firstQuestion?.Id ?? 0;
 				var attempt = _context.Attemps
 					.Include(a => a.Answers)
-                    .SingleOrDefault(a => a.QuizzId == q.Id && a.AuthorId == user!.Id);
+                    .SingleOrDefault(a => a.QuizId == q.Id && a.AuthorId == user!.Id);
 				if (attempt != null) {
 					var points = attempt.Answers.Count(a => a.IsCorrect);
 					var total = q.Questions.Count;
@@ -111,19 +111,19 @@ public class QuizzesController : ControllerBase
 			await _context.Questions
 				.Include(q => q.Solutions)
 				.OrderBy(q =>q .Order)
-				.Where(q => q.QuizzId == quizId).ToListAsync()
+				.Where(q => q.QuizId == quizId).ToListAsync()
 		);
 	}
 
 	[Authorized(Role.Teacher)]
 	[HttpGet("byName/{name}")]
-	public async Task<ActionResult<QuizzDTO>> ByName(string name)
+	public async Task<ActionResult<QuizDTO>> ByName(string name)
 	{
-		var quizz = await _context.Quizzes
+		var quiz = await _context.Quizzes
 		.SingleOrDefaultAsync(q => q.Name == name);
-		// if (quizz == null)
+		// if (quiz == null)
 		// 	return NotFound();
-		return _mapper.Map<QuizzDTO>(quizz);
+		return _mapper.Map<QuizDTO>(quiz);
 	}
 
 	/**
@@ -131,15 +131,15 @@ public class QuizzesController : ControllerBase
 	 */
 	[Authorized(Role.Teacher)]
 	[HttpPut]
-	public async Task<IActionResult> PutQuiz(QuizzWithQuestionsDTO dto)
+	public async Task<IActionResult> PutQuiz(QuizWithQuestionsDTO dto)
 	{
-		var quizz = await _context.Quizzes.FindAsync(dto.Id);
+		var quiz = await _context.Quizzes.FindAsync(dto.Id);
 
-		if (quizz == null) return NotFound();
+		if (quiz == null) return NotFound();
 
-		_mapper.Map<QuizzWithQuestionsDTO, Quizz>(dto, quizz);
+		_mapper.Map<QuizWithQuestionsDTO, Quiz>(dto, quiz);
 
-		var result = await new QuizValidator(_context).ValidateAsync(quizz);
+		var result = await new QuizValidator(_context).ValidateAsync(quiz);
 		if (!result.IsValid)
 			return BadRequest(result);
 		

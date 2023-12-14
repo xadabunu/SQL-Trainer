@@ -13,7 +13,7 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   {
     path: 'quizzes',
-    component: QuizzListPageComponent,
+    component: QuizListPageComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Student, Role.Teacher]}
   },
@@ -25,8 +25,8 @@ const appRoutes: Routes = [
   },
   // { path: 'signup', component: SignUpComponent },  
   {
-    path: 'editQuizz/:id',
-    component: EditQuizzComponent,
+    path: 'editQuiz/:id',
+    component: EditQuizComponent,
     canActivate: [AuthGuard],
     data: { roles: [Role.Teacher]}
   },
@@ -40,10 +40,10 @@ import { LoginComponent } from '../components/login/login.component';
 import { UnknownComponent } from '../components/unknown/unknown.component';
 import { AuthGuard } from '../services/auth.guard';
 import { Role } from '../models/user';
-import { QuizzListPageComponent } from '../components/quizzlist/quizzlist-page.component';
-import { EditQuizzComponent } from '../components/edit-quizz/edit-quizz.component';
+import { EditQuizComponent } from '../components/edit-quiz/edit-quiz.component';
 import { TestCodeEditorComponent } from '../components/test-code-editor/test-code-editor.component';
 import { QuestionComponent } from '../components/question/question.component';
+import { QuizListPageComponent } from '../components/quizlist/quizlist-page.component';
 // import { SignUpComponent } from '../components/signup/signup.component';
 
 export const AppRoutes = RouterModule.forRoot(appRoutes);

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace prid_2324_a02.Models;
 
-public class Quizz
+public class Quiz
 {
 	[Key]
 	public int Id { get; set; }
@@ -29,7 +29,7 @@ public class Quizz
 	[NotMapped]
 	public string? Evaluation { get; set; }
 
-	public Quizz AddStatus(Attempt? attempt) {
+	public Quiz AddStatus(Attempt? attempt) {
 
 		if (IsTest) {
 			var today = DateTime.Now;

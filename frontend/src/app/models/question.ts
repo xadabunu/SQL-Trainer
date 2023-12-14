@@ -1,12 +1,12 @@
 import { Answer } from "./answer";
-import { Quizz } from "./quizz";
+import { Quiz } from "./quiz";
 import { Solution } from "./solution";
 
 export class Question {
 	id?: number;
 	order?: number;
 	body?: string;
-	quiz?: Quizz;
+	quiz?: Quiz;
 
 	solutions: Solution[] = [];
 

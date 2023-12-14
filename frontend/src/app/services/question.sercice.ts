@@ -3,6 +3,13 @@ import { Inject, Injectable } from "@angular/core";
 import { Question } from "../models/question";
 import { plainToInstance } from "class-transformer";
 import { map } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { QueryResult } from "../models/queryResult";
+
+export class ForQuery {
+    dbName: string = '';
+    query: string = '';
+}
 
 @Injectable({ providedIn: 'root' })
 export class QuestionService {
@@ -12,5 +19,11 @@ export class QuestionService {
     getQuestion(id: number) {
         return this.http.get<Question>(`${this.baseUrl}api/questions/${id}`)
             .pipe(map(res => plainToInstance(Question, res)));
+    }
+
+    executeQuery(dbName: string, query: string): Observable<any> {
+        var temp: ForQuery = { dbName: dbName, query: query }
+        return this.http.post(`${this.baseUrl}api/databases/executeQuery`, temp)
+            .pipe(map(res => plainToInstance(QueryResult, res)));
     }
 }

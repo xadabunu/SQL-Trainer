@@ -11,8 +11,8 @@ public class Attempt
 
 	public Student Author { get; } = null!;
 	public int AuthorId { get; set; }
-	public Quizz Quizz { get; } = null!;
-	public int QuizzId { get; set; }
+	public Quiz Quiz { get; } = null!;
+	public int QuizId { get; set; }
 
 	public virtual ICollection<Answer> Answers { get; set; } = new HashSet<Answer>();
 }

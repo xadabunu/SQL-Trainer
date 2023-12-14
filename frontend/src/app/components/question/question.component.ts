@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { QueryResult } from "src/app/models/queryResult";
 import { Question } from "src/app/models/question";
 import { QuestionService } from "src/app/services/question.sercice";
 
@@ -18,6 +19,8 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 	displaySolutions: boolean = false;
 	canWrite: boolean = false;
 	solutionBtnLabel: string = 'Voir solutions';
+
+	queryResult?: QueryResult;
 
 	constructor(
 		private questionService: QuestionService,
@@ -56,13 +59,16 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 					this.label = 'Votre requête:';
 					this.query = question.answer.sql;
 					this.displaySolutions = true;
+					this.canWrite = false;
+					this.solutionBtnLabel = "Cacher solutions";
 				}
 			});
 		});
 	}
 
-	send(): [ boolean, string ] {
-		return [ true, ''];
+	send(): void {
+		this.questionService.executeQuery(this.question.quiz!.database!.name!, this.query)
+			.subscribe(qr => this.queryResult = qr);
 	}
 
 	erase(): void {
@@ -70,16 +76,14 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 	}
 
 	showSolutions(): void {
-		if (this.displaySolutions === true)
-		{
+		this.displaySolutions = !this.displaySolutions;
+		if (this.displaySolutions === true) {
+			this.solutionBtnLabel = "Cacher solutions";
+			this.canWrite = false;
+		} else {
 			this.solutionBtnLabel = "Voir solutions";
 			this.canWrite = true;
 		}
-		else {
-			this.solutionBtnLabel = "Cacher solutions";
-			this.canWrite = false;
-		}
-		this.displaySolutions = !this.displaySolutions;
 	}
 
 	get isFirst(): boolean {

@@ -1,4 +1,10 @@
-{{ timestamp }}
-<table>
-    <tr *ngFor="let tr of trs">{{tr}}</tr>
+{{ timestamp ?? 'void'}}
+{{ resultLabel }}
+<table mat-table [dataSource]="qr.data" *ngIf="qr !== undefined">
+    <ng-container *ngFor="let column of qr.columns" matColumnDef="{{ column }}">
+        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+        <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="qr.columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: qr.columns;"></tr>
 </table>

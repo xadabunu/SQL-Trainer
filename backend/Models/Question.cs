@@ -9,8 +9,8 @@ public class Question
 	public int Order { get; set; }
 	public string Body { get; set; } = null!;
 
-	public Quizz Quizz { get; set; } = null!;
-	public int QuizzId { get; set; }
+	public Quiz Quiz { get; set; } = null!;
+	public int QuizId { get; set; }
 
 	public virtual ICollection<Solution> Solutions { get; set; } = new HashSet<Solution>();
 	public virtual ICollection<Answer> Answers { get; set; } = new HashSet<Answer>();

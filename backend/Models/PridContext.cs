@@ -21,7 +21,7 @@ public class PridContext : DbContext
 
 		modelBuilder.Entity<Answer>().HasIndex(a => a.Id).IsUnique();
 		modelBuilder.Entity<Question>().HasIndex(q => q.Id).IsUnique();
-		modelBuilder.Entity<Quizz>().HasIndex(q => q.Id).IsUnique();
+		modelBuilder.Entity<Quiz>().HasIndex(q => q.Id).IsUnique();
 		modelBuilder.Entity<Database>().HasIndex(d => d.Id).IsUnique();
 
 		_ = new SeedData(modelBuilder);
@@ -32,7 +32,7 @@ public class PridContext : DbContext
 	public DbSet<Attempt> Attemps => Set<Attempt>();
 	public DbSet<Database> Databases => Set<Database>();
 	public DbSet<Question> Questions => Set<Question>();
-	public DbSet<Quizz> Quizzes => Set<Quizz>();
+	public DbSet<Quiz> Quizzes => Set<Quiz>();
 	public DbSet<Solution> Solutions => Set<Solution>();
 }
 
@@ -84,11 +84,11 @@ public class SeedData
 
     public void CreateQuiz()
     {
-        modelBuilder.Entity<Quizz>().HasData(
-            new Quizz { Id = 1, Name = "TP1", DatabaseId = 1, IsPublished = true },
-            new Quizz { Id = 2, Name = "TP2", DatabaseId = 1, IsPublished = true },
-            new Quizz { Id = 3, Name = "TP4", DatabaseId = 2, IsPublished = true },
-            new Quizz {
+        modelBuilder.Entity<Quiz>().HasData(
+            new Quiz { Id = 1, Name = "TP1", DatabaseId = 1, IsPublished = true },
+            new Quiz { Id = 2, Name = "TP2", DatabaseId = 1, IsPublished = true },
+            new Quiz { Id = 3, Name = "TP4", DatabaseId = 2, IsPublished = true },
+            new Quiz {
                 Id = 4,
                 Name = "TEST2",
                 DatabaseId = 1,
@@ -97,7 +97,7 @@ public class SeedData
                 Start = DateTimeOffset.Now.AddDays(-1),
                 Finish = DateTimeOffset.Now.AddDays(1)
             },
-            new Quizz {
+            new Quiz {
                 Id = 5,
                 Name = "TEST1",
                 IsPublished = true,
@@ -106,7 +106,7 @@ public class SeedData
                 Start = DateTimeOffset.Now.AddDays(-2),
                 Finish = DateTimeOffset.Now.AddDays(-1)
             },
-            new Quizz {
+            new Quiz {
                 Id = 6,
                 Name = "TEST3",
                 IsPublished = true,
@@ -120,12 +120,12 @@ public class SeedData
 
     public void CreateQuestionsQuiz1() {
         modelBuilder.Entity<Question>().HasData(
-            new Question { Id = 1, QuizzId = 1, Order = 1, Body = "On veut afficher le contenu de la table des fournisseurs." },
-            new Question { Id = 2, QuizzId = 1, Order = 2, Body = "On veut le nom et la ville de tous les fournisseurs avec comme intitulé NOM et VILLE." },
-            new Question { Id = 3, QuizzId = 1, Order = 3, Body = "On veut le nom des fournisseurs dont la ville est London ou Paris." },
-            new Question { Id = 4, QuizzId = 1, Order = 4, Body = "On veut le nom des fournisseurs dont le statut vaut strictement moins de 25 et qui sont de Paris." },
-            new Question { Id = 5, QuizzId = 1, Order = 5, Body = "On veut obtenir le nom des fournisseurs dont le statut n'est pas dans l'intervalle fermé [15,25]. Autrement dit, le statut doit être strictement inférieur à 15 ou strictement supérieur à 25." },
-            new Question { Id = 6, QuizzId = 1, Order = 6, Body = "On veut obtenir les noms des pièces rouges ou bleues. On ne veut pas de doublon." }
+            new Question { Id = 1, QuizId = 1, Order = 1, Body = "On veut afficher le contenu de la table des fournisseurs." },
+            new Question { Id = 2, QuizId = 1, Order = 2, Body = "On veut le nom et la ville de tous les fournisseurs avec comme intitulé NOM et VILLE." },
+            new Question { Id = 3, QuizId = 1, Order = 3, Body = "On veut le nom des fournisseurs dont la ville est London ou Paris." },
+            new Question { Id = 4, QuizId = 1, Order = 4, Body = "On veut le nom des fournisseurs dont le statut vaut strictement moins de 25 et qui sont de Paris." },
+            new Question { Id = 5, QuizId = 1, Order = 5, Body = "On veut obtenir le nom des fournisseurs dont le statut n'est pas dans l'intervalle fermé [15,25]. Autrement dit, le statut doit être strictement inférieur à 15 ou strictement supérieur à 25." },
+            new Question { Id = 6, QuizId = 1, Order = 6, Body = "On veut obtenir les noms des pièces rouges ou bleues. On ne veut pas de doublon." }
         );
         modelBuilder.Entity<Solution>().HasData(
             new Solution { Id = 1, QuestionId = 1, Order = 1, Sql = "SELECT * FROM s" },
@@ -143,12 +143,12 @@ public class SeedData
 
     public void CreateQuestionsQuiz2() {
         modelBuilder.Entity<Question>().HasData(
-            new Question { Id = 7, QuizzId = 2, Order = 1, Body = "Affichez l'identifiant des livraisons qui concernent un produit rouge." },
-            new Question { Id = 8, QuizzId = 2, Order = 2, Body = "Affichez le nom des fournisseurs qui fournissent le produit P4" },
-            new Question { Id = 9, QuizzId = 2, Order = 3, Body = "Affichez le nom des clients/projets qui utilisent le produit P3" },
-            new Question { Id = 10, QuizzId = 2, Order = 4, Body = "Affichez le nom des projets fournis par le fournisseur S1" },
-            new Question { Id = 11, QuizzId = 2, Order = 5, Body = "Affichez le nom des fournisseurs qui ont fait au moins une livraison d'entre 150 et 250 pièces" },
-            new Question { Id = 12, QuizzId = 2, Order = 6, Body = @"On souhaite obtenir l'affichage des livraisons avec le nom du fournisseur à la place de son identifiant, 
+            new Question { Id = 7, QuizId = 2, Order = 1, Body = "Affichez l'identifiant des livraisons qui concernent un produit rouge." },
+            new Question { Id = 8, QuizId = 2, Order = 2, Body = "Affichez le nom des fournisseurs qui fournissent le produit P4" },
+            new Question { Id = 9, QuizId = 2, Order = 3, Body = "Affichez le nom des clients/projets qui utilisent le produit P3" },
+            new Question { Id = 10, QuizId = 2, Order = 4, Body = "Affichez le nom des projets fournis par le fournisseur S1" },
+            new Question { Id = 11, QuizId = 2, Order = 5, Body = "Affichez le nom des fournisseurs qui ont fait au moins une livraison d'entre 150 et 250 pièces" },
+            new Question { Id = 12, QuizId = 2, Order = 6, Body = @"On souhaite obtenir l'affichage des livraisons avec le nom du fournisseur à la place de son identifiant, 
 ainsi que le nom de la pièce à la place de son identifiant et le nom du projet à la place de son identifiant.
 
 La date de dernière livraison ne doit pas figurer dans le résultat.
@@ -163,12 +163,12 @@ Smith  Nut      Console   700
 …      …        …         … 
 " 
                      },
-            new Question { Id = 13, QuizzId = 2, Order = 7, Body = @"Même requête où l'on ne garde que les fournisseurs de Paris" },
-            new Question { Id = 14, QuizzId = 2, Order = 8, Body = @"Affichez les villes des projets où le fournisseur Adams a livré.
+            new Question { Id = 13, QuizId = 2, Order = 7, Body = @"Même requête où l'on ne garde que les fournisseurs de Paris" },
+            new Question { Id = 14, QuizId = 2, Order = 8, Body = @"Affichez les villes des projets où le fournisseur Adams a livré.
                                                                 Attention, vous ne pouvez pas faire d'hypothèse sur les données : vous ne pouvez pas considérer que Adams est le fournisseur S5." },
-            new Question { Id = 15, QuizzId = 2, Order = 9, Body = @"On souhaite le nom des pièces dont le poids est strictement inférieur à 18 livres et qui sont fournies par un fournisseur de Rome ou de Londres.
+            new Question { Id = 15, QuizId = 2, Order = 9, Body = @"On souhaite le nom des pièces dont le poids est strictement inférieur à 18 livres et qui sont fournies par un fournisseur de Rome ou de Londres.
                                                                 Même remarque : vous ne pouvez pas supposer qu'il n'y a pas de fournisseur à Rome." },
-            new Question { Id = 16, QuizzId = 2, Order = 10, Body = @"Obtenir l'identifiant des pièces de Londres qui ont étés livrées par un fournisseur de Londres" }
+            new Question { Id = 16, QuizId = 2, Order = 10, Body = @"Obtenir l'identifiant des pièces de Londres qui ont étés livrées par un fournisseur de Londres" }
         );
 
         modelBuilder.Entity<Solution>().HasData(
@@ -224,15 +224,15 @@ WHERE l.ID_P = p.ID_P
 
     public void CreateQuestionsQuiz3() {
         modelBuilder.Entity<Question>().HasData(
-            new Question { Id = 20, QuizzId = 3, Order = 1, Body = @"Affichez le nom des personnes qui ont plus de trente ans" }
+            new Question { Id = 20, QuizId = 3, Order = 1, Body = @"Affichez le nom des personnes qui ont plus de trente ans" }
         );
         modelBuilder.Entity<Solution>().HasData(new Solution { Id = 22, QuestionId = 20, Order = 1, Sql = "SELECT DISTINCT p.Nom\nFROM Personne p\nWHERE p.Age >= 30;" });
     }
 
     public void CreateQuestionsQuiz4() {
         modelBuilder.Entity<Question>().HasData(
-            new Question { Id = 30, QuizzId = 4, Order = 1, Body = @"On veut afficher le contenu de la table des fournisseurs." },
-            new Question { Id = 31, QuizzId = 4, Order = 2, Body = @"On veut le nom et la ville de tous les fournisseurs avec comme intitulé NOM et VILLE." }
+            new Question { Id = 30, QuizId = 4, Order = 1, Body = @"On veut afficher le contenu de la table des fournisseurs." },
+            new Question { Id = 31, QuizId = 4, Order = 2, Body = @"On veut le nom et la ville de tous les fournisseurs avec comme intitulé NOM et VILLE." }
         );
         modelBuilder.Entity<Solution>().HasData(
             new Solution { Id = 23, QuestionId = 30, Order = 1, Sql = "SELECT * FROM s" },
@@ -242,7 +242,7 @@ WHERE l.ID_P = p.ID_P
 
     public void CreateQuestionsQuiz5() {
         modelBuilder.Entity<Question>().HasData(
-            new Question { Id = 32, QuizzId = 5, Order = 1, Body = @"On veut le nom et la ville de tous les fournisseurs avec comme intitulé NOM et VILLE." }
+            new Question { Id = 32, QuizId = 5, Order = 1, Body = @"On veut le nom et la ville de tous les fournisseurs avec comme intitulé NOM et VILLE." }
         );
         modelBuilder.Entity<Solution>().HasData(
             new Solution { Id = 25, QuestionId = 32, Order = 1, Sql = "SELECT sname NOM, city VILLE FROM s" }
@@ -251,8 +251,8 @@ WHERE l.ID_P = p.ID_P
 
     public void CreateQuestionQuiz6() {
         modelBuilder.Entity<Question>().HasData(
-            new Question { Id = 33, QuizzId = 6, Order = 1, Body = @"Affichez le nom des personnes qui ont plus de trente ans" },
-            new Question { Id = 34, QuizzId = 6, Order = 2, Body = @"Affichez la date d'expédition des messages envoyés par Paul" }
+            new Question { Id = 33, QuizId = 6, Order = 1, Body = @"Affichez le nom des personnes qui ont plus de trente ans" },
+            new Question { Id = 34, QuizId = 6, Order = 2, Body = @"Affichez la date d'expédition des messages envoyés par Paul" }
         );
         modelBuilder.Entity<Solution>().HasData(
             new Solution { Id = 26, QuestionId = 33, Order = 1, Sql = "SELECT DISTINCT p.Nom\nFROM Personne p\nWHERE p.Age >= 30;" },
@@ -262,7 +262,7 @@ WHERE l.ID_P = p.ID_P
 
     public void CreateAttempt1() {
         modelBuilder.Entity<Attempt>().HasData(
-            new Attempt { Id = 1, Start = new DateTimeOffset(new DateTime(2023, 09, 01)), QuizzId = 1, AuthorId = 4 }
+            new Attempt { Id = 1, Start = new DateTimeOffset(new DateTime(2023, 09, 01)), QuizId = 1, AuthorId = 4 }
         );
         modelBuilder.Entity<Answer>().HasData(
             new Answer { Id = 1, QuestionId = 1, AttemptId = 1, Sql = "SELECT * FROM S", IsCorrect = true }
@@ -271,7 +271,7 @@ WHERE l.ID_P = p.ID_P
 
     public void CreateAttempt2() {
         modelBuilder.Entity<Attempt>().HasData(
-            new Attempt { Id = 2, Start = DateTimeOffset.Now, Finish = DateTimeOffset.Now, QuizzId = 4, AuthorId = 4 }
+            new Attempt { Id = 2, Start = DateTimeOffset.Now, Finish = DateTimeOffset.Now, QuizId = 4, AuthorId = 4 }
         );
         modelBuilder.Entity<Answer>().HasData(
             new Answer { Id = 2, QuestionId = 30, AttemptId = 2, Sql = "SELECT * FROM S", IsCorrect = true }

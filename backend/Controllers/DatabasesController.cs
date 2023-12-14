@@ -17,6 +17,7 @@ public class ForQuery {
 
 [Authorize]
 [Route("api/[controller]")]
+[ApiController]
 public class DatabasesController : ControllerBase
 {
 	private readonly PridContext _context;
@@ -44,8 +45,6 @@ public class DatabasesController : ControllerBase
 		QueryResult solutionResult = new();
 
 		string solution = "SELECT * FROM S"; // todo: get solution
-
-		Console.WriteLine("-> " + forquery.Query);
 
 		using MySqlConnection connection = new($"server=localhost;database=" + forquery.DbName + ";uid=root;password=root");
 		DataTable table;

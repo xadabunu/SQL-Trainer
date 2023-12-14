@@ -261,23 +261,25 @@ WHERE l.ID_P = p.ID_P
     }
 
     public void CreateAttempt1() {
+        var date = new DateTimeOffset(new DateTime(2023, 09, 01));
         modelBuilder.Entity<Attempt>().HasData(
-            new Attempt { Id = 1, Start = new DateTimeOffset(new DateTime(2023, 09, 01)), QuizId = 1, AuthorId = 4 }
+            new Attempt { Id = 1, Start = date, QuizId = 1, AuthorId = 4 }
         );
         modelBuilder.Entity<Answer>().HasData(
-            new Answer { Id = 1, QuestionId = 1, AttemptId = 1, Sql = "SELECT * FROM S", IsCorrect = true }
+            new Answer { Id = 1, QuestionId = 1, AttemptId = 1, Sql = "SELECT * FROM S", IsCorrect = true, Timestamp = date }
         );
     }
 
     public void CreateAttempt2() {
+        var date = DateTimeOffset.Now;
         modelBuilder.Entity<Attempt>().HasData(
-            new Attempt { Id = 2, Start = DateTimeOffset.Now, Finish = DateTimeOffset.Now, QuizId = 4, AuthorId = 4 }
+            new Attempt { Id = 2, Start = date, Finish = DateTimeOffset.Now, QuizId = 4, AuthorId = 4 }
         );
         modelBuilder.Entity<Answer>().HasData(
-            new Answer { Id = 2, QuestionId = 30, AttemptId = 2, Sql = "SELECT * FROM S", IsCorrect = true }
+            new Answer { Id = 2, QuestionId = 30, AttemptId = 2, Sql = "SELECT * FROM S", IsCorrect = true, Timestamp = date }
         );
         modelBuilder.Entity<Answer>().HasData(
-            new Answer { Id = 3, QuestionId = 31, AttemptId = 2, Sql = "SELECT * FROM J", IsCorrect = false }
+            new Answer { Id = 3, QuestionId = 31, AttemptId = 2, Sql = "SELECT * FROM J", IsCorrect = false, Timestamp = date }
         );
     }
 

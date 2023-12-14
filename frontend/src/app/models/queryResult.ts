@@ -6,4 +6,8 @@ export class QueryResult {
     public columnCount: number = -1;
     public columns: string[] = [];
     public data: string[][] = [];
+
+    get nbLinesLabel(): string {
+        return this.rowCount + " line" + (this.rowCount > 1 ? 's': '');
+    }
 }

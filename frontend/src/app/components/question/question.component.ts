@@ -36,12 +36,12 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 
 	navigateToPrevious(): void {
 		this.router.navigateByUrl("/question/" + this.question.previous)
-			.then(() =>	this.refresh());
+			.then(() => this.refresh());
 	}
 
 	navigateToNext(): void {
 		this.router.navigateByUrl("/question/" + this.question.next)
-			.then(() =>	this.refresh());
+			.then(() => this.refresh());
 	}
 
 	refresh(): void {
@@ -61,6 +61,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 					this.displaySolutions = true;
 					this.canWrite = false;
 					this.solutionBtnLabel = "Cacher solutions";
+					this.send();
 				}
 			});
 		});
@@ -68,7 +69,11 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 
 	send(): void {
 		this.questionService.executeQuery(this.question.quiz!.database!.name!, this.query)
-			.subscribe(qr => this.queryResult = qr);
+			.subscribe(qr => {
+				let errors: string[] = qr.errors;
+				qr.errors = errors.filter(e => e !== null);
+				this.queryResult = qr;
+			});
 	}
 
 	erase(): void {
@@ -84,6 +89,20 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 			this.solutionBtnLabel = "Voir solutions";
 			this.canWrite = true;
 		}
+	}
+
+	get timestamp(): string {
+		// if (this.question && this.question.answer) {
+		// 	if (this.question) {
+		// 		if (this.question.answer)
+		// 			if (this.question.answer.timestamp)
+		// 				console.log(this.question.answer.timestamp)
+		// 	}
+		// 	console.log(this.question?.answer?.timestamp?.toLocaleDateString);
+		// 	return this.printDate(this.question?.answer?.timestamp)
+		// 	return this.question?.answer?.timestamp?.toLocaleDateString;
+		// }
+		return "";
 	}
 
 	get isFirst(): boolean {
@@ -118,7 +137,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 	}
 
 	get dbName(): string {
-		if (this.question!== undefined)
+		if (this.question !== undefined)
 			return this.question.quiz!.database!.name!;
 		return '';
 	}

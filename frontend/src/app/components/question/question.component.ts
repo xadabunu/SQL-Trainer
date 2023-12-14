@@ -55,6 +55,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 					this.label = 'Votre requête: (pas encore répondu)';
 					this.query = '';
 					this.displaySolutions = false;
+					this.queryResult = undefined;
 				} else {
 					this.label = 'Votre requête:';
 					this.query = question.answer.sql;

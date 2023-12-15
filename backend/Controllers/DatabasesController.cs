@@ -13,6 +13,7 @@ namespace prid_2324_a02.Controllers;
 public class ForQuery {
 	public string DbName { get; set; } = null!;
 	public string Query { get; set; } = null!;
+	public int QuestionId { get; set; }
 }
 
 [Authorize]
@@ -36,8 +37,7 @@ public class DatabasesController : ControllerBase
 		return _mapper.Map<List<DatabaseDTO>>(await _context.Databases.ToListAsync());
 	}
 
-	// [Authorized(Role.Student)]
-	[AllowAnonymous]
+	[Authorized(Role.Student)]
 	[HttpPost("executeQuery")]
 	public async Task<ActionResult<QueryResult>> ExecuteQuery(ForQuery forquery)
 	{
@@ -50,7 +50,12 @@ public class DatabasesController : ControllerBase
 			return queryResult;
 		}
 
-		string solution = "SELECT * FROM S"; // todo: get solution
+		string solution = await _context.Solutions
+							.Where(s => s.QuestionId == forquery.QuestionId)
+							.Select(s => s.Sql)
+							.FirstOrDefaultAsync() ?? "";
+		
+		if (solution == "") return BadRequest();
 
 		using MySqlConnection connection = new($"server=localhost;database=" + forquery.DbName + ";uid=root;password=root");
 		DataTable table;

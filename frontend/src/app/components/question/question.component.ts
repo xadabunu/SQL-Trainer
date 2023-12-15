@@ -45,6 +45,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 	}
 
 	refresh(): void {
+		this.solutionBtnLabel = "Afficher solutions";
 		this.route.params.subscribe(params => {
 			this.questionService.getQuestion(params['id']).subscribe(question => {
 				this.question = question;
@@ -57,6 +58,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 					this.displaySolutions = false;
 					this.queryResult = undefined;
 				} else {
+					console.log("here")
 					this.label = 'Votre requête:';
 					this.query = question.answer.sql;
 					this.displaySolutions = true;
@@ -69,7 +71,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 	}
 
 	send(): void {
-		this.questionService.executeQuery(this.question.quiz!.database!.name!, this.query)
+		this.questionService.executeQuery(this.question.quiz!.database!.name!, this.query, this.question.id!)
 			.subscribe(qr => {
 				let errors: string[] = qr.errors;
 				qr.errors = errors.filter(e => e !== null);

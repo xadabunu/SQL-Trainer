@@ -9,6 +9,7 @@ import { QueryResult } from "../models/queryResult";
 export class ForQuery {
     dbName: string = '';
     query: string = '';
+    questionId!: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -21,8 +22,8 @@ export class QuestionService {
             .pipe(map(res => plainToInstance(Question, res)));
     }
 
-    executeQuery(dbName: string, query: string): Observable<any> {
-        var temp: ForQuery = { dbName: dbName, query: query }
+    executeQuery(dbName: string, query: string, qstId: number): Observable<any> {
+        var temp: ForQuery = { dbName: dbName, query: query, questionId: qstId }
         return this.http.post(`${this.baseUrl}api/databases/executeQuery`, temp)
             .pipe(map(res => plainToInstance(QueryResult, res)));
     }

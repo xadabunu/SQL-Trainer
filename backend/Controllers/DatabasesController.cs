@@ -44,6 +44,12 @@ public class DatabasesController : ControllerBase
 		QueryResult queryResult = new();
 		QueryResult solutionResult = new();
 
+		if (forquery.Query == "") {
+			queryResult.IsCorrect = false;
+			queryResult.SqlError = "Requête vide";
+			return queryResult;
+		}
+
 		string solution = "SELECT * FROM S"; // todo: get solution
 
 		using MySqlConnection connection = new($"server=localhost;database=" + forquery.DbName + ";uid=root;password=root");
@@ -81,9 +87,9 @@ public class DatabasesController : ControllerBase
 		int index = 0;
 		
 		if (attempt.RowCount != solution.RowCount)
-			attempt.Errors[index++] = "Nombre de colonnes incorrect";
-		if (attempt.ColumnCount != solution.ColumnCount)
 			attempt.Errors[index++] = "Nombre de lignes incorrect";
+		if (attempt.ColumnCount != solution.ColumnCount)
+			attempt.Errors[index++] = "Nombre de colonnes incorrect";
 		
 		if (index == 0) {
 			if (attempt != solution)

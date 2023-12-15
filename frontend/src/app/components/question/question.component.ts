@@ -92,6 +92,10 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 		}
 	}
 
+	closeAttempt() {
+		
+	}
+
 	get timestamp(): string {
 		// if (this.question && this.question.answer) {
 		// 	if (this.question) {

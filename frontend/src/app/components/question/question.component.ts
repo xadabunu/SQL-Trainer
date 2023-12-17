@@ -1,8 +1,9 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Answer } from "src/app/models/answer";
 import { QueryResult } from "src/app/models/queryResult";
 import { Question } from "src/app/models/question";
-import { QuestionService } from "src/app/services/question.sercice";
+import { QuestionService } from "src/app/services/question.service";
 
 @Component({
 	selector: '',
@@ -17,7 +18,6 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 	label: string = '';
 	query: string = '';
 	displaySolutions: boolean = false;
-	canWrite: boolean = false;
 	solutionBtnLabel: string = 'Voir solutions';
 
 	queryResult?: QueryResult;
@@ -51,51 +51,53 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 				this.question = question;
 				this.header = question.quiz?.name + ' - Exercice ' + question.order;
 				this.body = question.body ?? '';
-				this.canWrite = this.canEdit;
 				if (!question.answer) {
 					this.label = 'Votre requête: (pas encore répondu)';
 					this.query = '';
 					this.displaySolutions = false;
 					this.queryResult = undefined;
 				} else {
-					console.log("here")
 					this.label = 'Votre requête:';
 					this.query = question.answer.sql;
-					this.displaySolutions = true;
-					this.canWrite = false;
-					this.solutionBtnLabel = "Cacher solutions";
-					this.send();
+					this.executeQuery();
 				}
 			});
 		});
 	}
 
 	send(): void {
+		const answer: Answer = {
+					timestamp: new Date(),
+					sql: this.query,
+					isCorrect: false,
+					question: this.question,
+					attempt: this.question.attempt };
+
+		this.questionService.sendAnswer(answer).subscribe(() => this.refresh());
+	}
+
+	executeQuery(): void {
 		this.questionService.executeQuery(this.question.quiz!.database!.name!, this.query, this.question.id!)
 			.subscribe(qr => {
 				let errors: string[] = qr.errors;
 				qr.errors = errors.filter(e => e !== null);
 				this.queryResult = qr;
+				this.displaySolutions = qr.isCorrect;
 			});
 	}
 
 	erase(): void {
 		this.query = '';
+		this.displaySolutions = false;
+		this.queryResult = undefined;
 	}
 
 	showSolutions(): void {
-		this.displaySolutions = !this.displaySolutions;
-		if (this.displaySolutions === true) {
-			this.solutionBtnLabel = "Cacher solutions";
-			this.canWrite = false;
-		} else {
-			this.solutionBtnLabel = "Voir solutions";
-			this.canWrite = true;
-		}
+		this.displaySolutions = true;
 	}
 
 	closeAttempt() {
-		
+
 	}
 
 	get timestamp(): string {
@@ -134,6 +136,12 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 		if (this.question !== undefined)
 			return !this.question.quiz!.isClosed &&
 				(!this.question.quiz!.isTest || this.question.answer === undefined);
+		return false;
+	}
+
+	get canWrite(): boolean {
+		if (this.canEdit)
+			return !this.displaySolutions;
 		return false;
 	}
 

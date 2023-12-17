@@ -27,12 +27,10 @@ public class QuizzesController : ControllerBase
 	{
 		var quiz = await _context.Quizzes
 		.Include(q => q.Database)
-		// .Include(q => q.Questions).ThenInclude(q => q.Solutions)
-		// .AsNoTracking()
 		.SingleOrDefaultAsync(q => q.Id == id);
 		if (quiz == null)
 			return NotFound();
-		quiz.Editable = !await _context.Attemps.AnyAsync(a => a.QuizId == quiz.Id);
+		quiz.Editable = !await _context.Attempts.AnyAsync(a => a.QuizId == quiz.Id);
 		return _mapper.Map<QuizDTO>(quiz);
 	}
 
@@ -69,7 +67,7 @@ public class QuizzesController : ControllerBase
 			list.Select(q => {
 				var firstQuestion = q.Questions.FirstOrDefault(q => q.Order == 1);
 				q.FirstQuestionId = firstQuestion?.Id ?? 0;
-				var attempt = _context.Attemps
+				var attempt = _context.Attempts
                                 .SingleOrDefault(a => a.QuizId == q.Id && a.AuthorId == user!.Id);
 				return q.AddStatus(attempt);
 			}));
@@ -91,7 +89,7 @@ public class QuizzesController : ControllerBase
 			list.Select(q => {
 				var firstQuestion = q.Questions.FirstOrDefault(q => q.Order == 1);
 				q.FirstQuestionId = firstQuestion?.Id ?? 0;
-				var attempt = _context.Attemps
+				var attempt = _context.Attempts
 					.Include(a => a.Answers)
                     .SingleOrDefault(a => a.QuizId == q.Id && a.AuthorId == user!.Id);
 				if (attempt != null) {

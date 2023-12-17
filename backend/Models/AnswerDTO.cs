@@ -7,6 +7,6 @@ public class AnswerDTO
 	public DateTimeOffset Timestamp { get; set; }
 	public bool IsCorrect { get; set; }
 
-	public AttemptDTO Attempt { get; } = null!;
-	public QuestionDTO Question { get; } = null!;
+	public AttemptForAnswerDTO Attempt { get; set; } = null!;
+	public QuestionDTO? Question { get; set; } = null!;
 }

@@ -29,7 +29,7 @@ public class PridContext : DbContext
 
 	public DbSet<User> Users => Set<User>();
 	public DbSet<Answer> Answers => Set<Answer>();
-	public DbSet<Attempt> Attemps => Set<Attempt>();
+	public DbSet<Attempt> Attempts => Set<Attempt>();
 	public DbSet<Database> Databases => Set<Database>();
 	public DbSet<Question> Questions => Set<Question>();
 	public DbSet<Quiz> Quizzes => Set<Quiz>();

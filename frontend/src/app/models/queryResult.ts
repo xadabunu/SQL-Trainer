@@ -1,6 +1,6 @@
 export class QueryResult {
     public isCorrect!: boolean;
-    public sqlError?: string;
+    public sqlError?: string = undefined;
     public errors: string[] = [];
     public rowCount: number = -1;
     public columnCount: number = -1;

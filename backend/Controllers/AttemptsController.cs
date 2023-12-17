@@ -20,9 +20,8 @@ public class AttemptsController : ControllerBase
         _mapper = mapper;
     }
 
-    // [Authorized(Role.Student)]
-	[AllowAnonymous]
-    [HttpPost]
+    [Authorized(Role.Student)]
+	[HttpPost]
     public async Task<ActionResult> CreateAttempt(AttemptDTO dto)
 	{
 		var quiz = await _context.Quizzes.FindAsync(dto.Quiz.Id);
@@ -34,7 +33,7 @@ public class AttemptsController : ControllerBase
 		// var result = await new AttemptValidator(_context).ValidateAsync(attempt);
 		// if (result.IsValid)
 		// 	return BadRequest();
-		_context.Attemps.Add(attempt);
+		_context.Attempts.Add(attempt);
 
 		await _context.SaveChangesAsync();
 		return NoContent();

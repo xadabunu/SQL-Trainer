@@ -42,5 +42,8 @@ public class MappingProfile : Profile
 
 		CreateMap<Attempt, AttemptDTO>();
 		CreateMap<AttemptDTO, Attempt>();
+
+		CreateMap<Attempt, AttemptForAnswerDTO>();
+		CreateMap<AttemptForAnswerDTO, Attempt>();
 	}
 }

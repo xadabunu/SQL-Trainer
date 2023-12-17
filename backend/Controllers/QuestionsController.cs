@@ -53,6 +53,7 @@ public class QuestionsController : ControllerBase
             .SingleOrDefaultAsync();
         
         dto.Answer = _mapper.Map<AnswerDTO>(answer);
+        dto.Attempt = _mapper.Map<AttemptForAnswerDTO>(await _context.Attempts.Where(a => a.AuthorId == user!.Id && a.QuizId == quiz.Id).SingleAsync());
         return dto;
     }
 

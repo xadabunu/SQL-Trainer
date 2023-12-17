@@ -72,9 +72,7 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 		});
 	}
 
-	ngAfterViewInit(): void {
-		this.ctlType.setValue(quizType.Training);
-	}
+	ngAfterViewInit(): void { }
 
 	ngOnInit(): void {
 		this.route.params.subscribe(params => {

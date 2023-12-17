@@ -10,3 +10,10 @@ public class AttemptDTO
 	public QuizDTO Quiz { get; set; } = null!;
 	public int QuizId { get; set; }
 }
+
+public class AttemptForAnswerDTO
+{
+	public int Id { get; set; }
+	public int AuthorId { get; set; }
+	public int QuizId { get; set; }
+}

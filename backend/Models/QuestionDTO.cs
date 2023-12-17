@@ -13,4 +13,6 @@ public class QuestionDTO
 
 	public int Previous { get; set; }
 	public int Next { get; set; }
+
+	public AttemptForAnswerDTO? Attempt { get; set; }
 }

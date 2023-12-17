@@ -25,5 +25,5 @@
             </tr>
         </tbody>
     </table>
-    <p>{{ qr?.nbLinesLabel }}</p>
+    <p *ngIf="qr?.sqlError === null">{{ qr?.nbLinesLabel }}</p>
 </div>

@@ -171,6 +171,10 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 		return this.ctlType?.value === quizType.Test;
 	}
 
+	isLast(question: Question): boolean {
+		return question.order === this.qsts.data.length;
+	}
+
 	update() {
 		this.quizService.update(this._quiz);
 	}
@@ -250,39 +254,39 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 		let errors = this.ctlQuestions.errors || {};
 		let hasEmptySolution = false;
 		let hasNoSolution = false;
-	  
+
 		this.qsts.data.forEach(question => {
-		  if (!question.solutions || question.solutions.length === 0) {
-			hasNoSolution = true;
-		  } else {
-			for (const solution of question.solutions) {
-			  if (!solution || !solution.sql || solution.sql.trim().length === 0) {
-				hasEmptySolution = true;
-				break;
-			  }
+			if (!question.solutions || question.solutions.length === 0) {
+				hasNoSolution = true;
+			} else {
+				for (const solution of question.solutions) {
+					if (!solution || !solution.sql || solution.sql.trim().length === 0) {
+						hasEmptySolution = true;
+						break;
+					}
+				}
 			}
-		  }
 		});
-	  
+
 		if (hasNoSolution) {
-		  errors = { ...errors, noSolution: true };
+			errors = { ...errors, noSolution: true };
 		} else {
-		  delete errors['noSolution'];
+			delete errors['noSolution'];
 		}
-	  
+
 		if (hasEmptySolution) {
-		  errors = { ...errors, emptySolution: true };
+			errors = { ...errors, emptySolution: true };
 		} else {
-		  delete errors['emptySolution'];
+			delete errors['emptySolution'];
 		}
-	  
+
 		if (Object.keys(errors).length === 0) {
-		  this.ctlQuestions.setErrors(null);
+			this.ctlQuestions.setErrors(null);
 		} else {
-		  this.ctlQuestions.setErrors(errors);
+			this.ctlQuestions.setErrors(errors);
 		}
-	  }
-	  
+	}
+
 	private emptyQuestion(): any {
 		return () => {
 			if (this.qsts.data.length === 0)

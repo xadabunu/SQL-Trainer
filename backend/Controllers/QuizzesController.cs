@@ -124,9 +124,6 @@ public class QuizzesController : ControllerBase
 		return _mapper.Map<QuizDTO>(quiz);
 	}
 
-	/**
-	 * !On ne rentre pas dans la méthode
-	 */
 	[Authorized(Role.Teacher)]
 	[HttpPut]
 	public async Task<IActionResult> PutQuiz(QuizWithQuestionsDTO dto)
@@ -141,6 +138,18 @@ public class QuizzesController : ControllerBase
 		if (!result.IsValid)
 			return BadRequest(result);
 		
+		await _context.SaveChangesAsync();
+		return NoContent();
+	}
+
+	[Authorized(Role.Teacher)]
+	[HttpDelete("{quizId}")]
+	public async Task<ActionResult> DeleteQuiz(int quizId) {
+		Console.WriteLine(0);
+		var quiz = await _context.Quizzes.FindAsync(quizId);
+		if (quiz == null)
+			return NotFound();
+		_context.Quizzes.Remove(quiz);
 		await _context.SaveChangesAsync();
 		return NoContent();
 	}

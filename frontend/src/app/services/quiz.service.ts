@@ -56,12 +56,21 @@ export class QuizService {
 	}
 
 	createAttempt(a: Attempt): Observable<boolean> {
-		console.log("in service", a)
 		return this.http.post<Attempt>(`${this.baseUrl}api/attempts`, a)
 			.pipe(map(res => true),
 				catchError(err => {
 					console.log(err);
 					return of(false);
 				}));
+	}
+
+	deleteQuiz(quizId: number): Observable<boolean> {
+		return this.http.delete<boolean>(`${this.baseUrl}api/quizzes/${quizId}`).pipe(
+			map(res => true),
+			catchError(err => {
+				console.log(err);
+				return of(false);
+			})
+		);
 	}
 }

@@ -3,10 +3,12 @@ import { MatTableDataSource } from "@angular/material/table";
 import { Database } from "src/app/models/database";
 import { DatabaseService } from "src/app/services/database.service";
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl, ValidationErrors } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { QuizService } from "src/app/services/quiz.service";
 import { Question } from "src/app/models/question";
 import { Quiz } from "src/app/models/quiz";
+import { MatDialog } from "@angular/material/dialog";
+import { ConfirmDeleteComponent } from "./confirm-delete";
 
 enum quizType {
 	Training = "Training",
@@ -42,7 +44,9 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 		private quizService: QuizService,
 		private formBuilder: FormBuilder,
 		private route: ActivatedRoute,
-		private cdr: ChangeDetectorRef
+		private cdr: ChangeDetectorRef,
+		private dialog: MatDialog,
+		private router: Router
 	) {
 		this.getDatabases();
 		this.ctlName = this.formBuilder.control('', [
@@ -180,7 +184,15 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 	}
 
 	delete() {
-		console.log("delete");
+		const dialogRef = this.dialog.open(ConfirmDeleteComponent);
+
+		dialogRef.afterClosed().subscribe(result => {
+			if (result) {
+				this.quizService.deleteQuiz(this._quiz.id!).subscribe(() => {
+					this.router.navigateByUrl("/");
+				});
+			}
+		});
 	}
 
 	addQuestion(): void {

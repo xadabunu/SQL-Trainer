@@ -25,6 +25,7 @@ import { CodeEditorComponent } from '../components/code-editor/code-editor.compo
 import { QuestionComponent } from '../components/question/question.component';
 import { QueryResultComponent } from '../components/question/query-result.component';
 import { QuizListComponent } from '../components/quizlist/quizlist.component';
+import { ConfirmDeleteComponent } from '../components/edit-quiz/confirm-delete';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { QuizListComponent } from '../components/quizlist/quizlist.component';
     CodeEditorComponent,
     TestCodeEditorComponent,
 	  QuestionComponent,
-    QueryResultComponent
+    QueryResultComponent,
+    ConfirmDeleteComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

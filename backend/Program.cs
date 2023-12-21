@@ -11,7 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<PridContext>(opt => opt.UseSqlite("Data Source=prid.db"));
+// builder.Services.AddDbContext<PridContext>(opt => opt.UseSqlite("Data Source=prid.db"));
+builder.Services.AddDbContext<PridContext>(opt => opt.UseMySql(
+    builder.Configuration.GetConnectionString("prid-2324-mysql"),
+    ServerVersion.Parse("10.4.28-mariadb")
+));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

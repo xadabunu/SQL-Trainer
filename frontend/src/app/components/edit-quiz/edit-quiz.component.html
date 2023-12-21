@@ -82,7 +82,7 @@
 		Aucune solution ne peut être vide
 	</mat-error>
 	<edit-question *ngFor="let question of qsts.data"
-			[question]="question" [canEdit]="canEdit" [isLast]="isLast(question)"
+			[question]="question" [canEdit]="canEdit" [isLast]="isLast(question)" [database]="dbName"
 			(indexToRemove)="deleteQuestion($event)"
 			(indexToPushDown)="swapQuestions('down', $event)"
 			(indexToPushUp)="swapQuestions('up', $event)"

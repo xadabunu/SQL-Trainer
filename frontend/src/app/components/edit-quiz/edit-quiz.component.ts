@@ -175,6 +175,10 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 		return this.ctlType?.value === quizType.Test;
 	}
 
+	get dbName(): string {
+		return this.ctlDatabase.value.name;
+	}
+
 	isLast(question: Question): boolean {
 		return question.order === this.qsts.data.length;
 	}

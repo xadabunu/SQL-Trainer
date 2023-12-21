@@ -22,7 +22,7 @@
 			<button mat-elevated-button (click)="solutionUp(solution.order)" [disabled]="solution.order===1"><mat-icon>arrow_drop_up</mat-icon></button>
 			<button mat-elevated-button  (click)="solutionDown(solution.order)" [disabled]="solution.order===question.solutions.length"><mat-icon>arrow_drop_down</mat-icon></button>
 		</div>
-		<code-editor [(ngModel)]="solution.sql" [readOnly]="!canEdit" (ngModelChange)="sqlChange(solution.sql)"></code-editor>
+		<code-editor [(ngModel)]="solution.sql" [readOnly]="!canEdit" (ngModelChange)="sqlChange(solution.sql)" [database]="database"></code-editor>
 		<button mat-elevated-button class="delete" (click)="deleteSolution(solution.order)" *ngIf="canEdit"><mat-icon>delete</mat-icon></button>
 	</div>
 	<div class="add_solution" *ngIf="canEdit">

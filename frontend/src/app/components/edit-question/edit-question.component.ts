@@ -13,6 +13,7 @@ export class EditQuestionComponent {
 	@Input() question!: Question;
 	@Input() canEdit!: boolean;
 	@Input() isLast!: boolean;
+	@Input() database?: string;
 
 	@Output() indexToRemove = new EventEmitter<number>();
 	@Output() indexToPushDown = new EventEmitter<number>();

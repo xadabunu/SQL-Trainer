@@ -127,12 +127,17 @@ export class QuizListComponent {
 			const attempt: Attempt = {
 					id: 0,
 					quiz: quiz,
-					author: this.authService.currentUser,
 					start: new Date(),
 					finish: undefined
 			};
-			this.quizService.createAttempt(attempt).subscribe();
+			this.quizService.createAttempt(attempt).subscribe(res => {
+				if (res)
+					this.router.navigateByUrl('question/' + quiz.firstQuestionId)
+				else
+					this.snackBar.open(`There was an error at the server. The attempt could not be created! Please try again.`, 'Dismiss', { duration: 10000 });
+			});
 		}
-		this.router.navigateByUrl('question/' + quiz.firstQuestionId);
+		else
+			this.router.navigateByUrl('question/' + quiz.firstQuestionId);
 	}
 }

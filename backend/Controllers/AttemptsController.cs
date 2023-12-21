@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using prid_2324_a02.Helpers;
 using prid_2324_a02.Models;
 
@@ -29,7 +30,12 @@ public class AttemptsController : ControllerBase
 		if (quiz == null)
 			return NotFound();
 
+		dto.QuizId = quiz.Id;
+		var user = await _context.Users.SingleAsync(u => u.Pseudo == User.Identity!.Name);
+		dto.Author = _mapper.Map<UserDTO>(user);
+
 		var attempt = _mapper.Map<Attempt>(dto);
+
 		// var result = await new AttemptValidator(_context).ValidateAsync(attempt);
 		// if (result.IsValid)
 		// 	return BadRequest();

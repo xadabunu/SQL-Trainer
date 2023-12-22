@@ -54,7 +54,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 				if (!question.answer) {
 					this.label = 'Votre requête: (pas encore répondu)';
 					this.query = '';
-					this.displaySolutions = false;
+					this.displaySolutions = question.quiz!.isClosed!;
 					this.queryResult = undefined;
 				} else {
 					this.label = 'Votre requête:';
@@ -71,7 +71,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 					sql: this.query,
 					isCorrect: false,
 					question: this.question,
-					attempt: this.question.attempt };
+					attempt: this.question.attempt! };
 
 		this.questionService.sendAnswer(answer).subscribe(() => this.refresh());
 	}
@@ -82,7 +82,8 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 				let errors: string[] = qr.errors;
 				qr.errors = errors.filter(e => e !== null);
 				this.queryResult = qr;
-				this.displaySolutions = qr.isCorrect;
+				this.displaySolutions = qr.isCorrect || this.question!.quiz!.isClosed || this.question.attempt?.finish;
+				console.log(this.question!.quiz!.isClosed);
 			});
 	}
 
@@ -101,16 +102,11 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 	}
 
 	get timestamp(): string {
-		// if (this.question && this.question.answer) {
-		// 	if (this.question) {
-		// 		if (this.question.answer)
-		// 			if (this.question.answer.timestamp)
-		// 				console.log(this.question.answer.timestamp)
-		// 	}
-		// 	console.log(this.question?.answer?.timestamp?.toLocaleDateString);
-		// 	return this.printDate(this.question?.answer?.timestamp)
-		// 	return this.question?.answer?.timestamp?.toLocaleDateString;
-		// }
+		if (this.question && this.question.answer) {
+			const ts: Date = this.question.answer!.timestamp;
+			console.log(ts);
+			return ts.toLocaleDateString() + " " + ts.toLocaleTimeString();
+		}
 		return "";
 	}
 
@@ -135,13 +131,16 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 	get canEdit(): boolean {
 		if (this.question !== undefined)
 			return !this.question.quiz!.isClosed &&
-				(!this.question.quiz!.isTest || this.question.answer === undefined);
+				(!this.question.quiz!.isTest || this.question.attempt!.finish === null);
 		return false;
 	}
 
 	get canWrite(): boolean {
-		if (this.canEdit)
-			return !this.displaySolutions;
+		if (this.question !== undefined) {
+			return !this.question.quiz?.isClosed
+				&& this.question.attempt!.finish === null
+				&& !this.displaySolutions;
+		}
 		return false;
 	}
 

@@ -25,6 +25,7 @@
     <button mat-elevated-button (click)="erase()" *ngIf="canEdit">Effacer</button>
     <button mat-elevated-button (click)="showSolutions()" *ngIf="canSeeSolutions">{{ solutionBtnLabel }}</button>
 </div>
+<!-- <p>{{ timestamp }}</p> -->
 <query-result [qr]="queryResult"></query-result>
 <div *ngIf="displaySolutions">
     <div *ngFor="let solution of question.solutions">

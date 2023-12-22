@@ -6,8 +6,8 @@ export class Answer {
     id?: number;
     sql: string = '';
     @Type(() => Date)
-    timestamp?: Date;
+    timestamp!: Date;
     isCorrect: boolean = false;
     question?: Question;
-    attempt?: Attempt;
+    attempt!: Attempt;
 }

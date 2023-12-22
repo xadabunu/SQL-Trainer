@@ -36,6 +36,7 @@ public class QuestionsController : ControllerBase
         var quiz = question.Quiz;
         var dto = _mapper.Map<QuestionDTO>(question);
         dto.Quiz = _mapper.Map<QuizForQuestionDTO>(quiz);
+        dto.Quiz.IsClosed = quiz.Finish != null && quiz.Finish < new DateTimeOffset();
         var temp = await _context.Questions
             .Where(q => q.QuizId == dto.Quiz.Id && q.Order == dto.Order - 1)
             .SingleOrDefaultAsync();
@@ -53,7 +54,14 @@ public class QuestionsController : ControllerBase
             .SingleOrDefaultAsync();
         
         dto.Answer = _mapper.Map<AnswerDTO>(answer);
-        dto.Attempt = _mapper.Map<AttemptForAnswerDTO>(await _context.Attempts.Where(a => a.AuthorId == user!.Id && a.QuizId == quiz.Id).SingleAsync());
+        dto.Attempt = _mapper.Map<AttemptForAnswerDTO>(
+                        await _context.Attempts
+                        .Where(a => a.AuthorId == user!.Id && a.QuizId == quiz.Id)
+                        .SingleAsync()
+                    );
+        if (quiz.IsTest && quiz.Finish >= DateTimeOffset.Now && dto.Attempt.Finish != null) {
+            question.Solutions.Clear();
+        }
         return dto;
     }
 

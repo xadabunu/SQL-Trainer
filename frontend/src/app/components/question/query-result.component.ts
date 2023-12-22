@@ -6,7 +6,7 @@ import { QueryResult } from "src/app/models/queryResult";
     templateUrl: './query-result.component.html',
     styleUrls: ['./query-result.component.css']
 })
-export class QueryResultComponent implements OnChanges, OnInit, AfterViewInit {
+export class QueryResultComponent implements OnChanges {
 
     @Input() qr?: QueryResult;
 
@@ -23,18 +23,7 @@ export class QueryResultComponent implements OnChanges, OnInit, AfterViewInit {
     queryErrorLabel: string = 'Votre requête a retourné un mauvais résultat:';
     sqlErrorLabel: string = 'Erreur de requête';
 
-    constructor(
-    ) {
-
-    }
-
-    ngOnInit(): void {
-        
-    }
-
-    ngAfterViewInit(): void {
-        
-    }
+    constructor() { }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.qr && this.qr) {

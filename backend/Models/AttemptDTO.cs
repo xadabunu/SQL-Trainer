@@ -16,4 +16,5 @@ public class AttemptForAnswerDTO
 	public int Id { get; set; }
 	public int AuthorId { get; set; }
 	public int QuizId { get; set; }
+	public DateTimeOffset? Finish { get; set; }
 }

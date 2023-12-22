@@ -9,10 +9,11 @@ using System.Data;
 
 namespace prid_2324_a02.Controllers;
 
-public class ForQuery {
-	public string DbName { get; set; } = null!;
-	public string Query { get; set; } = null!;
-	public int QuestionId { get; set; }
+public class ForQuery
+{
+    public string DbName { get; set; } = null!;
+    public string Query { get; set; } = null!;
+    public int QuestionId { get; set; }
 }
 
 [Authorize]
@@ -122,6 +123,19 @@ public class AnswersController : ControllerBase
             return StatusCode(500, new { Error = e.Message });
         }
 
+        var user = await _context.Users.SingleAsync(u => u.Pseudo == User.Identity!.Name);
+
+        var quiz = await _context.Questions
+                            .Where(q => q.Id == forquery.QuestionId)
+                            .Include(q => q.Quiz)
+                            .Select(q => q.Quiz)
+                            .FirstOrDefaultAsync();
+        var attempt = await _context.Attempts
+                            .Where(a => a.QuizId == quiz!.Id && a.AuthorId == user.Id)
+                            .FirstOrDefaultAsync();
+
+        if (quiz!.IsTest && attempt!.Finish == null)
+            return new QueryResult(){  };
         return queryResult;
     }
 

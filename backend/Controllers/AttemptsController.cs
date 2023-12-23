@@ -44,4 +44,20 @@ public class AttemptsController : ControllerBase
 		await _context.SaveChangesAsync();
 		return NoContent();
 	}
+
+	[Authorized(Role.Student)]
+	[HttpPost("close")]
+	public async Task<ActionResult> CloseAttempt(AttemptDTO dto)
+	{
+		var attempt = await _context.Attempts.FindAsync(dto.Id);
+		
+		var user = await _context.Users.SingleAsync(u => u.Pseudo == User.Identity!.Name);
+		if (attempt.AuthorId != user.Id)
+			return BadRequest("Not the author" + attempt.AuthorId + " - " + user.Id);
+		
+		attempt.Finish = DateTimeOffset.Now;
+		await _context.SaveChangesAsync();
+
+		return NoContent();
+	}
 }

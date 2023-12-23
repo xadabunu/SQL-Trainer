@@ -1,9 +1,11 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Answer } from "src/app/models/answer";
 import { QueryResult } from "src/app/models/queryResult";
 import { Question } from "src/app/models/question";
 import { QuestionService } from "src/app/services/question.service";
+import { ConfirmCloseAttemptComponent } from "./confirm-close";
 
 @Component({
 	selector: '',
@@ -24,6 +26,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 
 	constructor(
 		private questionService: QuestionService,
+		private dialog: MatDialog,
 		private route: ActivatedRoute,
 		private router: Router
 	) { }
@@ -54,7 +57,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 				if (!question.answer) {
 					this.label = 'Votre requête: (pas encore répondu)';
 					this.query = '';
-					this.displaySolutions = question.quiz!.isClosed!;
+					this.displaySolutions = question.quiz!.isClosed! || question.attempt?.finish != null;
 					this.queryResult = undefined;
 				} else {
 					this.label = 'Votre requête:';
@@ -98,7 +101,14 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 	}
 
 	closeAttempt() {
+		const dialogRef = this.dialog.open(ConfirmCloseAttemptComponent);
 
+		dialogRef.afterClosed().subscribe(result => {
+			if (result) {
+				this.questionService.closeAttempt(this.question.attempt!)
+					.subscribe(() => this.router.navigateByUrl("/"));
+			}
+		})
 	}
 
 	get timestamp(): string {
@@ -122,15 +132,9 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 		return false;
 	}
 
-	get canSave(): boolean {
-		if (this.question !== undefined)
-			return this.question.answer?.sql !== undefined;
-		return false;
-	}
-
 	get canEdit(): boolean {
 		if (this.question !== undefined)
-			return !this.question.quiz!.isClosed &&
+			return !this.question.quiz!.isClosed && this.question.attempt!.finish === null &&
 				(!this.question.quiz!.isTest || this.question.attempt!.finish === null);
 		return false;
 	}
@@ -144,9 +148,9 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 		return false;
 	}
 
-	get canSeeSolutions() {
+	get canSeeSolutions(): boolean {
 		if (this.question !== undefined)
-			return !this.question.quiz!.isTest || this.question.quiz!.isClosed;
+			return !this.question.quiz!.isTest && this.question.attempt?.finish == null;
 		return false;
 	}
 

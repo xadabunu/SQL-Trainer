@@ -11,7 +11,7 @@
     </div>
     <h3>{{ header }}</h3>
     <span matTooltip="Fermer tentative">
-        <button mat-elevated-button *ngIf="canEdit" [disabled]="!canSave" (click)="closeAttempt()">
+        <button mat-elevated-button *ngIf="canEdit" (click)="closeAttempt()">
             <mat-icon>clear</mat-icon>
         </button>
     </span>

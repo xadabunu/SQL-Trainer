@@ -6,6 +6,7 @@ import { catchError, map } from "rxjs/operators";
 import { Observable, of } from "rxjs";
 import { QueryResult } from "../models/queryResult";
 import { Answer } from "../models/answer";
+import { Attempt } from "../models/attempt";
 
 export class ForQuery {
     dbName: string = '';
@@ -36,5 +37,14 @@ export class QuestionService {
         var fq: ForQuery = { dbName: dbName, query: query, questionId: qstId }
         return this.http.post(`${this.baseUrl}api/answers/executeQuery`, fq)
             .pipe(map(res => plainToInstance(QueryResult, res)));
+    }
+
+    closeAttempt(attempt: Attempt): Observable<boolean> {
+        return this.http.post(`${this.baseUrl}api/attempts/close`, attempt)
+            .pipe(map(res => true),
+            catchError(err => {
+                console.error(err);
+                return of(false);
+            }))
     }
 }

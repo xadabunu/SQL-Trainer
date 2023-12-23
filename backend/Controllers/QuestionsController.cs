@@ -48,17 +48,19 @@ public class QuestionsController : ControllerBase
         dto.Next = temp?.Id ?? 0;
 
         var user = _context.Users.SingleOrDefault(u => u.Pseudo == User.Identity!.Name);
-        var answer = await _context.Answers
-            .Include(a => a.Attempt)
-            .Where(a => a.QuestionId == id && a.Attempt.AuthorId == user!.Id)
-            .SingleOrDefaultAsync();
-        
-        dto.Answer = _mapper.Map<AnswerDTO>(answer);
+
         dto.Attempt = _mapper.Map<AttemptForAnswerDTO>(
                         await _context.Attempts
                         .Where(a => a.AuthorId == user!.Id && a.QuizId == quiz.Id)
-                        .SingleAsync()
+                        .OrderBy(a => a.Id)
+                        .LastOrDefaultAsync()
                     );
+        var answer = await _context.Answers
+            .Include(a => a.Attempt)
+            .Where(a => a.QuestionId == id && a.Attempt.Id == dto.Attempt.Id)
+            .SingleOrDefaultAsync();
+        
+        dto.Answer = _mapper.Map<AnswerDTO>(answer);
         if (quiz.IsTest && quiz.Finish >= DateTimeOffset.Now && dto.Attempt.Finish != null) {
             question.Solutions.Clear();
         }

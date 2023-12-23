@@ -68,7 +68,7 @@ public class QuizzesController : ControllerBase
 				var firstQuestion = q.Questions.FirstOrDefault(q => q.Order == 1);
 				q.FirstQuestionId = firstQuestion?.Id ?? 0;
 				var attempt = _context.Attempts
-                                .SingleOrDefault(a => a.QuizId == q.Id && a.AuthorId == user!.Id);
+                                .SingleOrDefault(a => a.QuizId == q.Id && a.AuthorId == user!.Id && a.Finish == null);
 				return q.AddStatus(attempt);
 			}));
 	}

@@ -27,11 +27,13 @@ public class QuizzesController : ControllerBase
 	{
 		var quiz = await _context.Quizzes
 		.Include(q => q.Database)
+		.Include(q => q.Questions)
+		.ThenInclude(q => q.Solutions)
 		.SingleOrDefaultAsync(q => q.Id == id);
 		if (quiz == null)
 			return NotFound();
 		quiz.Editable = !await _context.Attempts.AnyAsync(a => a.QuizId == quiz.Id);
-		return _mapper.Map<QuizDTO>(quiz);
+		return _mapper.Map<QuizWithQuestionsDTO>(quiz);
 	}
 
 	[Authorized(Role.Teacher)]
@@ -99,18 +101,6 @@ public class QuizzesController : ControllerBase
 				}
 				return q.AddStatus(attempt);
 			}));
-	}
-
-	[Authorized(Role.Student, Role.Teacher)]
-	[HttpGet("getQuestions/{quizId:int}")]
-	public async Task<ActionResult<IEnumerable<QuestionDTO>>> GetQuestions(int quizId)
-	{
-		return _mapper.Map<List<QuestionDTO>>(
-			await _context.Questions
-				.Include(q => q.Solutions)
-				.OrderBy(q =>q .Order)
-				.Where(q => q.QuizId == quizId).ToListAsync()
-		);
 	}
 
 	[Authorized(Role.Teacher)]

@@ -39,12 +39,6 @@ export class QuizService {
 			catchError(err => of(null)));
 	}
 
-	getQuestions(id: number) {
-		return this.http.get<any[]>(`${this.baseUrl}api/quizzes/getQuestions/${id}`)
-			.pipe(map(res => plainToInstance(Question, res)),
-			catchError(err => of(null)));
-	}
-
 	update(q: Quiz): Observable<boolean> {
 		return this.http.put<Quiz>(`${this.baseUrl}api/quizzes`, q).pipe(
 			map(res => true),

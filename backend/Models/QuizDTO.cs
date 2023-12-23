@@ -19,7 +19,7 @@ public class QuizDTO
 
 public class QuizWithQuestionsDTO : QuizDTO
 {
-	public virtual ICollection<Question> Questions { get; set; } = new HashSet<Question>();
+	public virtual ICollection<QuestionDTO> Questions { get; set; } = new HashSet<QuestionDTO>();
 }
 
 public class QuizForQuestionDTO

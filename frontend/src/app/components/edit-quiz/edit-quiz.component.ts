@@ -69,7 +69,7 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 			start: this.ctlStart,
 			finish: this.ctlFinish,
 			database: this.ctlDatabase,
-			isTest: this.ctlType.value === quizType.Test,
+			// isTest: this.isTest,
 			isPublished: this.ctlPublished,
 			questions: this.ctlQuestions
 		});
@@ -201,6 +201,7 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 	//	})
 
 	update() {
+		this._quiz.isTest = this.isTest;
 		this.quizService.update({ ...this._quiz, ...this.editQuizForm.value }).subscribe(res => {
 			if (res)
 				this.router.navigateByUrl("/");

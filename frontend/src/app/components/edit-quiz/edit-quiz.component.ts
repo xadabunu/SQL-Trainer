@@ -37,7 +37,6 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 	public ctlQuestions!: FormControl;
 
 	dbs: MatTableDataSource<Database> = new MatTableDataSource();
-	qsts: MatTableDataSource<Question> = new MatTableDataSource();
 
 	constructor(
 		private databaseService: DatabaseService,
@@ -72,7 +71,7 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 			database: this.ctlDatabase,
 			isTest: this.ctlType.value === quizType.Test,
 			isPublished: this.ctlPublished,
-			question: this.ctlQuestions
+			questions: this.ctlQuestions
 		});
 	}
 
@@ -96,6 +95,7 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 						this.ctlDatabase.setValue(this.dbs.data[index ?? 0]);
 						this.ctlStart.setValue(quiz?.start);
 						this.ctlFinish.setValue(quiz?.finish);
+						this.ctlQuestions.setValue(quiz?.questions ?? []);
 						if (!quiz?.editable) {
 							this._editable = quiz?.editable ?? true;
 							this.ctlName.disable();
@@ -106,19 +106,17 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 							this.ctlStart.disable();
 							this.ctlFinish.disable();
 						}
-					})
-				this.quizService.getQuestions(params['id'])
-					.subscribe(qsts => {
-						if (qsts) {
-							this.qsts.data = qsts;
-							this.ctlQuestions.setValue(this.qsts.data);
-						}
 					});
 			}
 		});
-		this.ctlType.valueChanges.subscribe(() => {
-			this.ctlStart.updateValueAndValidity();
-			this.ctlFinish.updateValueAndValidity();
+		this.ctlType.valueChanges.subscribe(value => {
+			if (value === quizType.Test) {
+				this.ctlStart.updateValueAndValidity();
+				this.ctlFinish.updateValueAndValidity();
+			} else {
+				this.ctlStart.setValue(null);
+				this.ctlFinish.setValue(null);
+			}
 		});
 		this.ctlStart.valueChanges.subscribe(() => this.ctlFinish.setValue(''));
 	}
@@ -167,8 +165,18 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 		return null;
 	}
 
+	get questions(): Question[] {
+		if (this._quiz)
+			return this._quiz.questions;
+		return [];
+	}
+
 	get canEdit(): boolean {
 		return this._editable;
+	}
+
+	get canSave(): boolean {
+		return !(this.editQuizForm.pristine || this.editQuizForm.invalid || this.editQuizForm.pending);
 	}
 
 	get isTest(): boolean {
@@ -180,11 +188,23 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 	}
 
 	isLast(question: Question): boolean {
-		return question.order === this.qsts.data.length;
+		return question.order === this.questions.length;
 	}
 
+	//	debugFormGroup() :{
+	//		const fg = this.editQuizForm;
+	//
+	//		Object.keys(fg.controls).forEach(key => {
+	//		const ctl = fg.get(key);
+	//		if (ctl?.invalid)
+	//			console.log(`${key} : `, ctl.errors);
+	//	})
+
 	update() {
-		this.quizService.update(this._quiz);
+		this.quizService.update({ ...this._quiz, ...this.editQuizForm.value }).subscribe(res => {
+			if (res)
+				this.router.navigateByUrl("/");
+		});
 	}
 
 	delete() {
@@ -200,8 +220,8 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 	}
 
 	addQuestion(): void {
-		const order: number = this.qsts.data.length + 1;
-		this.qsts.data.push({
+		const order: number = this.questions.length + 1;
+		this.questions.push({
 			order: order,
 			solutions: [],
 			previous: 0,
@@ -212,9 +232,9 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 
 	deleteQuestion($event: number): void {
 		if ($event >= 0)
-			this.qsts.data.splice($event, 1);
-		for (let index = $event; index < this.qsts.data.length; index++) {
-			const element = this.qsts.data[index];
+			this.questions.splice($event, 1);
+		for (let index = $event; index < this.questions.length; index++) {
+			const element = this.questions[index];
 			if (element && element.order) element.order--;
 		}
 		this.ctlQuestions.updateValueAndValidity();
@@ -222,11 +242,11 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 
 	swapQuestions(direction: 'up' | 'down', index: number): void {
 		let destination: number = index + (direction === 'up' ? -1 : 1);
-		let temp: Question = this.qsts.data[index];
+		let temp: Question = this.questions[index];
 		if (temp && temp.order) temp.order += (direction === 'up' ? -1 : 1);
-		temp = this.qsts.data[destination];
+		temp = this.questions[destination];
 		if (temp && temp.order) temp.order -= (direction === 'up' ? -1 : 1);
-		this.qsts.data.sort((q1, q2) => (q1.order ?? 0) - (q2.order ?? 0));
+		this.questions.sort((q1, q2) => (q1.order ?? 0) - (q2.order ?? 0));
 		this.cdr.detectChanges();
 	}
 
@@ -242,7 +262,7 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 		if (!body || body.trim().length < 2) {
 			errors = { ...errors, questionBody: true };
 		} else {
-			let validBody = this.qsts.data.every(question => (question.body?.trim().length ?? 0) >= 2);
+			let validBody = this.questions.every(question => (question.body?.trim().length ?? 0) >= 2);
 
 			if (validBody) {
 				delete errors['questionBody'];
@@ -267,11 +287,12 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 	}
 
 	checkSolutions(): void {
+		this.editQuizForm.markAsDirty();
 		let errors = this.ctlQuestions.errors || {};
 		let hasEmptySolution = false;
 		let hasNoSolution = false;
 
-		this.qsts.data.forEach(question => {
+		this.questions.forEach(question => {
 			if (!question.solutions || question.solutions.length === 0) {
 				hasNoSolution = true;
 			} else {
@@ -305,9 +326,9 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 
 	private emptyQuestion(): any {
 		return () => {
-			if (this.qsts.data.length === 0)
+			if (this.questions.length === 0)
 				return { noQuestion: true };
-			return { noQuestion: false };
+			return null;
 		};
 	}
 }

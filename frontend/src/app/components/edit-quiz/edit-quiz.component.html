@@ -53,7 +53,7 @@
 			<div class="buttons">
 				<span matTooltip="Enregistrer" *ngIf="canEdit">
 					<button type="submit" mat-elevated-button form="form" *ngIf="canEdit"
-						[disabled]="editQuizForm.pristine || editQuizForm.invalid || editQuizForm.pending"
+						[disabled]="!canSave"
 						(click)="update()">
 						<mat-icon>save</mat-icon>
 					</button>
@@ -81,7 +81,7 @@
 	<mat-error class="field-error" *ngIf="ctlQuestions.hasError('emptySolution')">
 		Aucune solution ne peut être vide
 	</mat-error>
-	<edit-question *ngFor="let question of qsts.data"
+	<edit-question *ngFor="let question of questions"
 			[question]="question" [canEdit]="canEdit" [isLast]="isLast(question)" [database]="dbName"
 			(indexToRemove)="deleteQuestion($event)"
 			(indexToPushDown)="swapQuestions('down', $event)"

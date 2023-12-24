@@ -12,7 +12,7 @@ public partial class QuestionValidator : AbstractValidator<Question>
 
         RuleFor(q => q.Body.Trim())
             .NotNull()
-            .Length(2);
+            .MinimumLength(2);
         
         RuleFor(q => q.Solutions)
             .Must(solutions => solutions != null && solutions.Any())

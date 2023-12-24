@@ -13,7 +13,7 @@ public partial class QuizValidator : AbstractValidator<Quiz>
 
         RuleFor(q => q.Name.Trim())
             .NotEmpty()
-            .Length(3)
+            .MinimumLength(3)
             .DependentRules(() => {
                 RuleFor(q => new { q.Name, q.Id })
                 .MustAsync((q, token) => BeUniqueName(q.Name, q.Id, token))

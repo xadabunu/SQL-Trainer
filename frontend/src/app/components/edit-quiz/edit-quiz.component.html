@@ -58,7 +58,7 @@
 						<mat-icon>save</mat-icon>
 					</button>
 				</span>
-				<span matTooltip="Supprimer">
+				<span matTooltip="Supprimer" *ngIf="canDelete">
 					<button mat-elevated-button tabindex="-1" (click)="delete()">
 						<mat-icon>delete</mat-icon>
 					</button>

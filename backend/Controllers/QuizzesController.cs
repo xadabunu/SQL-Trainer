@@ -133,9 +133,25 @@ public class QuizzesController : ControllerBase
 	}
 
 	[Authorized(Role.Teacher)]
+	[HttpPost]
+	public async Task<ActionResult> PostQuiz(QuizWithQuestionsDTO dto)
+	{
+		var newQuiz = _mapper.Map<Quiz>(dto);
+
+		var result = await new QuizValidator(_context).ValidateOnCreate(newQuiz);
+		if (!result.IsValid)
+			return BadRequest(result.Errors);
+
+		newQuiz.Database = null;
+
+		_context.Quizzes.Add(newQuiz);
+		await _context.SaveChangesAsync();
+		return NoContent();
+	}
+
+	[Authorized(Role.Teacher)]
 	[HttpDelete("{quizId}")]
 	public async Task<ActionResult> DeleteQuiz(int quizId) {
-		Console.WriteLine(0);
 		var quiz = await _context.Quizzes.FindAsync(quizId);
 		if (quiz == null)
 			return NotFound();

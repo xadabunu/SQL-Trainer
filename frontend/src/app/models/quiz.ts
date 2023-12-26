@@ -22,10 +22,6 @@ export class Quiz {
 
 	questions: Question[] = [];
 
-	get display(): string {
-		return `${this.name} - (${this.description ? this.description : 'no description'})`;
-	}
-
 	get evaluationAsString(): string {
 		return this.evaluation ?? "N/A";
 	}

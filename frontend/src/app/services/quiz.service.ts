@@ -49,6 +49,16 @@ export class QuizService {
 		)
 	}
 
+	create(q: Quiz): Observable<boolean> {
+		return this.http.post<Quiz>(`${this.baseUrl}api/quizzes`, q).pipe(
+			map(res => true),
+			catchError(err => {
+				console.log(err);
+				return of(false);
+			})
+		);
+	}
+
 	createAttempt(a: Attempt): Observable<boolean> {
 		return this.http.post<Attempt>(`${this.baseUrl}api/attempts`, a)
 			.pipe(map(res => true),

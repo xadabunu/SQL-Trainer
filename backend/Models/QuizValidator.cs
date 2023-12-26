@@ -31,4 +31,8 @@ public partial class QuizValidator : AbstractValidator<Quiz>
     private async Task<bool> BeUniqueName(string name, int id, CancellationToken token) {
         return !await _context.Quizzes.AnyAsync(q => q.Name == name && q.Id != id);
     }
+
+    public async Task<FluentValidation.Results.ValidationResult> ValidateOnCreate(Quiz quiz) {
+        return await this.ValidateAsync(quiz!, q => q.IncludeRuleSets("default"));
+    }
 }

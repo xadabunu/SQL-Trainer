@@ -26,6 +26,7 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 	id: number = 0;
 	private _editable: boolean = true;
 	private _quiz: Quiz = null!;
+	temp: Question[] = [];
 
 	public ctlName!: FormControl;
 	public ctlDescription!: FormControl;
@@ -53,8 +54,8 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 			Validators.minLength(3)
 		], [this.nameUsed()]);
 		this.ctlDescription = this.formBuilder.control('');
-		this.ctlStart = this.formBuilder.control('', [this.startValidator.bind(this)]);
-		this.ctlFinish = this.formBuilder.control('', [this.finishValidator.bind(this)]);
+		this.ctlStart = this.formBuilder.control(null, [this.startValidator.bind(this)]);
+		this.ctlFinish = this.formBuilder.control(null, [this.finishValidator.bind(this)]);
 		this.ctlType = this.formBuilder.control(quizType.Training);
 		this.ctlDatabase = this.formBuilder.control(null, [
 			Validators.required
@@ -69,7 +70,6 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 			start: this.ctlStart,
 			finish: this.ctlFinish,
 			database: this.ctlDatabase,
-			// isTest: this.isTest,
 			isPublished: this.ctlPublished,
 			questions: this.ctlQuestions
 		});
@@ -107,6 +107,10 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 							this.ctlFinish.disable();
 						}
 					});
+			} else {
+				this._quiz = new Quiz();
+				this._quiz.questions = this.temp;
+				this.ctlQuestions.setValue(this.temp);
 			}
 		});
 		this.ctlType.valueChanges.subscribe(value => {
@@ -114,11 +118,10 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 				this.ctlStart.updateValueAndValidity();
 				this.ctlFinish.updateValueAndValidity();
 			} else {
-				this.ctlStart.setValue(null);
-				this.ctlFinish.setValue(null);
+				this.ctlStart.setValue(undefined);
 			}
 		});
-		this.ctlStart.valueChanges.subscribe(() => this.ctlFinish.setValue(''));
+		this.ctlStart.valueChanges.subscribe(() => this.ctlFinish.setValue(undefined));
 	}
 
 	nameUsed(): any {
@@ -168,7 +171,7 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 	get questions(): Question[] {
 		if (this._quiz)
 			return this._quiz.questions;
-		return [];
+		return this.temp;
 	}
 
 	get canEdit(): boolean {
@@ -179,12 +182,16 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 		return !(this.editQuizForm.pristine || this.editQuizForm.invalid || this.editQuizForm.pending);
 	}
 
+	get canDelete(): boolean {
+		return this.route.snapshot.params['id'] != 0;
+	}
+
 	get isTest(): boolean {
 		return this.ctlType?.value === quizType.Test;
 	}
 
 	get dbName(): string {
-		return this.ctlDatabase.value.name;
+		return this.ctlDatabase.value?.name ?? "";
 	}
 
 	isLast(question: Question): boolean {
@@ -202,10 +209,17 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 
 	update() {
 		this._quiz.isTest = this.isTest;
-		this.quizService.update({ ...this._quiz, ...this.editQuizForm.value }).subscribe(res => {
-			if (res)
-				this.router.navigateByUrl("/");
-		});
+		if (!this._quiz.id) {
+			this.quizService.create({ ...this._quiz, ...this.editQuizForm.value }).subscribe(res => {
+				if (res)
+					this.router.navigateByUrl("/");
+			});
+		} else {
+			this.quizService.update({ ...this._quiz, ...this.editQuizForm.value }).subscribe(res => {
+				if (res)
+					this.router.navigateByUrl("/");
+			});
+		}
 	}
 
 	delete() {
@@ -254,6 +268,7 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 	private getDatabases(): void {
 		this.databaseService.getAll().subscribe(dbs => {
 			this.dbs.data = dbs;
+			this.ctlDatabase.setValue(dbs[0]);
 		});
 	}
 

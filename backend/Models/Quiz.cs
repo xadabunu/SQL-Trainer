@@ -10,7 +10,7 @@ public class Quiz
 	public string Name { get; set; } = null!;
 	public string? Description { get; set; }
 	public int DatabaseId { get; set; }
-	public Database Database { get; set; } = null!;
+	public Database? Database { get; set; }
 	public bool IsPublished { get; set; }
 	public bool IsClosed { get; set; } = false;
 	public bool IsTest { get; set; } = false;

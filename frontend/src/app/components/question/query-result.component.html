@@ -2,7 +2,7 @@
     <p>{{ correctAnswerLabel }}</p>
     <p>{{ correctAnswerDetails }}</p>
 </div>
-<div class="error" *ngIf="qr?.isCorrect === false">
+<div class="error" *ngIf="qr?.isCorrect === false || qr?.sqlError">
     <p>{{ resultLabel }}</p>
     <p *ngIf="qr?.sqlError">{{ qr!.sqlError }}</p>
     <ul *ngIf="qr?.errors !== []">

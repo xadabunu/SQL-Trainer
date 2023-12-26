@@ -86,7 +86,6 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 				qr.errors = errors.filter(e => e !== null);
 				this.queryResult = qr;
 				this.displaySolutions = qr.isCorrect || this.question!.quiz!.isClosed || this.question.attempt?.finish;
-				console.log(this.question!.quiz!.isClosed);
 			});
 	}
 

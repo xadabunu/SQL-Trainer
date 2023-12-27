@@ -58,7 +58,8 @@ public class QuestionsController : ControllerBase
         var answer = await _context.Answers
             .Include(a => a.Attempt)
             .Where(a => a.QuestionId == id && a.Attempt.Id == dto.Attempt.Id)
-            .SingleOrDefaultAsync();
+            .OrderBy(a => a.Timestamp)
+            .LastOrDefaultAsync();
         
         dto.Answer = _mapper.Map<AnswerDTO>(answer);
         if (quiz.IsTest && quiz.Finish >= DateTimeOffset.Now && dto.Attempt.Finish != null) {

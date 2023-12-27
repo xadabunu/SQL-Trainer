@@ -76,7 +76,10 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 					question: this.question,
 					attempt: this.question.attempt! };
 
-		this.questionService.sendAnswer(answer).subscribe(() => this.refresh());
+		this.questionService.sendAnswer(answer).subscribe(res => {
+			if (res)
+				this.refresh();
+		})
 	}
 
 	executeQuery(): void {

@@ -45,29 +45,16 @@ public class AnswersController : ControllerBase
                 .Include(q => q.Database)
                 .SingleAsync(q => q.Id == question.QuizId);
 
-        newAnswer.Attempt = await _context.Attempts
-                            .Where(a => a.AuthorId == user.Id && a.QuizId == quiz!.Id)
-                            .SingleAsync();
+        newAnswer.Attempt = null;
 
-        var oldAnswer = await _context.Answers
-                        .SingleOrDefaultAsync(a => a.Attempt.AuthorId == user.Id && a.QuestionId == question.Id);
-
-        if (oldAnswer != null)
-        {
-            oldAnswer.Sql = dto.Sql;
-            dto.Timestamp = dto.Timestamp;
-        }
-        else
-        {
-            _context.Answers.Add(newAnswer);
-        }
+        _context.Answers.Add(newAnswer);
 
         await _context.SaveChangesAsync();
 
         ForQuery fq = new()
         {
             Query = dto.Sql,
-            DbName = quiz.Database.Name,
+            DbName = quiz.Database!.Name,
             QuestionId = question.Id
         };
 

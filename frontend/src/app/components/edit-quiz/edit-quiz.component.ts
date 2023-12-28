@@ -49,6 +49,67 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 		private router: Router
 	) {
 		this.getDatabases();
+		this.createForm();
+	}
+
+	ngAfterViewInit(): void { }
+
+	ngOnInit(): void {
+		this.route.params.subscribe(params => {
+			this.id = params['id'];
+			if (params['id'] != 0) {
+				this.quizService.getById(params['id'])
+					.subscribe(quiz => {
+						this.setQuizValues(quiz);
+						if (!quiz?.editable) {
+							this._editable = quiz?.editable ?? true;
+							this.disableForm();
+						}
+					});
+			} else {
+				this._quiz = new Quiz();
+				this._quiz.questions = this.temp;
+				this.ctlQuestions.setValue(this.temp);
+			}
+		});
+		this.ctlType.valueChanges.subscribe(value => {
+			if (value === quizType.Test) {
+				this.ctlStart.updateValueAndValidity();
+				this.ctlFinish.updateValueAndValidity();
+			} else {
+				this.ctlStart.setValue(undefined);
+			}
+		});
+		this.ctlStart.valueChanges.subscribe(() => this.ctlFinish.setValue(undefined));
+	}
+
+	private disableForm(): void {
+		this.ctlName.disable();
+		this.ctlDescription.disable();
+		this.ctlType.disable();
+		this.ctlPublished.disable();
+		this.ctlDatabase.disable();
+		this.ctlStart.disable();
+		this.ctlFinish.disable();
+	}
+
+	private setQuizValues(quiz: Quiz | null): void {
+		if (quiz)
+			this._quiz = quiz;
+		this.ctlName.setValue(quiz?.name);
+		this.ctlDescription.setValue(quiz?.description);
+		this.ctlType.setValue(quiz?.isTest ? quizType.Test : quizType.Training);
+		this.ctlPublished.setValue(quiz?.isPublished);
+		var index: number | undefined = quiz?.database ? quiz.database.id : 1;
+		if (index) //? meilleur moyen de récupérer la db ?
+			index -= 1;
+		this.ctlDatabase.setValue(this.dbs.data[index ?? 0]);
+		this.ctlStart.setValue(quiz?.start);
+		this.ctlFinish.setValue(quiz?.finish);
+		this.ctlQuestions.setValue(quiz?.questions ?? []);
+	}
+
+	private createForm(): void {
 		this.ctlName = this.formBuilder.control('', [
 			Validators.required,
 			Validators.minLength(3)
@@ -73,55 +134,6 @@ export class EditQuizComponent implements AfterViewInit, OnInit {
 			isPublished: this.ctlPublished,
 			questions: this.ctlQuestions
 		});
-	}
-
-	ngAfterViewInit(): void { }
-
-	ngOnInit(): void {
-		this.route.params.subscribe(params => {
-			this.id = params['id'];
-			if (params['id'] != 0) {
-				this.quizService.getById(params['id'])
-					.subscribe(quiz => {
-						if (quiz)
-							this._quiz = quiz;
-						this.ctlName.setValue(quiz?.name);
-						this.ctlDescription.setValue(quiz?.description);
-						this.ctlType.setValue(quiz?.isTest ? quizType.Test : quizType.Training);
-						this.ctlPublished.setValue(quiz?.isPublished);
-						var index: number | undefined = quiz?.database ? quiz.database.id : 1;
-						if (index) //? meilleur moyen de récupérer la db ?
-							index -= 1;
-						this.ctlDatabase.setValue(this.dbs.data[index ?? 0]);
-						this.ctlStart.setValue(quiz?.start);
-						this.ctlFinish.setValue(quiz?.finish);
-						this.ctlQuestions.setValue(quiz?.questions ?? []);
-						if (!quiz?.editable) {
-							this._editable = quiz?.editable ?? true;
-							this.ctlName.disable();
-							this.ctlDescription.disable();
-							this.ctlType.disable();
-							this.ctlPublished.disable();
-							this.ctlDatabase.disable();
-							this.ctlStart.disable();
-							this.ctlFinish.disable();
-						}
-					});
-			} else {
-				this._quiz = new Quiz();
-				this._quiz.questions = this.temp;
-				this.ctlQuestions.setValue(this.temp);
-			}
-		});
-		this.ctlType.valueChanges.subscribe(value => {
-			if (value === quizType.Test) {
-				this.ctlStart.updateValueAndValidity();
-				this.ctlFinish.updateValueAndValidity();
-			} else {
-				this.ctlStart.setValue(undefined);
-			}
-		});
-		this.ctlStart.valueChanges.subscribe(() => this.ctlFinish.setValue(undefined));
 	}
 
 	nameUsed(): any {

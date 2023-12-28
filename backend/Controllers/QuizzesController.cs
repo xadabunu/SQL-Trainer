@@ -94,8 +94,11 @@ public class QuizzesController : ControllerBase
 				var attempt = _context.Attempts
 					.Include(a => a.Answers)
                     .SingleOrDefault(a => a.QuizId == q.Id && a.AuthorId == user!.Id);
-				if (attempt != null) {
-					var points = attempt.Answers.Count(a => a.IsCorrect);
+				if (attempt != null && attempt.Finish != null) {
+					var answers = attempt.Answers
+						.GroupBy(a => a.QuestionId)
+						.Select(group => group.OrderByDescending(a => a.Timestamp).First());
+					var points = answers.Count(a => a.IsCorrect);
 					var total = q.Questions.Count;
 					q.Evaluation = "" + points * 10 / total + "/10";
 				}

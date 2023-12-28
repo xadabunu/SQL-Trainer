@@ -62,7 +62,8 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 				} else {
 					this.label = 'Votre requête:';
 					this.query = question.answer.sql;
-					this.executeQuery();
+					if (! question.quiz?.isTest || question.attempt?.finish != null)
+						this.executeQuery();
 				}
 			});
 		});

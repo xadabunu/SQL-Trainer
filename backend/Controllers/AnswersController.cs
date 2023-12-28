@@ -45,12 +45,6 @@ public class AnswersController : ControllerBase
                 .Include(q => q.Database)
                 .SingleAsync(q => q.Id == question.QuizId);
 
-        newAnswer.Attempt = null;
-
-        _context.Answers.Add(newAnswer);
-
-        await _context.SaveChangesAsync();
-
         ForQuery fq = new()
         {
             Query = dto.Sql,
@@ -58,7 +52,17 @@ public class AnswersController : ControllerBase
             QuestionId = question.Id
         };
 
-        return await ExecuteQuery(fq);
+        var result = await ExecuteQuery(fq);
+
+        newAnswer.IsCorrect = result.Value?.IsCorrect ?? false;
+            
+        newAnswer.Attempt = null;
+        _context.Answers.Add(newAnswer);
+        await _context.SaveChangesAsync();
+
+        if (quiz.IsTest && newAnswer.Attempt!.Finish == null)
+            return new QueryResult() { };
+        return result;
     }
 
     [Authorized(Role.Student)]
@@ -121,31 +125,31 @@ public class AnswersController : ControllerBase
                             .Where(a => a.QuizId == quiz!.Id && a.AuthorId == user.Id)
                             .FirstOrDefaultAsync();
 
-        if (quiz!.IsTest && attempt!.Finish == null)
-            return new QueryResult(){  };
+        // if (quiz!.IsTest && attempt!.Finish == null)
+        //     return new QueryResult(){  };
         return queryResult;
     }
 
-    private static void CheckData(QueryResult attempt, QueryResult solution)
+    private static void CheckData(QueryResult answer, QueryResult solution)
     {
         int index = 0;
 
-        if (attempt.RowCount != solution.RowCount)
-            attempt.Errors[index++] = "Nombre de lignes incorrect";
-        if (attempt.ColumnCount != solution.ColumnCount)
-            attempt.Errors[index++] = "Nombre de colonnes incorrect";
+        if (answer.RowCount != solution.RowCount)
+            answer.Errors[index++] = "Nombre de lignes incorrect";
+        if (answer.ColumnCount != solution.ColumnCount)
+            answer.Errors[index++] = "Nombre de colonnes incorrect";
 
         if (index == 0)
         {
-            if (attempt != solution)
-                attempt.Errors[index] = "Données incorrectes";
+            if (answer != solution)
+                answer.Errors[index] = "Données incorrectes";
             else
             {
-                attempt.IsCorrect = true;
+                answer.IsCorrect = true;
                 return;
             }
         }
-        attempt.IsCorrect = false;
+        answer.IsCorrect = false;
     }
 
     private static void GetData(QueryResult queryResult, DataTable table)

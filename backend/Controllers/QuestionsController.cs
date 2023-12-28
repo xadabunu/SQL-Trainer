@@ -62,8 +62,10 @@ public class QuestionsController : ControllerBase
             .LastOrDefaultAsync();
         
         dto.Answer = _mapper.Map<AnswerDTO>(answer);
-        if (quiz.IsTest && quiz.Finish >= DateTimeOffset.Now && dto.Attempt.Finish != null) {
-            question.Solutions.Clear();
+        if (quiz.IsTest && quiz.Finish >= DateTimeOffset.Now && dto.Attempt.Finish == null) {
+            dto.Solutions.Clear();
+            if (dto.Answer != null)
+                dto.Answer.IsCorrect = false;
         }
         return dto;
     }

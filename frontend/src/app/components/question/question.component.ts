@@ -116,8 +116,7 @@ export class QuestionComponent implements OnInit, AfterViewInit {
 	get timestamp(): string {
 		if (this.question && this.question.answer) {
 			const ts: Date = this.question.answer!.timestamp;
-			console.log(ts);
-			return ts.toLocaleDateString() + " " + ts.toLocaleTimeString();
+			return new Date(ts).toLocaleString();
 		}
 		return "";
 	}

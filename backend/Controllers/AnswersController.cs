@@ -60,7 +60,7 @@ public class AnswersController : ControllerBase
         _context.Answers.Add(newAnswer);
         await _context.SaveChangesAsync();
 
-        if (quiz.IsTest && newAnswer.Attempt!.Finish == null)
+        if (quiz.IsTest && newAnswer.Attempt?.Finish == null)
             return new QueryResult() { };
         return result;
     }

@@ -10,16 +10,15 @@ public class QueryResult
     public string[]? Columns { get; set; }
     public string[][]? Data { get; set; }
 
-    public static bool operator ==(QueryResult qr1, QueryResult qr2) {
-        if (qr1.ColumnCount == qr2.ColumnCount && qr1.RowCount == qr2.RowCount) {
-            string[] qr1_flat = qr1.Data.SelectMany(a => a).OrderBy(s => s).ToArray();
-            string[] qr2_flat = qr2.Data.SelectMany(a => a).OrderBy(s => s).ToArray();
+    public bool HasSameData(QueryResult other) {
+        if (this.Data == null && other.Data == null)
+            return true;
+        if (this.ColumnCount == other.ColumnCount && this.RowCount == other.RowCount) {
+            string[] qr1_flat = this.Data!.SelectMany(a => a).OrderBy(s => s).ToArray();
+            string[] qr2_flat = other.Data!.SelectMany(a => a).OrderBy(s => s).ToArray();
             return qr1_flat.SequenceEqual(qr2_flat);
         }
-        return false;
-    }
 
-    public static bool operator !=(QueryResult qr1, QueryResult qr2) {
-        return !(qr1 == qr2);
+        return false;
     }
 }

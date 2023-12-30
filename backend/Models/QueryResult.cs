@@ -18,7 +18,6 @@ public class QueryResult
             string[] qr2_flat = other.Data!.SelectMany(a => a).OrderBy(s => s).ToArray();
             return qr1_flat.SequenceEqual(qr2_flat);
         }
-
         return false;
     }
 }

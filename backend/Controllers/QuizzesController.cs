@@ -27,8 +27,8 @@ public class QuizzesController : ControllerBase
 	{
 		var quiz = await _context.Quizzes
 		.Include(q => q.Database)
-		.Include(q => q.Questions)
-		.ThenInclude(q => q.Solutions)
+		.Include(q => q.Questions.OrderBy(q => q.Order))
+		.ThenInclude(q => q.Solutions.OrderBy(s => s.Order))
 		.SingleOrDefaultAsync(q => q.Id == id);
 		if (quiz == null)
 			return NotFound();
@@ -121,7 +121,11 @@ public class QuizzesController : ControllerBase
 	[HttpPut]
 	public async Task<IActionResult> PutQuiz(QuizWithQuestionsDTO dto)
 	{
-		var quiz = await _context.Quizzes.FindAsync(dto.Id);
+		var quiz = await _context.Quizzes
+			.Include(q => q.Questions)
+			.ThenInclude(q => q.Solutions)
+			.Where(q => q.Id == dto.Id)
+			.SingleOrDefaultAsync();
 
 		if (quiz == null) return NotFound();
 

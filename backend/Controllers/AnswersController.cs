@@ -141,7 +141,7 @@ public class AnswersController : ControllerBase
 
         if (index == 0)
         {
-            if (answer.HasSameData(solution))
+            if (!answer.HasSameData(solution))
                 answer.Errors[index] = "Données incorrectes";
             else
             {
